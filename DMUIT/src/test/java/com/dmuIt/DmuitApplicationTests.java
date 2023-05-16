@@ -1,10 +1,10 @@
-package com.example.dmuit;
+package com.dmuIt;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DmuItApplicationTests {
+class DmuitApplicationTests {
 
 	@Test
 	void contextLoads() {
