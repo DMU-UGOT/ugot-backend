@@ -1,4 +1,8 @@
 package com.dmuIt.domain.comment;
+import com.dmuIt.domain.community.Community;
+import com.dmuIt.domain.member.Member;
+import com.dmuIt.domain.study.Study;
+import com.dmuIt.domain.team.Team;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,18 +26,6 @@ public class Comment {
     private String content;
 
     @Column(length = 10, nullable = false)
-    private Long member_id;
-
-    @Column(length = 10, nullable = false)
-    private Long team_id;
-
-    @Column(length = 10, nullable = false)
-    private Long study_id;
-
-    @Column(length = 10, nullable = false)
-    private Long community_id;
-
-    @Column(length = 10, nullable = false)
     private String status;
 
     @Column(length = 20, nullable = false)
@@ -43,19 +35,36 @@ public class Comment {
     private Date modified_at;
 
 
-    @Builder
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    public Comment(Long id, String content, Long member_id, Long team_id, Long study_id,
-                   Long community_id, String status, Date create_at, Date modified_at)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    private Team team;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "study_id")
+    private Study study;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "community_id")
+    private Community community;
+
+
+    @Builder
+    public Comment(Long id, String content, String status, Date create_at,
+                   Date modified_at, Member member, Team team, Study study,
+                   Community community)
     {
         this.id = id;
         this.content = content;
-        this.member_id = member_id;
-        this.team_id = team_id;
-        this.study_id = study_id;
-        this.community_id = community_id;
         this.status = status;
         this.create_at = create_at;
         this.modified_at = modified_at;
+        this.member = member;
+        this.team = team;
+        this.study = study;
+        this.community = community;
     }
 }

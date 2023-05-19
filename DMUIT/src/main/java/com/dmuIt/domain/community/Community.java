@@ -1,4 +1,6 @@
 package com.dmuIt.domain.community;
+import com.dmuIt.domain.comment.Comment;
+import com.dmuIt.domain.vote.Vote;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +43,11 @@ public class Community {
 
     @Column(length = 20, nullable = false)
     private Date modified_at;
+
+    @OneToMany(mappedBy = "community")
+    private Vote vote;
+    private Comment comment;
+
 
 
     @Builder

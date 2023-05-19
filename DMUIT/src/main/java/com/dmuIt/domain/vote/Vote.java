@@ -1,5 +1,7 @@
 package com.dmuIt.domain.vote;
 
+import com.dmuIt.domain.community.Community;
+import com.dmuIt.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,17 +21,13 @@ public class Vote {
     @Column(name = "vote_id", unique = true, nullable = false)
     private Long id;
 
-    @Column(length = 10, nullable = false)
-    private Long member_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    @Column(length = 10, nullable = false)
-    private Long community_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "community_id")
+    private Community community;
 
 
-    @Builder
-    public Vote(Long id, Long member_id, Long community_id) {
-        this.id = id;
-        this.member_id = member_id;
-        this.community_id = community_id;
-    }
 }

@@ -1,5 +1,8 @@
 package com.dmuIt.domain.member;
 
+import com.dmuIt.domain.classChange.ClassChange;
+import com.dmuIt.domain.project.Project;
+import com.dmuIt.domain.vote.Vote;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,18 +59,30 @@ public class Member {
     private String status;
 
     @Column(length = 30, nullable = false)
-    private Long project_id;
-
-    @Column(length = 30, nullable = false)
     private Date create_at;
 
     @Column(length = 30, nullable = false)
     private Date modified_at;
 
+
+    //----------------수정중-------------------------------
+    
+    @OneToMany(mappedBy = "member") // 일대다관계
+    private ClassChange classChange;
+    private Project project;
+    private Vote vote;
+
+    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계, 하나의 classChange - 여러 member
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    //-----------------------------------------------
+    
+    
     //빌더
     @Builder
     public Member(Long id, String name, String nickname, String email, String password, String phone, String major,
-                  Integer grade, String _class, List skill, String role, String status, Long project_id, Date create_at,
+                  Integer grade, String _class, List skill, String role, String status, Date create_at,
                   Date modified_at)
     {
         this.id = id;
@@ -82,8 +97,9 @@ public class Member {
         this.skill = skill;
         this.role = role;
         this.status = status;
-        this.project_id = project_id;
         this.create_at = create_at;
         this.modified_at = modified_at;
     }
+
+
 }

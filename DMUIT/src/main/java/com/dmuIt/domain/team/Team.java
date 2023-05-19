@@ -1,5 +1,6 @@
 package com.dmuIt.domain.team;
 
+import com.dmuIt.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,17 +42,21 @@ public class Team {
     private String status;
 
     @Column(length = 20, nullable = false)
-    private Long memberid;
-
-    @Column(length = 20, nullable = false)
     private Date create_at;
 
     @Column(length = 20, nullable = false)
     private Date modified_at;
 
+    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계, 하나의 classChange - 여러 member
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     //빌더
     @Builder
-    public Team(Long id, String teamName, String title, String content, String field, Integer personnel, List skill, String status, Long memberid, Date create_at, Date modified_at) {
+    public Team(Long id, String teamName, String title, String content, String field,
+                Integer personnel, List skill, String status,
+                Date create_at, Date modified_at)
+    {
         this.id = id;
         this.teamName = teamName;
         this.title = title;
@@ -60,7 +65,6 @@ public class Team {
         this.personnel = personnel;
         this.skill = skill;
         this.status = status;
-        this.memberid = memberid;
         this.create_at = create_at;
         this.modified_at = modified_at;
     }

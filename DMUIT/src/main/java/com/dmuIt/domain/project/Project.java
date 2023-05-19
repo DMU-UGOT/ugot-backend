@@ -1,4 +1,5 @@
 package com.dmuIt.domain.project;
+import com.dmuIt.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,23 +22,31 @@ public class Project {
     @Column(length = 15, nullable = false)
     private String projectName;
 
-    @Column(length = 10, nullable = false)
-    private Long member_id;
-
     @Column(length = 20, nullable = false)
     private Date create_at;
 
     @Column(length = 20, nullable = false)
     private Date modified_at;
 
-    @Builder
 
-    public Project(Long id, String projectName, Long member_id,
+    //----------------수정중-------------------------------
+
+    @OneToMany(mappedBy = "project") // 일대다관계
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계, 하나의 classChange - 여러 member
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    //-----------------------------------------------
+
+
+    @Builder
+    public Project(Long id, String projectName,
                    Date create_at, Date modified_at)
     {
         this.id = id;
         this.projectName = projectName;
-        this.member_id = member_id;
         this.create_at = create_at;
         this.modified_at = modified_at;
     }

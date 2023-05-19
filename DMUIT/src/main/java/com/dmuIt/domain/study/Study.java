@@ -1,4 +1,6 @@
 package com.dmuIt.domain.study;
+import com.dmuIt.domain.comment.Comment;
+import com.dmuIt.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +30,6 @@ public class Study {
     private String field;
 
     @Column(length = 15, nullable = false)
-    private Long member_id;
-
-    @Column(length = 15, nullable = false)
     private String status;
 
     @Column(length = 20, nullable = false)
@@ -39,15 +38,24 @@ public class Study {
     @Column(length = 20, nullable = false)
     private Date modified_at;
 
+
+    @OneToMany(mappedBy = "study") // 일대다관계
+    private Comment comment;
+
+    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계, 하나의 classChange - 여러 member
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+
+
     @Builder
-    public Study(Long id, String title, String content, String field, Long member_id,
+    public Study(Long id, String title, String content, String field,
                  String status, Date create_at, Date modified_at)
     {
         this.id = id;
         this.title = title;
         this.content = content;
         this.field = field;
-        this.member_id = member_id;
         this.status = status;
         this.create_at = create_at;
         this.modified_at = modified_at;
