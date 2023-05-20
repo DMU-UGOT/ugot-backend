@@ -34,7 +34,7 @@ public class Project {
     @OneToMany(mappedBy = "project") // 일대다관계
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계, 하나의 classChange - 여러 member
+    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "member_id")
     private Member member;
 

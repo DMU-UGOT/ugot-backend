@@ -47,7 +47,7 @@ public class Team {
     @Column(length = 20, nullable = false)
     private Date modified_at;
 
-    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계, 하나의 classChange - 여러 member
+    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "member_id")
     private Member member;
 

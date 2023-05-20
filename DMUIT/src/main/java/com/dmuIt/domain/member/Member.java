@@ -72,7 +72,7 @@ public class Member {
     private Project project;
     private Vote vote;
 
-    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계, 하나의 classChange - 여러 member
+    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "project_id")
     private Project project;
 

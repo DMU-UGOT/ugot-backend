@@ -34,7 +34,7 @@ public class ClassChange {
     @Column(length = 20, nullable = false)
     private Date modified_at;
 
-    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계, 하나의 classChange - 여러 member
+    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "member_id") // 포함 대상 정보는 member_id에 기록
     private Member member;
 
