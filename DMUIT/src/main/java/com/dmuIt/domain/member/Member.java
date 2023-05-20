@@ -69,13 +69,13 @@ public class Member {
     
     @OneToMany(mappedBy = "member") // 일대다관계
     private ClassChange classChange;
-    private Project project;
     private Vote vote;
 
-    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
-    @JoinColumn(name = "project_id")
+    @ManyToMany                     // 다대다관계
+    @JoinTable(name = "member_project",
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
     private Project project;
-
     //-----------------------------------------------
     
     
