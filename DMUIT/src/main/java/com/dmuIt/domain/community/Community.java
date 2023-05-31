@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -45,8 +46,8 @@ public class Community {
     private Date modified_at;
 
     @OneToMany(mappedBy = "community")
-    private Vote vote;
-    private Comment comment;
+    private List<Vote> vote;
+    private List<Comment> comment;
 
 
 

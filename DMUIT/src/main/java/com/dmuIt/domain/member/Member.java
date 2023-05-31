@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
+
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -48,7 +51,7 @@ public class Member {
     @Column(length = 10, nullable = false)
     private String _class;
 
-    //List??<------------------------------------------
+    //오류...<------------------------------------------
     @Column(length = 21, nullable = false)
     private List skill;
 
@@ -64,19 +67,15 @@ public class Member {
     @Column(length = 30, nullable = false)
     private Date modified_at;
 
-
-    //----------------수정중-------------------------------
-    
     @OneToMany(mappedBy = "member") // 일대다관계
-    private ClassChange classChange;
-    private Vote vote;
+    private List<ClassChange> classChange;
+    private List<Vote> vote;
 
     @ManyToMany                     // 다대다관계
     @JoinTable(name = "member_project",
             joinColumns = @JoinColumn(name = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id"))
-    private Project project;
-    //-----------------------------------------------
+    private List<Project> project;
     
     
     //빌더

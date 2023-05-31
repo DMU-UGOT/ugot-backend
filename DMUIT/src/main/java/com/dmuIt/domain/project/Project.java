@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -28,14 +29,8 @@ public class Project {
     @Column(length = 20, nullable = false)
     private Date modified_at;
 
-
-    //----------------수정중-------------------------------
-
     @OneToMany(mappedBy = "project") // 일대다관계
-    private Member member;
-
-    //-----------------------------------------------
-
+    private List<Member> member;
 
     @Builder
     public Project(Long id, String projectName,

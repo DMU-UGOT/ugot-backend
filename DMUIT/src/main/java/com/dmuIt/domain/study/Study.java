@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -40,7 +41,7 @@ public class Study {
 
 
     @OneToMany(mappedBy = "study") // 일대다관계
-    private Comment comment;
+    private List<Comment> comment;
 
     @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "member_id")
