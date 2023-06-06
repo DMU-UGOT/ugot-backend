@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @NoArgsConstructor
@@ -35,8 +34,9 @@ public class Team {
     @Column(length = 20, nullable = false)
     private Integer personnel;
 
+    @ElementCollection
     @Column(length = 20, nullable = false)
-    private List skill;
+    private Set<String> skill = new HashSet<>();
 
     @Column(length = 20, nullable = false)
     private String status;
@@ -54,9 +54,8 @@ public class Team {
     //빌더
     @Builder
     public Team(Long id, String teamName, String title, String content, String field,
-                Integer personnel, List skill, String status,
-                Date create_at, Date modified_at)
-    {
+                Integer personnel, Set<String> skill, String status, Date create_at,
+                Date modified_at, Member member) {
         this.id = id;
         this.teamName = teamName;
         this.title = title;
@@ -67,7 +66,6 @@ public class Team {
         this.status = status;
         this.create_at = create_at;
         this.modified_at = modified_at;
+        this.member = member;
     }
-
-
 }

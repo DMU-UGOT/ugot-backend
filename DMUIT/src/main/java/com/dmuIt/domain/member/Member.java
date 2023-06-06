@@ -8,11 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-
+import java.util.*;
 
 
 @Getter
@@ -29,7 +25,7 @@ public class Member {
 
     @Column(length = 15, nullable = false)
     private String name;
-
+/*
     @Column(length = 30, nullable = false)
     private String nickname;
 
@@ -51,9 +47,9 @@ public class Member {
     @Column(length = 10, nullable = false)
     private String _class;
 
-    //오류...<------------------------------------------
-    @Column(length = 21, nullable = false)
-    private List skill;
+    @ElementCollection
+    @Column(length = 20, nullable = false)
+    private Set<String> skill = new HashSet<>();
 
     @Column(length = 30, nullable = false)
     private String role;
@@ -80,10 +76,10 @@ public class Member {
     
     //빌더
     @Builder
-    public Member(Long id, String name, String nickname, String email, String password, String phone, String major,
-                  Integer grade, String _class, List skill, String role, String status, Date create_at,
-                  Date modified_at)
-    {
+    public Member(Long id, String name, String nickname, String email, String password,
+                  String phone, String major, Integer grade, String _class, Set<String> skill,
+                  String role, String status, Date create_at, Date modified_at, List<ClassChange> classChange,
+                  List<Vote> vote, List<Project> project) {
         this.id = id;
         this.name = name;
         this.nickname = nickname;
@@ -98,7 +94,15 @@ public class Member {
         this.status = status;
         this.create_at = create_at;
         this.modified_at = modified_at;
+        this.classChange = classChange;
+        this.vote = vote;
+        this.project = project;
+    }*/
+
+    @Builder
+
+    public Member(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
-
-
 }
