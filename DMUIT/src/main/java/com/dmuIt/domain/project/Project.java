@@ -16,7 +16,6 @@ public class Project {
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "project_id", unique = true, nullable = false)
     private Long id;
 
@@ -29,8 +28,8 @@ public class Project {
     @Column(length = 20, nullable = false)
     private Date modified_at;
 
-    @OneToMany(mappedBy = "project") // 일대다관계
-    private List<Member> member;
+//    @OneToMany(mappedBy = "project") // 일대다관계
+//    private List<Member> members;
 
     @Builder
     public Project(Long id, String projectName,

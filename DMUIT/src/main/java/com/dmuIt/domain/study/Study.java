@@ -17,7 +17,6 @@ public class Study {
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "study_id", unique = true, nullable = false)
     private Long id;
 
@@ -41,11 +40,11 @@ public class Study {
 
 
     @OneToMany(mappedBy = "study") // 일대다관계
-    private List<Comment> comment;
+    private List<Comment> comments;
 
     @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member members;
 
 
 
