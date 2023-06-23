@@ -1,12 +1,10 @@
 package com.dmuIt.domain.entity;
 
-import com.dmuIt.domain.entity.Member;
 import com.dmuIt.global.audit.Auditable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Getter
 @NoArgsConstructor
@@ -29,13 +27,10 @@ public class Team extends Auditable {
     private String field;
 
     @Column(length = 20, nullable = false)
+    private String _class;
+
+    @Column(length = 20, nullable = false)
     private Integer personnel;
-
-    @Column(length = 20, nullable = false)
-    private Date create_at;
-
-    @Column(length = 20, nullable = false)
-    private Date modified_at;
 
     @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "member_id")

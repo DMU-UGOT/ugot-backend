@@ -53,12 +53,6 @@ public class Member extends Auditable {
     @Column(length = 30, nullable = false)
     private String status;
 
-    @Column(length = 30, nullable = false)
-    private LocalDateTime created_at;
-
-    @Column(length = 30, nullable = false)
-    private LocalDateTime modified_at;
-
     @OneToMany(mappedBy = "member") // 일대다관계
     private List<ClassChange> classChanges;
 

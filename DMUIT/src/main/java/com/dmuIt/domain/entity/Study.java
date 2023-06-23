@@ -1,6 +1,4 @@
 package com.dmuIt.domain.entity;
-import com.dmuIt.domain.entity.Comment;
-import com.dmuIt.domain.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
