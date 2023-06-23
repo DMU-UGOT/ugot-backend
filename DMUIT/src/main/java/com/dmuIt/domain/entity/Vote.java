@@ -1,8 +1,7 @@
-package com.dmuIt.domain.vote;
+package com.dmuIt.domain.entity;
 
-import com.dmuIt.domain.community.Community;
-import com.dmuIt.domain.member.Member;
-import lombok.Builder;
+import com.dmuIt.domain.entity.Community;
+import com.dmuIt.domain.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

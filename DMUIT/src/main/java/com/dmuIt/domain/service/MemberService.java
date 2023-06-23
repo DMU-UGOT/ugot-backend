@@ -1,7 +1,7 @@
-package com.dmuIt.service;
+package com.dmuIt.domain.service;
 
-import com.dmuIt.Repository.MemberRepository;
-import com.dmuIt.domain.member.Member;
+import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

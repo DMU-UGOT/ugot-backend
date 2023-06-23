@@ -1,13 +1,10 @@
-package com.dmuIt.domain.community;
-import com.dmuIt.domain.comment.Comment;
-import com.dmuIt.domain.vote.Vote;
+package com.dmuIt.domain.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor

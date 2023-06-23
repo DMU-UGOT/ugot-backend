@@ -1,7 +1,7 @@
-package com.dmuIt.Controller;
+package com.dmuIt.domain.controller;
 
-import com.dmuIt.domain.member.Member;
-import com.dmuIt.service.MemberService;
+import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

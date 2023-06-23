@@ -1,8 +1,4 @@
-package com.dmuIt.domain.comment;
-import com.dmuIt.domain.community.Community;
-import com.dmuIt.domain.member.Member;
-import com.dmuIt.domain.study.Study;
-import com.dmuIt.domain.team.Team;
+package com.dmuIt.domain.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

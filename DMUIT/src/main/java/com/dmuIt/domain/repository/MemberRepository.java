@@ -1,8 +1,7 @@
-package com.dmuIt.Repository;
+package com.dmuIt.domain.repository;
 
-import com.dmuIt.domain.member.Member;
+import com.dmuIt.domain.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 
 public interface MemberRepository extends JpaRepository<Member, Long> {

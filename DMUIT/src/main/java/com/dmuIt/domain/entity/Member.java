@@ -1,14 +1,10 @@
-package com.dmuIt.domain.member;
+package com.dmuIt.domain.entity;
 
-import com.dmuIt.domain.classChange.ClassChange;
-import com.dmuIt.domain.project.Project;
-import com.dmuIt.domain.vote.Vote;
-import lombok.Builder;
+import com.dmuIt.global.audit.Auditable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -17,7 +13,7 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "member")
-public class Member {
+public class Member extends Auditable {
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,10 +54,10 @@ public class Member {
     private String status;
 
     @Column(length = 30, nullable = false)
-    private final LocalDateTime created_at = LocalDateTime.now();
+    private LocalDateTime created_at;
 
     @Column(length = 30, nullable = false)
-    private LocalDateTime modified_at = LocalDateTime.now();
+    private LocalDateTime modified_at;
 
     @OneToMany(mappedBy = "member") // 일대다관계
     private List<ClassChange> classChanges;

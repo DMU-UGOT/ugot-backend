@@ -1,12 +1,10 @@
-package com.dmuIt.domain.project;
-import com.dmuIt.domain.member.Member;
+package com.dmuIt.domain.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
