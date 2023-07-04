@@ -9,4 +9,5 @@ import org.mapstruct.ReportingPolicy;
 public interface TeamMapper {
     Team teamPostDtoToTeam(TeamDto.Post teamPostDto);
     Team teamPatchDtoToTeam(TeamDto.Patch teamPatchDto);
+    TeamDto.Response teamToTeamResponseDto(Team team);
 }

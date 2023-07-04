@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -56,6 +55,9 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member") // 일대다관계
     private List<ClassChange> classChanges;
 
+    @OneToMany(mappedBy = "member")
+    private List<Bookmark> bookmarks;
+
     @ElementCollection
     private List<Long> votes;
 
@@ -64,7 +66,8 @@ public class Member extends Auditable {
             joinColumns = @JoinColumn(name = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id"))
     private List<Project> projects;
-    
+
+
     
     //빌더
 //    @Builder

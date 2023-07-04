@@ -6,6 +6,7 @@ import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class TeamService {
         teamRepository.save(team);
     }
 
+    @Transactional
     public void updateTeam(Team team) {
         Team findTeam = findVerifiedTeam(team.getId());
         Optional.ofNullable(team.getTitle())
@@ -33,6 +35,21 @@ public class TeamService {
                 .ifPresent(personnel -> findTeam.setPersonnel(personnel));
         findTeam.setModifiedAt(LocalDateTime.now());
         teamRepository.save(findTeam);
+    }
+
+    public void removeTeam(long teamId) {
+        teamRepository.delete(findVerifiedTeam(teamId));
+    }
+
+    public Team findTeam(long teamId) {
+        Team team = findVerifiedTeam(teamId);
+        team.setViewCount(team.getViewCount() + 1);
+        return teamRepository.save(team);
+    }
+
+    public void bookmarkTeam(long teamId, long memberId) {
+
+
     }
 
     public Team findVerifiedTeam(long teamId) {
