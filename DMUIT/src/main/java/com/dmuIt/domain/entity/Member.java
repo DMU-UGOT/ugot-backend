@@ -43,7 +43,7 @@ public class Member extends Auditable {
     private String _class;
 
     @ElementCollection
-    @Column(length = 20, nullable = false)
+    @Column(length = 20)
     private Set<String> skill = new HashSet<>();
 
     @Column(length = 30, nullable = false)
