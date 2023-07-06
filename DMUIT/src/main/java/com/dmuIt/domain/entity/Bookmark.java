@@ -17,9 +17,6 @@ public class Bookmark {
     private boolean checked;
 
     @Column
-    private long memberId;
-
-    @Column
     private long teamId;
 
     @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
