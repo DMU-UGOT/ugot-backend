@@ -43,9 +43,5 @@ public class TeamController {
         teamService.removeTeam(teamId);
     }
 
-    @PostMapping("/bookmark/{team-id}/{member-id}")
-    public void bookmarkTeam(@PathVariable("team-id") long teamId,
-                             @PathVariable("member-id") long memberId) {
-        teamService.bookmarkTeam(teamId, memberId);
-    }
+
 }
