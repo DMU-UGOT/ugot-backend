@@ -9,6 +9,8 @@ import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +53,11 @@ public class TeamService {
         Team team = findVerifiedTeam(teamId);
         team.setViewCount(team.getViewCount() + 1);
         return teamRepository.save(team);
+    }
+
+    public Page<Team> findTeams(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return teamRepository.findAllByOrderByIdDesc(pageRequest);
     }
 
     @Transactional

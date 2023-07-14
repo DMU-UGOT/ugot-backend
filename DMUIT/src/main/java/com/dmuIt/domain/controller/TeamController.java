@@ -1,13 +1,20 @@
 package com.dmuIt.domain.controller;
 
+import com.dmuIt.domain.dto.PageInfo;
+import com.dmuIt.domain.dto.TeamAllDto;
 import com.dmuIt.domain.dto.TeamDto;
 import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.mapper.TeamMapper;
 import com.dmuIt.domain.service.TeamService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @RequestMapping("/teams")
@@ -33,9 +40,22 @@ public class TeamController {
     @GetMapping("/{team-id}")
     public TeamDto.Response getTeam(@PathVariable("team-id") long teamId) {
         Team team = teamService.findTeam(teamId);
-        TeamDto.Response response = teamMapper.teamToTeamResponseDto(team);
-        response.setTeamId(teamId);
-        return response;
+        return teamMapper.teamToResponse(team);
+
+    }
+
+    @GetMapping
+    public TeamAllDto getTeams(@Positive @RequestParam int page,
+                                   @Positive @RequestParam int size) {
+        // page information
+        Page<Team> teamPage = teamService.findTeams(page - 1, size);
+        PageInfo pageInfo = new PageInfo(page, size, (int) teamPage.getTotalElements(), teamPage.getTotalPages());
+
+        // team 반환 + dto로 변환
+        List<Team> teams = teamPage.getContent();
+        List<TeamDto.Response> responses = teamMapper.teamsToTeamResponseDtos(teams);
+
+        return new TeamAllDto(responses, pageInfo);
     }
 
     @DeleteMapping("/{team-id}")
