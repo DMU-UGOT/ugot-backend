@@ -1,9 +1,8 @@
 package com.dmuIt.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 public class TeamDto {
 
@@ -16,6 +15,7 @@ public class TeamDto {
         private String field;
         private String _class;
         private Integer personnel;
+
     }
 
     @Getter
@@ -39,4 +39,23 @@ public class TeamDto {
         private Integer personnel;
         private Long viewCount;
     }
+
+        private Long teamId;
+        private String title;
+        private String content;
+        private String field;
+        private String _class;
+        private Integer personnel;
+
+        public TeamDto(Long teamId, String title, String content, String field,
+                         String _class, Integer personnel) {
+            this.teamId = teamId;
+            this.title = title;
+            this.content = content;
+            this.field = field;
+            this._class = _class;
+            this.personnel = personnel;
+        }
+
+
 }
