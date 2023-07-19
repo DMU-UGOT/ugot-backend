@@ -56,38 +56,38 @@ public class TeamController {
     public class PageController {
 
         @Autowired
-        TeamRepository postRepository;
+        TeamRepository teamRepository;
 
         @CrossOrigin(origins = "*", allowedHeaders = "*")
-        @GetMapping("/post/page")
+        @GetMapping("/page")
         public Page<TeamDto> paging(@PageableDefault(size=5, sort="createdTime") Pageable pageRequest) {
 
-            Page<Team> teamList = postRepository.findAll(pageRequest);
+            Page<Team> teamList = teamRepository.findAll(pageRequest);
 
             Page<TeamDto> pagingList = teamList.map(
                     team -> new TeamDto(
                             team.getId(), team.getTitle(), team.getContent(),
                             team.get_class(), team.getField(),
-                            team.getPersonnel()
+                            team.getPersonnel(), team.getCreateAt()
                     ));
 
             return pagingList;
         }
 
         @CrossOrigin(origins = "*", allowedHeaders = "*")
-        @GetMapping("/post/page/search")
+        @GetMapping("/page/search")
         public Page<TeamDto> searchPaging(
                 @RequestParam String title,
                 @RequestParam String content,
                 @PageableDefault(size=5, sort="createdTime") Pageable pageRequest) {
 
-            Page<Team> postList = postRepository.findAllSearch(title,content,pageRequest);
+            Page<Team> teamList = teamRepository.findAllSearch(title,content,pageRequest);
 
-            Page<TeamDto> pagingList = postList.map(
+            Page<TeamDto> pagingList = teamList.map(
                     team -> new TeamDto(
                             team.getId(), team.getTitle(), team.getContent(),
                             team.get_class(), team.getField(),
-                            team.getPersonnel()
+                            team.getPersonnel(), team.getCreateAt()
                     ));
 
             return pagingList;
