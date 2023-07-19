@@ -68,7 +68,7 @@ public class TeamController {
                     team -> new TeamDto(
                             team.getId(), team.getTitle(), team.getContent(),
                             team.get_class(), team.getField(),
-                            team.getPersonnel(), team.getCreateAt()
+                            team.getPersonnel(), team.getViewCount()
                     ));
 
             return pagingList;
@@ -87,7 +87,7 @@ public class TeamController {
                     team -> new TeamDto(
                             team.getId(), team.getTitle(), team.getContent(),
                             team.get_class(), team.getField(),
-                            team.getPersonnel(), team.getCreateAt()
+                            team.getPersonnel(), team.getViewCount()
                     ));
 
             return pagingList;

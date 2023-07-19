@@ -13,16 +13,16 @@ public class TeamDto {
     private String field;
     private String _class;
     private Integer personnel;
-    private LocalDateTime createdTime;
+    private Long viewCount;
     public TeamDto(Long teamId, String title, String content, String field,
-                   String _class, Integer personnel, LocalDateTime createdTime) {
+                   String _class, Integer personnel, Long viewCount) {
         this.teamId = teamId;
         this.title = title;
         this.content = content;
         this.field = field;
         this._class = _class;
         this.personnel = personnel;
-        this.createdTime = createdTime;
+        this.viewCount = viewCount;
     }
     @AllArgsConstructor
     @Getter
