@@ -1,5 +1,6 @@
 package com.dmuIt.domain.controller;
 
+import com.dmuIt.domain.PageInfo;
 import com.dmuIt.domain.dto.TeamDto;
 import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.mapper.TeamMapper;
@@ -10,19 +11,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
 @RequestMapping("/teams")
 @RequiredArgsConstructor
 public class TeamController {
+    @Autowired
+    TeamRepository teamRepository;
     private final TeamService teamService;
     private final TeamMapper teamMapper;
+
 
     @PostMapping
     public void createTeam(@RequestBody @Valid TeamDto.Post teamPostDto) {
@@ -52,6 +59,7 @@ public class TeamController {
     }
 
 
+/*
     @RequiredArgsConstructor
     public class PageController {
 
@@ -94,3 +102,44 @@ public class TeamController {
         }
 
 }}
+*/
+
+/*    @GetMapping
+    public ResponseEntity searchTeam(@Positive @RequestParam int page,
+                                     @Positive @RequestParam int size){
+    Page<Team> teamPage = teamService.searchTeam(page-1,size);
+    PageInfo pageInfo = new PageInfo(page, size, (int) teamPage.getTotalElements(),
+            teamPage.getTotalPages());
+
+    List<Team> teams = teamPage.getContent();
+    List<TeamDto> response = teamMapper.teamToTeamResponseDto(teams);
+    }*/
+
+
+
+
+        @GetMapping("/post")
+        public Page<Team> getPostList(@RequestParam("page") int page){
+            Page<Team> resultList = teamService.getPostList(page, 5);
+
+            return resultList;
+        }
+
+        @CrossOrigin(origins = "*", allowedHeaders = "*")
+        @GetMapping("/post/search")
+        public Page<TeamDto> searchPaging(
+                @Param("keyword") String keyword,
+                @PageableDefault(size=5) Pageable pageRequest) {
+
+            Page<Team> teamList = teamRepository.findAllSearch(keyword, pageRequest);
+
+            Page<TeamDto> pagingList = teamList.map(
+                    team -> new TeamDto(
+                            team.getId(), team.getTitle(), team.getContent(),
+                            team.get_class(), team.getField(),
+                            team.getPersonnel(), team.getViewCount(), team.getBookmarked()
+                    ));
+
+            return pagingList;
+        }
+    }

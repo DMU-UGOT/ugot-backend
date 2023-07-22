@@ -1,5 +1,6 @@
 package com.dmuIt.domain.entity;
 
+import com.dmuIt.domain.PageInfo;
 import com.dmuIt.global.audit.Auditable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,5 +40,7 @@ public class Team extends Auditable {
 
     @Column
     private long bookmarked = 0;
+
+
 
 }

@@ -14,8 +14,9 @@ public class TeamDto {
     private String _class;
     private Integer personnel;
     private Long viewCount;
+    private Long bookmarked;
     public TeamDto(Long teamId, String title, String content, String field,
-                   String _class, Integer personnel, Long viewCount) {
+                   String _class, Integer personnel, Long viewCount, Long bookmarked) {
         this.teamId = teamId;
         this.title = title;
         this.content = content;
@@ -23,6 +24,7 @@ public class TeamDto {
         this._class = _class;
         this.personnel = personnel;
         this.viewCount = viewCount;
+        this.bookmarked = bookmarked;
     }
     @AllArgsConstructor
     @Getter

@@ -9,6 +9,7 @@ import com.dmuIt.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +62,19 @@ public class TeamService {
         Team findTeam = optionalTeam.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.TEAM_NOT_FOUND));
         return findTeam;
+    }
+
+  /*  public Page<Team> searchTeam(int page, int size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return teamRepository.findAllSearch(pageRequest);
+    }*/
+
+    //게시글 리스트
+    public Page<Team> getPostList(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Team> postList = teamRepository.findAll(pageable);
+
+        return postList;
     }
 
 }
