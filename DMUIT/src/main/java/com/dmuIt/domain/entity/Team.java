@@ -34,6 +34,12 @@ public class Team extends Auditable {
     @Column(length = 20, nullable = false)
     private Integer personnel;
 
+    @Column
+    private long viewCount = 0;
+
+    @Column
+    private long bookmarked = 0;
+
     @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "member_id")
     private Member member;
