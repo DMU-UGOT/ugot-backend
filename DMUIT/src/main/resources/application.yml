@@ -6,7 +6,7 @@ spring:
 #      path: /h2
   datasource:
     # jdbc:h2:mem:test
-    url: ${datasource_URL}
+    url: jdbc:mysql://database-1.c8mntq7qpcmx.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${datasource_NAME}
     password: ${datasource_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
