@@ -58,82 +58,20 @@ public class TeamController {
         teamService.removeTeam(teamId);
     }
 
+    //페이징
+    @GetMapping("/post")
+    public Page<Team> getPostList(@RequestParam("page") int page) {
+        Page<Team> resultList = teamService.getPostList(page - 1, 5);
+        return resultList;
+    }
 
-/*
-    @RequiredArgsConstructor
-    public class PageController {
+    //검색
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/post/search")
+    public Page<TeamDto> searchPaging(@Param("keyword") String keyword, @PageableDefault(size = 5) Pageable pageRequest) {
+        Page<Team> teamList = teamRepository.findAllSearch(keyword, pageRequest);
 
-        @Autowired
-        TeamRepository teamRepository;
-
-        @CrossOrigin(origins = "*", allowedHeaders = "*")
-        @GetMapping("/page")
-        public Page<TeamDto> paging(@PageableDefault(size=5, sort="createdTime") Pageable pageRequest) {
-
-            Page<Team> teamList = teamRepository.findAll(pageRequest);
-
-            Page<TeamDto> pagingList = teamList.map(
-                    team -> new TeamDto(
-                            team.getId(), team.getTitle(), team.getContent(),
-                            team.get_class(), team.getField(),
-                            team.getPersonnel(), team.getViewCount()
-                    ));
-
-            return pagingList;
-        }
-
-        @CrossOrigin(origins = "*", allowedHeaders = "*")
-        @GetMapping("/page/search")
-        public Page<TeamDto> searchPaging(
-                @RequestParam String title,
-                @RequestParam String content,
-                @PageableDefault(size=5, sort="createdTime") Pageable pageRequest) {
-
-            Page<Team> teamList = teamRepository.findAllSearch(title,content,pageRequest);
-
-            Page<TeamDto> pagingList = teamList.map(
-                    team -> new TeamDto(
-                            team.getId(), team.getTitle(), team.getContent(),
-                            team.get_class(), team.getField(),
-                            team.getPersonnel(), team.getViewCount()
-                    ));
-
-            return pagingList;
-        }
-
-}}
-*/
-
-/*    @GetMapping
-    public ResponseEntity searchTeam(@Positive @RequestParam int page,
-                                     @Positive @RequestParam int size){
-    Page<Team> teamPage = teamService.searchTeam(page-1,size);
-    PageInfo pageInfo = new PageInfo(page, size, (int) teamPage.getTotalElements(),
-            teamPage.getTotalPages());
-
-    List<Team> teams = teamPage.getContent();
-    List<TeamDto> response = teamMapper.teamToTeamResponseDto(teams);
-    }*/
-
-
-
-
-        @GetMapping("/post")
-        public Page<Team> getPostList(@RequestParam("page") int page){
-            Page<Team> resultList = teamService.getPostList(page, 5);
-
-            return resultList;
-        }
-
-        @CrossOrigin(origins = "*", allowedHeaders = "*")
-        @GetMapping("/post/search")
-        public Page<TeamDto> searchPaging(
-                @Param("keyword") String keyword,
-                @PageableDefault(size=5) Pageable pageRequest) {
-
-            Page<Team> teamList = teamRepository.findAllSearch(keyword, pageRequest);
-
-            Page<TeamDto> pagingList = teamList.map(
+        Page<TeamDto> pagingList = teamList.map(
                     team -> new TeamDto(
                             team.getId(), team.getTitle(), team.getContent(),
                             team.get_class(), team.getField(),
@@ -141,5 +79,6 @@ public class TeamController {
                     ));
 
             return pagingList;
-        }
     }
+}
+

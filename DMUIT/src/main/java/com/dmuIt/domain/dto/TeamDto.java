@@ -26,6 +26,7 @@ public class TeamDto {
         this.viewCount = viewCount;
         this.bookmarked = bookmarked;
     }
+
     @AllArgsConstructor
     @Getter
     @NoArgsConstructor
