@@ -61,7 +61,7 @@ public class TeamController {
     //페이징
     @GetMapping("/post")
     public Page<Team> getPostList(@RequestParam("page") int page) {
-        Page<Team> resultList = teamService.getPostList(page - 1, 5);
+        Page<Team> resultList = teamService.getPostList(page, 5);
         return resultList;
     }
 
@@ -69,16 +69,27 @@ public class TeamController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/post/search")
     public Page<TeamDto> searchPaging(@Param("keyword") String keyword, @PageableDefault(size = 5) Pageable pageRequest) {
-        Page<Team> teamList = teamRepository.findAllSearch(keyword, pageRequest);
 
-        Page<TeamDto> pagingList = teamList.map(
+        Page<TeamDto> pagingList = null;
+        if(keyword == null) {
+            Page<Team> teamList = teamRepository.findAllSearch("", pageRequest);
+            pagingList = teamList.map(
                     team -> new TeamDto(
                             team.getId(), team.getTitle(), team.getContent(),
                             team.get_class(), team.getField(),
                             team.getPersonnel(), team.getViewCount(), team.getBookmarked()
                     ));
+        }else{
+            Page<Team> teamList = teamRepository.findAllSearch(keyword, pageRequest);
+            pagingList = teamList.map(
+                    team -> new TeamDto(
+                            team.getId(), team.getTitle(), team.getContent(),
+                            team.get_class(), team.getField(),
+                            team.getPersonnel(), team.getViewCount(), team.getBookmarked()
+                    ));
+        }
+        return pagingList;
 
-            return pagingList;
     }
 }
 

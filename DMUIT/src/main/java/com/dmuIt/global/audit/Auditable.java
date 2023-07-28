@@ -1,4 +1,3 @@
-
 package com.dmuIt.global.audit;
 
 import lombok.Getter;
@@ -25,5 +24,6 @@ public abstract class Auditable {
     @Column(name = "LAST_MODIFIED_AT")
     private LocalDateTime modifiedAt;
 }
+
 
 
