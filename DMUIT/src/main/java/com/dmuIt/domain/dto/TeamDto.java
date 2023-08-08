@@ -15,7 +15,9 @@ public class TeamDto {
         private String content;
         private String field;
         private String _class;
-        private Integer personnel;
+        private Integer allPersonnel;
+        private String kakaoOpenLink;
+        private String gitHubLink;
     }
 
     @Getter
@@ -25,7 +27,9 @@ public class TeamDto {
         private String content;
         private String field;
         private String _class;
-        private Integer personnel;
+        private Integer allPersonnel;
+        private String kakaoOpenLink;
+        private String gitHubLink;
     }
 
     @Getter
@@ -36,7 +40,10 @@ public class TeamDto {
         private String content;
         private String field;
         private String _class;
-        private Integer personnel;
+        private Integer allPersonnel;
+        private Integer nowPersonnel;
+        private String kakaoOpenLink;
+        private String gitHubLink;
         private Long viewCount;
     }
 }
