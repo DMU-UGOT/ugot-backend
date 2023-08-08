@@ -39,8 +39,12 @@ public class TeamService {
                 .ifPresent(field -> findTeam.setField(field));
         Optional.ofNullable(team.get_class())
                 .ifPresent(_class -> findTeam.set_class(_class));
-        Optional.ofNullable(team.getPersonnel())
-                .ifPresent(personnel -> findTeam.setPersonnel(personnel));
+        Optional.ofNullable(team.getAllPersonnel())
+                .ifPresent(allPersonnel -> findTeam.setAllPersonnel(allPersonnel));
+        Optional.ofNullable(team.getKakaoOpenLink())
+                .ifPresent(kakaoOpenLink -> findTeam.setKakaoOpenLink(kakaoOpenLink));
+        Optional.ofNullable(team.getGitHubLink())
+                .ifPresent(gitHubLink -> findTeam.setKakaoOpenLink(gitHubLink));
         findTeam.setModifiedAt(LocalDateTime.now());
         teamRepository.save(findTeam);
     }

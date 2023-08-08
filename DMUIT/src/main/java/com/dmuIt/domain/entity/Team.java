@@ -32,7 +32,16 @@ public class Team extends Auditable {
     private String _class;
 
     @Column(length = 20, nullable = false)
-    private Integer personnel;
+    private Integer allPersonnel;
+
+    @Column
+    private Integer nowPersonnel = 1;
+
+    @Column(nullable = false)
+    private String kakaoOpenLink;
+
+    @Column(nullable = false)
+    private String gitHubLink;
 
     @Column
     private long viewCount = 0;

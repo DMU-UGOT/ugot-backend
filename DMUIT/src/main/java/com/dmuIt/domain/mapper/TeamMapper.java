@@ -23,8 +23,11 @@ public interface TeamMapper {
             response.setContent(team.getContent());
             response.setField(team.getField());
             response.set_class(team.get_class());
-            response.setPersonnel(team.getPersonnel());
+            response.setAllPersonnel(team.getAllPersonnel());
+            response.setNowPersonnel(team.getNowPersonnel());
             response.setViewCount(team.getViewCount());
+            response.setKakaoOpenLink(team.getKakaoOpenLink());
+            response.setGitHubLink(team.getGitHubLink());
             return response;
         }
     }
