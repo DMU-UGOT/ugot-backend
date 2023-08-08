@@ -5,9 +5,14 @@ import com.dmuIt.domain.dto.TeamAllDto;
 import com.dmuIt.domain.dto.TeamDto;
 import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.mapper.TeamMapper;
+import com.dmuIt.domain.repository.TeamRepository;
 import com.dmuIt.domain.service.TeamService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +25,7 @@ import java.util.List;
 @RequestMapping("/teams")
 @RequiredArgsConstructor
 public class TeamController {
+    private final TeamRepository teamRepository;
     private final TeamService teamService;
     private final TeamMapper teamMapper;
 
@@ -67,5 +73,33 @@ public class TeamController {
     public void bookmarkTeam(@PathVariable("team-id") long teamId,
                              @PathVariable("member-id") long memberId) {
         teamService.bookmarkTeam(teamId, memberId);
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/post/search")
+    public Page<TeamDto> searchPaging(@Param("keyword") String keyword, @PageableDefault(size = 5) Pageable pageRequest) {
+
+        Page<TeamDto> pagingList = null;
+        if(keyword == null) {
+            Page<Team> teamList = teamRepository.findAllSearch("", pageRequest);
+            pagingList = teamList.map(
+                    team -> new TeamDto(
+                            team.getId(), team.getTitle(), team.getContent(),
+                            team.get_class(), team.getField(),
+                            team.getAllPersonnel(), team.getNowPersonnel(), team.getViewCount(), team.getBookmarked(),
+                            team.getKakaoOpenLink(), team.getGitHubLink()
+                    ));
+        }else{
+            Page<Team> teamList = teamRepository.findAllSearch(keyword, pageRequest);
+            pagingList = teamList.map(
+                    team -> new TeamDto(
+                            team.getId(), team.getTitle(), team.getContent(),
+                            team.get_class(), team.getField(),
+                            team.getAllPersonnel(), team.getNowPersonnel(), team.getViewCount(), team.getBookmarked(),
+                            team.getKakaoOpenLink(), team.getGitHubLink()
+                    ));
+        }
+        return pagingList;
+
     }
 }
