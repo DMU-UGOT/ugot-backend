@@ -28,6 +28,7 @@ public interface TeamMapper {
             response.setViewCount(team.getViewCount());
             response.setKakaoOpenLink(team.getKakaoOpenLink());
             response.setGitHubLink(team.getGitHubLink());
+            response.setCreatedAt(team.getCreateAt());
             return response;
         }
     }

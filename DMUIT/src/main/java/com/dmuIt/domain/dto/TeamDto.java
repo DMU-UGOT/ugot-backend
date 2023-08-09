@@ -2,6 +2,8 @@ package com.dmuIt.domain.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Data
 public class TeamDto {
     private Long teamId;
@@ -70,5 +72,6 @@ public class TeamDto {
         private String kakaoOpenLink;
         private String gitHubLink;
         private Long viewCount;
+        private LocalDateTime createdAt;
     }
 }
