@@ -32,6 +32,9 @@ public class Community {
     @Column(length = 10, nullable = false)
     private Long member_id;
 
+    @Column(nullable = true)
+    private char deleteYN;
+
     @Column(length = 10, nullable = false)
     private String status;
 
@@ -48,16 +51,15 @@ public class Community {
 
 
     @Builder
-    public Community(Long id, String title, String content, Integer viewCount,
-                     Integer voteCount, Long member_id, String status, Date create_at,
-                     Date modified_at)
-    {
+
+    public Community(Long id, String title, String content, Integer viewCount, Integer voteCount, Long member_id, char deleteYN, String status, Date create_at, Date modified_at) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.viewCount = viewCount;
         this.voteCount = voteCount;
         this.member_id = member_id;
+        this.deleteYN = deleteYN;
         this.status = status;
         this.create_at = create_at;
         this.modified_at = modified_at;
