@@ -1,4 +1,5 @@
 package com.dmuIt.domain.dto;
+import com.dmuIt.domain.entity.Community;
 import lombok.Getter;
 import java.util.Date;
 
@@ -14,15 +15,15 @@ public class CommunityResponseDto {
     private Date create_at;
     private Date modified_at;
 
-    public CommunityResponseDto(Long id, String title, String content, Integer viewCount, Integer voteCount, Long member_id, String status, Date create_at, Date modified_at) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.viewCount = viewCount;
-        this.voteCount = voteCount;
-        this.member_id = member_id;
-        this.status = status;
-        this.create_at = create_at;
-        this.modified_at = modified_at;
+    public CommunityResponseDto(Community entity) {
+        this.id = entity.getId();
+        this.title = entity.getTitle();
+        this.content = entity.getContent();
+        this.viewCount = entity.getViewCount();
+        this.voteCount = entity.getVoteCount();
+        this.member_id = entity.getMember_id();
+        this.status = entity.getStatus();
+        this.create_at = entity.getCreate_at();
+        this.modified_at = entity.getModified_at();
     }
 }

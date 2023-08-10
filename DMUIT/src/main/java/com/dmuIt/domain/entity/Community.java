@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -39,10 +40,10 @@ public class Community {
     private String status;
 
     @Column(length = 20, nullable = false)
-    private Date create_at;
+    private LocalDateTime create_at;
 
     @Column(length = 20, nullable = false)
-    private Date modified_at;
+    private LocalDateTime modified_at;
 
 //    @OneToMany(mappedBy = "community")
 //    private List<Vote> vote;
@@ -52,7 +53,7 @@ public class Community {
 
     @Builder
 
-    public Community(Long id, String title, String content, Integer viewCount, Integer voteCount, Long member_id, char deleteYN, String status, Date create_at, Date modified_at) {
+    public Community(Long id, String title, String content, Integer viewCount, Integer voteCount, Long member_id, char deleteYN, String status, LocalDateTime create_at, LocalDateTime modified_at) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -63,5 +64,14 @@ public class Community {
         this.status = status;
         this.create_at = create_at;
         this.modified_at = modified_at;
+    }
+
+    public void update(String title, String content, Long member_id, String status, LocalDateTime create_at) {
+        this.title = title;
+        this.content = content;
+        this.member_id = member_id;
+        this.status = status;
+        this.create_at = create_at;
+        this.modified_at = LocalDateTime.now();
     }
 }
