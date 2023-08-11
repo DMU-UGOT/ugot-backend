@@ -16,7 +16,7 @@ public class CommunityController
     /**
      * 게시글 생성
      */
-    @PostMapping("/boards")
+    @PostMapping("/com")
     public Long save(@RequestBody final CommunityRequestDto params) {
         return communityService.save(params);
     }
@@ -24,7 +24,7 @@ public class CommunityController
     /**
      * 게시글 리스트 조회
      */
-    @GetMapping("/boards")
+    @GetMapping("/com")
     public List<CommunityResponseDto> findAll() {
         return communityService.findAll();
     }
@@ -32,7 +32,7 @@ public class CommunityController
     /**
      * 게시글 수정
      */
-    @PatchMapping("/boards/{id}")
+    @PatchMapping("/com/{id}")
     public Long save(@PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
         return communityService.update(id, params);
     }

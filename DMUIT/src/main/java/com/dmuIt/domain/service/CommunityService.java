@@ -43,8 +43,10 @@ public class CommunityService {
     @Transactional
     public Long update(final Long id, final CommunityRequestDto params) {
 
-        Community entity = communityRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
-        entity.update(params.getTitle(), params.getContent(), params.getWriter());
+        Community entity = communityRepository.findById(id).orElseThrow();
+        //Community entity = communityRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
+        entity.update(params.toEntity().getTitle(),params.toEntity().getContent(),params.toEntity().getMember_id(),
+                params.toEntity().getStatus(),params.toEntity().getCreate_at());
         return id;
     }
 

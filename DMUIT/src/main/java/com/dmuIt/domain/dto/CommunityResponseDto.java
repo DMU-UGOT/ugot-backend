@@ -1,6 +1,8 @@
 package com.dmuIt.domain.dto;
 import com.dmuIt.domain.entity.Community;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -12,8 +14,8 @@ public class CommunityResponseDto {
     private Integer voteCount;
     private Long member_id;
     private String status;
-    private Date create_at;
-    private Date modified_at;
+    private LocalDateTime create_at;
+    private LocalDateTime modified_at;
 
     public CommunityResponseDto(Community entity) {
         this.id = entity.getId();

@@ -52,9 +52,7 @@ public class Community {
 
 
     @Builder
-
-    public Community(Long id, String title, String content, Integer viewCount, Integer voteCount, Long member_id, char deleteYN, String status, LocalDateTime create_at, LocalDateTime modified_at) {
-        this.id = id;
+    public Community(String title, String content, Integer viewCount, Integer voteCount, Long member_id, char deleteYN, String status, LocalDateTime create_at, LocalDateTime modified_at) {
         this.title = title;
         this.content = content;
         this.viewCount = viewCount;
