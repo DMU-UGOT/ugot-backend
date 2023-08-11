@@ -23,7 +23,7 @@ public class CommunityService {
     @Transactional
     public Long save(final CommunityRequestDto params) {
 
-        Community entity = CommunityRepository.save(params.toEntity());
+        Community entity = communityRepository.save(params.toEntity());
         return entity.getId();
     }
 
@@ -33,7 +33,7 @@ public class CommunityService {
     public List<CommunityResponseDto> findAll() {
 
         Sort sort = Sort.by(Sort.Direction.DESC, "id", "createdDate");
-        List<Community> list = CommunityRepository.findAll(sort);
+        List<Community> list = communityRepository.findAll(sort);
         return list.stream().map(CommunityResponseDto::new).collect(Collectors.toList());
     }
 
@@ -49,4 +49,4 @@ public class CommunityService {
     }
 
 }
-}
+
