@@ -87,7 +87,8 @@ public class TeamController {
                             team.getId(), team.getTitle(), team.getContent(),
                             team.getField(), team.get_class(),
                             team.getAllPersonnel(), team.getNowPersonnel(), team.getViewCount(), team.getBookmarked(),
-                            team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreateAt()
+                            team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreatedAt()
+
                     ));
         }else{
             Page<Team> teamList = teamRepository.findAllSearch(keyword, pageRequest);
@@ -96,7 +97,9 @@ public class TeamController {
                             team.getId(), team.getTitle(), team.getContent(),
                             team.getField(), team.get_class(),
                             team.getAllPersonnel(), team.getNowPersonnel(), team.getViewCount(), team.getBookmarked(),
-                            team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreateAt()
+                            team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreatedAt()
+
+
                     ));
         }
         return pagingList;
