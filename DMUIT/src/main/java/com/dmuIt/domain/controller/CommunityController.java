@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
+@RequestMapping("/com")
 @RequiredArgsConstructor
 public class CommunityController
 {
@@ -16,7 +17,7 @@ public class CommunityController
     /**
      * 게시글 생성
      */
-    @PostMapping("/com")
+    @PostMapping
     public Long save(@RequestBody final CommunityRequestDto params) {
         return communityService.save(params);
     }
@@ -24,7 +25,7 @@ public class CommunityController
     /**
      * 게시글 리스트 조회
      */
-    @GetMapping("/com")
+    @GetMapping("/{id}")
     public List<CommunityResponseDto> findAll() {
         return communityService.findAll();
     }
@@ -32,7 +33,7 @@ public class CommunityController
     /**
      * 게시글 수정
      */
-    @PatchMapping("/com/{id}")
+    @PatchMapping("/{id}")
     public Long save(@PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
         return communityService.update(id, params);
     }
