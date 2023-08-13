@@ -17,10 +17,11 @@ public class TeamDto {
     private Long bookmarked;
     private String kakaoOpenLink;
     private String gitHubLink;
+    private LocalDateTime createdAt;
 
     public TeamDto(Long teamId, String title, String content, String field,
                    String _class, Integer allPersonnel, Integer nowPersonnel, Long viewCount, Long bookmarked,
-                   String kakaoOpenLink, String gitHubLink) {
+                   String kakaoOpenLink, String gitHubLink, LocalDateTime createdAt) {
         this.teamId = teamId;
         this.title = title;
         this.content = content;
@@ -32,6 +33,7 @@ public class TeamDto {
         this.bookmarked = bookmarked;
         this.kakaoOpenLink = kakaoOpenLink;
         this.gitHubLink = gitHubLink;
+        this.createdAt = createdAt;
     }
 
     @AllArgsConstructor
