@@ -6,6 +6,7 @@ import com.dmuIt.domain.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 @RestController
 @RequestMapping("/com")

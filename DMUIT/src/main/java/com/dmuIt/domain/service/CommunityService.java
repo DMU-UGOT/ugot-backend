@@ -22,7 +22,6 @@ public class CommunityService {
      */
     @Transactional
     public Long save(final CommunityRequestDto params) {
-
         Community entity = communityRepository.save(params.toEntity());
         return entity.getId();
     }

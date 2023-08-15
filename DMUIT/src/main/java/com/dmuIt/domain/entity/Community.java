@@ -18,31 +18,28 @@ public class Community {
     @Column(name = "community_id", unique = true, nullable = false)
     private Long id;
 
-    @Column(length = 15, nullable = false)
+    @Column(length = 100, nullable = false)
     private String title;
 
-    @Column(length = 15, nullable = false)
+    @Column(length = 100, nullable = false)
     private String content;
 
-    @Column(length = 10, nullable = false)
-    private Integer viewCount;
-
-    @Column(length = 10, nullable = false)
-    private Integer voteCount;
+    @Column
+    private long viewCount = 0;
 
     @Column(length = 10, nullable = false)
     private Long member_id;
 
-    @Column(nullable = true)
+    @Column
     private char deleteYN;
 
-    @Column(length = 10, nullable = false)
+    @Column(length = 10)
     private String status;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 20)
     private LocalDateTime create_at;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 20)
     private LocalDateTime modified_at;
 
 //    @OneToMany(mappedBy = "community")
@@ -52,11 +49,10 @@ public class Community {
 
 
     @Builder
-    public Community(String title, String content, Integer viewCount, Integer voteCount, Long member_id, char deleteYN, String status, LocalDateTime create_at, LocalDateTime modified_at) {
+    public Community(String title, String content, Integer viewCount, Long member_id, char deleteYN, String status, LocalDateTime create_at, LocalDateTime modified_at) {
         this.title = title;
         this.content = content;
         this.viewCount = viewCount;
-        this.voteCount = voteCount;
         this.member_id = member_id;
         this.deleteYN = deleteYN;
         this.status = status;

@@ -21,8 +21,6 @@ public class CommunityResponseDto {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.content = entity.getContent();
-        this.viewCount = entity.getViewCount();
-        this.voteCount = entity.getVoteCount();
         this.member_id = entity.getMember_id();
         this.status = entity.getStatus();
         this.create_at = entity.getCreate_at();
