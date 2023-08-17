@@ -36,10 +36,10 @@ public class Community {
     @Column(length = 10)
     private String status;
 
-    @Column(length = 20)
+    @Column
     private LocalDateTime create_at;
 
-    @Column(length = 20)
+    @Column
     private LocalDateTime modified_at;
 
 //    @OneToMany(mappedBy = "community")
@@ -56,7 +56,7 @@ public class Community {
         this.member_id = member_id;
         this.deleteYN = deleteYN;
         this.status = status;
-        this.create_at = create_at;
+        this.create_at = LocalDateTime.now();
         this.modified_at = modified_at;
     }
 

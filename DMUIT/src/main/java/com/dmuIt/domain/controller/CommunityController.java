@@ -26,7 +26,7 @@ public class CommunityController
     /**
      * 게시글 리스트 조회
      */
-    @GetMapping("/{id}")
+    @GetMapping
     public List<CommunityResponseDto> findAll() {
         return communityService.findAll();
     }
