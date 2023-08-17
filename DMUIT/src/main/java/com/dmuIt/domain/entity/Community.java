@@ -1,4 +1,5 @@
 package com.dmuIt.domain.entity;
+import com.dmuIt.global.audit.Auditable;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "community")
-public class Community {
+public class Community extends Auditable {
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,13 +37,6 @@ public class Community {
 
     @Column(length = 10)
     private String status;
-
-    @Column
-    private LocalDateTime created_at = LocalDateTime.now();;
-
-    @Column
-    private LocalDateTime modified_at;
-
 //    @OneToMany(mappedBy = "community")
 //    private List<Vote> vote;
 //    private List<Comment> comment;
@@ -64,6 +58,5 @@ public class Community {
         this.content = content;
         this.member_id = member_id;
         this.status = status;
-        this.modified_at = LocalDateTime.now();
     }
 }
