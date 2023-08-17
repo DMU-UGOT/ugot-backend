@@ -1,4 +1,5 @@
 package com.dmuIt.domain.entity;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "community")
 public class Community {
@@ -37,7 +38,7 @@ public class Community {
     private String status;
 
     @Column
-    private LocalDateTime create_at;
+    private LocalDateTime created_at = LocalDateTime.now();;
 
     @Column
     private LocalDateTime modified_at;
@@ -49,23 +50,20 @@ public class Community {
 
 
     @Builder
-    public Community(String title, String content, Integer viewCount, Long member_id, char deleteYN, String status, LocalDateTime create_at, LocalDateTime modified_at) {
+    public Community(String title, String content, Integer viewCount, Long member_id, char deleteYN, String status) {
         this.title = title;
         this.content = content;
         this.viewCount = viewCount;
         this.member_id = member_id;
         this.deleteYN = deleteYN;
         this.status = status;
-        this.create_at = LocalDateTime.now();
-        this.modified_at = modified_at;
     }
 
-    public void update(String title, String content, Long member_id, String status, LocalDateTime create_at) {
+    public void update(String title, String content, Long member_id, String status) {
         this.title = title;
         this.content = content;
         this.member_id = member_id;
         this.status = status;
-        this.create_at = create_at;
         this.modified_at = LocalDateTime.now();
     }
 }

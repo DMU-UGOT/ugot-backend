@@ -14,7 +14,7 @@ public class CommunityResponseDto {
     private Integer voteCount;
     private Long member_id;
     private String status;
-    private LocalDateTime create_at;
+    private LocalDateTime created_at;
     private LocalDateTime modified_at;
 
     public CommunityResponseDto(Community entity) {
@@ -23,7 +23,7 @@ public class CommunityResponseDto {
         this.content = entity.getContent();
         this.member_id = entity.getMember_id();
         this.status = entity.getStatus();
-        this.create_at = entity.getCreate_at();
+        this.created_at = entity.getCreated_at();
         this.modified_at = entity.getModified_at();
     }
 }

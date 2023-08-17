@@ -3,6 +3,8 @@ package com.dmuIt.domain.controller;
 import com.dmuIt.domain.dto.CommunityRequestDto;
 import com.dmuIt.domain.dto.CommunityResponseDto;
 import com.dmuIt.domain.service.CommunityService;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/com")
 @RequiredArgsConstructor
+
 public class CommunityController
 {
     private final CommunityService communityService;

@@ -5,6 +5,7 @@ import com.dmuIt.domain.dto.CommunityResponseDto;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.repository.CommunityRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommunityService {
     private final CommunityRepository communityRepository;
+
 
     /**
      * 게시글 생성
@@ -30,9 +32,9 @@ public class CommunityService {
      * 게시글 리스트 조회
      */
     public List<CommunityResponseDto> findAll() {
-
-        Sort sort = Sort.by(Sort.Direction.DESC, "id", "createdDate");
-        List<Community> list = communityRepository.findAll(sort);
+        //Sort sort = Sort.by(Sort.Direction.DESC, "id", "created_at");
+        //List<Community> list = communityRepository.findAll(sort);
+        List<Community> list = communityRepository.findAll();
         return list.stream().map(CommunityResponseDto::new).collect(Collectors.toList());
     }
 
@@ -45,7 +47,7 @@ public class CommunityService {
         Community entity = communityRepository.findById(id).orElseThrow();
         //Community entity = communityRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         entity.update(params.toEntity().getTitle(),params.toEntity().getContent(),params.toEntity().getMember_id(),
-                params.toEntity().getStatus(),params.toEntity().getCreate_at());
+                params.toEntity().getStatus());
         return id;
     }
 
