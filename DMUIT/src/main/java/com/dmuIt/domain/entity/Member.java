@@ -1,15 +1,19 @@
 package com.dmuIt.domain.entity;
 
 import com.dmuIt.global.audit.Auditable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.*;
 
 
 @Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "member")
 public class Member extends Auditable {
@@ -24,7 +28,7 @@ public class Member extends Auditable {
     @Column(length = 30, nullable = false)
     private String nickname;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, updatable = false, nullable = false)
     private String email;
 
     @Column(length = 100, nullable = false)
@@ -42,15 +46,11 @@ public class Member extends Auditable {
     @Column(length = 10, nullable = false)
     private String _class;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
     @ElementCollection
-    @Column(length = 20)
     private Set<String> skill = new HashSet<>();
-
-    @Column(length = 30, nullable = false)
-    private String role;
-
-    @Column(length = 30, nullable = false)
-    private String status;
 
     @OneToMany(mappedBy = "member") // 일대다관계
     private List<ClassChange> classChanges;
