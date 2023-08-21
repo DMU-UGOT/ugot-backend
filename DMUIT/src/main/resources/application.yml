@@ -12,9 +12,9 @@ spring:
       path: /h2
   datasource:
     url: jdbc:h2:mem:test
-#    username: root
-#    password: dmuit2023!
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+  #    username: root
+  #    password: dmuit2023!
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update  # (1) ??? ?? ??
@@ -29,6 +29,6 @@ mail:
   address:
     admin: admin@gmail.com
 jwt:
-  key: dkjalkdlkj23134dklfkjal123ldkal2498084lkdnka28u31mndaiu53j1
+  key: dldldldldldl123dldldldldldldl123dldldldldldl123dldldldldldldl123
 
 
