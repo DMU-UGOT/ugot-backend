@@ -101,17 +101,21 @@ public class MemberService {
     public Member updateMember(Member member) {
         Member findMember = findVerifiedMember(member.getMemberId());
         Optional.ofNullable(member.getName())
-                .ifPresent(name -> findMember.setName(name));
+                .ifPresent(findMember::setName);
         Optional.ofNullable(member.getNickname())
-                .ifPresent(nickname -> findMember.setNickname(nickname));
+                .ifPresent(findMember::setNickname);
         Optional.ofNullable(member.getMajor())
-                .ifPresent((major -> findMember.setMajor(major)));
+                .ifPresent(findMember::setMajor);
         Optional.ofNullable(member.getGrade())
-                .ifPresent((grade -> findMember.setGrade(grade)));
+                .ifPresent(findMember::setGrade);
         Optional.ofNullable(member.get_class())
-                .ifPresent((_class -> findMember.set_class(_class)));
+                .ifPresent(findMember::set_class);
         Optional.ofNullable(member.getSkill())
-                .ifPresent((skill -> findMember.setSkill(skill)));
+                .ifPresent(findMember::setSkill);
+        Optional.ofNullable(member.getGitHubLink())
+                .ifPresent(findMember::setGitHubLink);
+        Optional.ofNullable(member.getPersonalBlogLink())
+                .ifPresent(findMember::setPersonalBlogLink);
         return memberRepository.save(member);
     }
 

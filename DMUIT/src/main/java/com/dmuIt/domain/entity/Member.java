@@ -43,6 +43,12 @@ public class Member extends Auditable {
     @Column(length = 10, nullable = false)
     private String _class;
 
+    @Column(nullable = false)
+    private String gitHubLink;
+
+    @Column(nullable = false)
+    private String personalBlogLink;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 

@@ -34,6 +34,8 @@ public class MemberDto {
         private Integer grade;
         private String _class;
         private Set<String> skill;
+        private String gitHubLink;
+        private String personalBlogLink;
     }
     @Getter
     @NoArgsConstructor
@@ -45,6 +47,8 @@ public class MemberDto {
         private Integer grade;
         private String _class;
         private Set<String> skill;
+        private String gitHubLink;
+        private String personalBlogLink;
     }
     @Getter
     @Builder
@@ -58,6 +62,8 @@ public class MemberDto {
         private Integer grade;
         private String _class;
         private Set<String> skill;
+        private String gitHubLink;
+        private String personalBlogLink;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
