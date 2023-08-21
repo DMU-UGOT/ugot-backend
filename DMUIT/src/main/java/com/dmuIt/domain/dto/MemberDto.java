@@ -30,7 +30,6 @@ public class MemberDto {
         private String nickname;
         private String email;
         private String password;
-        private String phone;
         private String major;
         private Integer grade;
         private String _class;
@@ -42,7 +41,6 @@ public class MemberDto {
     public static class Patch {
         private String name;
         private String nickname;
-        private String phone;
         private String major;
         private Integer grade;
         private String _class;
@@ -56,7 +54,6 @@ public class MemberDto {
         private String name;
         private String nickname;
         private String email;
-        private String phone;
         private String major;
         private Integer grade;
         private String _class;

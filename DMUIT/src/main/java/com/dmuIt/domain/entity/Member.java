@@ -34,9 +34,6 @@ public class Member extends Auditable {
     @Column(length = 100, nullable = false)
     private String password;
 
-    @Column(length = 21, nullable = false)
-    private String phone;
-
     @Column(length = 20, nullable = false)
     private String major;
 

@@ -19,7 +19,6 @@ public interface MemberMapper {
             member.setNickname(memberPatchDto.getNickname());
             member.setEmail(findMember.getEmail());
             member.setPassword(findMember.getPassword());
-            member.setPhone(findMember.getPhone());
             member.setMajor(memberPatchDto.getMajor());
             member.setGrade(findMember.getGrade());
             member.set_class(findMember.get_class());

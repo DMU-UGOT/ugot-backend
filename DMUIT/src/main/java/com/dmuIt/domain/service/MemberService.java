@@ -104,8 +104,6 @@ public class MemberService {
                 .ifPresent(name -> findMember.setName(name));
         Optional.ofNullable(member.getNickname())
                 .ifPresent(nickname -> findMember.setNickname(nickname));
-        Optional.ofNullable(member.getPhone())
-                .ifPresent(phone -> findMember.setPhone(phone));
         Optional.ofNullable(member.getMajor())
                 .ifPresent((major -> findMember.setMajor(major)));
         Optional.ofNullable(member.getGrade())
