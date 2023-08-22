@@ -66,4 +66,8 @@ public class Community {
         this.status = status;
         this.modified_at = LocalDateTime.now();
     }
+
+    public void delete() {
+        this.deleteYN = 'Y';
+    }
 }

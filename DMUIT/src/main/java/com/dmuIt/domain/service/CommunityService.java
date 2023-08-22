@@ -51,5 +51,15 @@ public class CommunityService {
         return id;
     }
 
+    /**
+     * 게시글 삭제
+     */
+    @Transactional
+    public Long delete(final Long id) {
+        Community entity = communityRepository.findById(id).orElseThrow();
+        entity.delete();
+        return id;
+    }
+
 }
 

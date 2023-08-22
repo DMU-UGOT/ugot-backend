@@ -41,4 +41,12 @@ public class CommunityController
     public Long save(@PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
         return communityService.update(id, params);
     }
+
+    /**
+     * 게시글 삭제
+     */
+    @DeleteMapping("/{id}")
+    public Long delete(@PathVariable final Long id) {
+        return communityService.delete(id);
+    }
 }
