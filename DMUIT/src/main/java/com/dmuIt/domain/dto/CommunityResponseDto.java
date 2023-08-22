@@ -10,8 +10,9 @@ public class CommunityResponseDto {
     private Long id;
     private String title;
     private String content;
-    private Integer viewCount;
-    private Integer voteCount;
+    private int viewCount;
+    private int voteCount;
+    private char deleteYN;
     private Long member_id;
     private String status;
     private LocalDateTime created_at;
@@ -25,5 +26,8 @@ public class CommunityResponseDto {
         this.status = entity.getStatus();
         this.created_at = entity.getCreated_at();
         this.modified_at = entity.getModified_at();
+        this.viewCount = (int) entity.getViewCount();
+        this.voteCount = (int) entity.getVoteCount();
+        this.deleteYN = entity.getDeleteYN();
     }
 }

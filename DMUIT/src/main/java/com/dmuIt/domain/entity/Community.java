@@ -28,6 +28,9 @@ public class Community {
     @Column
     private long viewCount = 0;
 
+    @Column
+    private long voteCount = 0;
+
     @Column(length = 10, nullable = false)
     private Long member_id;
 
@@ -67,7 +70,10 @@ public class Community {
         this.modified_at = LocalDateTime.now();
     }
 
+
+    public void increaseViews() { this.viewCount++; }
     public void delete() {
         this.deleteYN = 'Y';
     }
+
 }

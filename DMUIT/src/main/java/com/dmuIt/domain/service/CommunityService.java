@@ -39,6 +39,17 @@ public class CommunityService {
     }
 
     /**
+     * 게시글 상세조회
+     */
+    @Transactional
+    public CommunityResponseDto findById(final Long id) {
+        Community entity = communityRepository.findById(id).orElseThrow();
+        entity.increaseViews();
+        return new CommunityResponseDto(entity);
+    }
+
+
+    /**
      * 게시글 수정
      */
     @Transactional

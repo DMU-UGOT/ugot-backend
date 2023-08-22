@@ -35,6 +35,14 @@ public class CommunityController
     }
 
     /**
+     * 게시글 상세정보 조회
+     */
+    @GetMapping("/{id}")
+    public CommunityResponseDto findById(@PathVariable final Long id) {
+        return communityService.findById(id);
+    }
+
+    /**
      * 게시글 수정
      */
     @PatchMapping("/{id}")
