@@ -36,13 +36,13 @@ public class Study {
     @Column(length = 20, nullable = false)
     private Date modified_at;
 
-
+/*
     @OneToMany(mappedBy = "study") // 일대다관계
     private List<Comment> comments;
 
     @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "member_id")
-    private Member members;
+    private Member members;*/
 
 
 

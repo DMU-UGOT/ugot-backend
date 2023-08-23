@@ -17,7 +17,7 @@ spring:
   #    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update  # (1) ??? ?? ??
+      ddl-auto: create-drop  # (1) ??? ?? ??
     show-sql: true      # (2) SQL ?? ??
     properties:
       hibernate:

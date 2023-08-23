@@ -3,10 +3,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -41,10 +44,14 @@ public class Community {
     private String status;
 
     @Column
-    private LocalDateTime created_at = LocalDateTime.now();;
+    private LocalDateTime created_at = LocalDateTime.now();
 
     @Column
     private LocalDateTime modified_at;
+
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Where(clause = "parent_id is null")
+    private List<Comment> commentList = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "community")
 //    private List<Vote> vote;
