@@ -159,4 +159,12 @@ public class MemberService {
             throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
         }
     }
+
+    public long getUserNum(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isPresent()) {
+            return member.get().getMemberId();
+        }
+        else return 0;
+    }
 }
