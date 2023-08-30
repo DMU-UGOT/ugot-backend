@@ -32,8 +32,6 @@ public class CommunityService {
      * 게시글 리스트 조회
      */
     public List<CommunityResponseDto> findAll() {
-        //Sort sort = Sort.by(Sort.Direction.DESC, "id", "created_at");
-        //List<Community> list = communityRepository.findAll(sort);
         List<Community> list = communityRepository.findAll();
         return list.stream().map(CommunityResponseDto::new).collect(Collectors.toList());
     }

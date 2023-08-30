@@ -49,9 +49,9 @@ public class Community {
     @Column
     private LocalDateTime modified_at;
 
-    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
+    /*@OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
     @Where(clause = "parent_id is null")
-    private List<Comment> commentList = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();*/
 
 //    @OneToMany(mappedBy = "community")
 //    private List<Vote> vote;

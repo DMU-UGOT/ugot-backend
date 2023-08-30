@@ -4,6 +4,7 @@ import com.dmuIt.domain.entity.Comment;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.repository.CommentRepository;
 import com.dmuIt.domain.repository.CommunityRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,32 +12,38 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 public class CommentController {
-    @Autowired
-    CommunityRepository communityRepository;
 
-    @Autowired
-    CommentRepository commentRepository;
+    private final CommunityRepository communityRepository;
+    private final CommentRepository commentRepository;
 
-  /*  @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @GetMapping("/post/{id}/comment")
+    /**
+    댓글 조회
+    */
+
+    @GetMapping("/com/{id}/comment")
     public List<Comment> getPostComments(@PathVariable Long id){
         Community community = communityRepository.findById(id).get();
-        return commentRepository.findCommentsByPost(community);
-    }*/
+        return commentRepository.findCommentsByCommunity(community);
+    }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    /**
+     댓글 추가
+     */
     @PutMapping("/com/{id}/comment")
     public Comment createComment(@PathVariable Long id, @RequestBody Comment comment){
         Optional<Community> postItem = communityRepository.findById(id);
         comment.setCommunity(postItem.get());
-        commentRepository.save(comment);
-        return comment;
+        return commentRepository.save(comment);
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @PostMapping("/post/{id}/comment/{commentID}")
-    public Comment updateComment(@PathVariable Long id,@PathVariable Long commentID, @RequestBody Comment comment){
+
+    /**
+     댓글 수정
+     */
+    @PostMapping("/com/{id}/comment/{commentID}")
+    public Comment updateComment(@PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
         Optional<Community> postItem = communityRepository.findById(id);
         comment.setCommunity(postItem.get());
         Comment newComment = commentRepository.findById(commentID).get();
@@ -45,10 +52,11 @@ public class CommentController {
         return newComment;
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @DeleteMapping("/post/{id}/comment/{commentID}")
-    public String deleteComment(@PathVariable Long id, @PathVariable Long commentID){
+    /**
+     댓글 삭제
+     */
+    @DeleteMapping("/com/{id}/comment/{commentID}")
+    public void deleteComment(@PathVariable Long id, @PathVariable Long commentID){
         commentRepository.deleteById(commentID);
-        return "Comment Delete Success!";
     }
 }
