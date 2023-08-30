@@ -59,7 +59,7 @@ public class NaverOauth {
         JsonNode userInfo = getUserInfo(userInfoResponse);
 
         String user_id = userInfo.get("response").get("email").asText();
-        String nickname = userInfo.get("response").get("nickname").asText();
+        String name = userInfo.get("response").get("name").asText();
 
         long user_num = memberService.getUserNum(user_id);
 
@@ -73,11 +73,11 @@ public class NaverOauth {
             MemberDto.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
             tokenInfo.setMemberId(user_num);
 
-            GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(tokenInfo, accessToken, user_id, nickname, password);
+            GetSocialOAuthRes getSocialOAuthRes = new GetSocialOAuthRes(tokenInfo, accessToken, user_id, name, password);
             return getSocialOAuthRes;
         }
         else {
-            return new GetSocialOAuthRes(null, null, user_id, nickname, randomPassword.getRandomPassword(10));
+            return new GetSocialOAuthRes(null, null, user_id, name, randomPassword.getRandomPassword(10));
         }
     }
 }
