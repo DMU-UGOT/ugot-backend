@@ -17,15 +17,15 @@ public class OauthController {
     private final NaverOauth naverOauth;
 
     @PostMapping("/auth/google")
-    public ResponseEntity googleLogin(@RequestBody String accessToken) throws IOException {
-        GetSocialOAuthRes getSocialOAuthRes = googleOauth.oAuthLogin(accessToken);
+    public ResponseEntity googleLogin(@RequestBody AccessTokenDto accessToken) throws IOException {
+        GetSocialOAuthRes getSocialOAuthRes = googleOauth.oAuthLogin(accessToken.getAccessToken());
 
         return response.success(getSocialOAuthRes);
     }
 
     @PostMapping("/auth/naver")
-    public ResponseEntity naverLogin(@RequestBody String accessToken) throws IOException {
-        GetSocialOAuthRes getSocialOAuthRes = naverOauth.oAuthLogin(accessToken);
+    public ResponseEntity naverLogin(@RequestBody AccessTokenDto accessToken) throws IOException {
+        GetSocialOAuthRes getSocialOAuthRes = naverOauth.oAuthLogin(accessToken.getAccessToken());
 
         return response.success(getSocialOAuthRes);
     }
