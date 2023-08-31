@@ -8,15 +8,17 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommunityRequestDto {
-    private String title; // 제목
-    private String content; // 내용
-    private Long member_id; // 작성자
-    private char deleteYN; // 삭제 여부
+    private String title;
+    private String content;
+    private String status;
+    private Long member_id;
+    private char deleteYN;
 
     public Community toEntity() {
         return Community.builder()
                 .title(title)
                 .content(content)
+                .status(status)
                 .member_id(member_id)
                 .viewCount(0)
                 .deleteYN(deleteYN)

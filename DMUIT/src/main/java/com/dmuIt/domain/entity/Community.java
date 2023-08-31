@@ -40,11 +40,11 @@ public class Community {
     @Column
     private char deleteYN;
 
-    @Column(length = 10)
+    @Column
     private String status;
 
     @Column
-    private LocalDateTime created_at = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column
     private LocalDateTime modified_at;

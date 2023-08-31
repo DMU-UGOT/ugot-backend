@@ -32,7 +32,7 @@ public class CommunityService {
      * 게시글 리스트 조회
      */
     public List<CommunityResponseDto> findAll() {
-        List<Community> list = communityRepository.findAll();
+        List<Community> list = communityRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
         return list.stream().map(CommunityResponseDto::new).collect(Collectors.toList());
     }
 
