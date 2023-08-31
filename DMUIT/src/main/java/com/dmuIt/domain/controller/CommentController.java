@@ -40,7 +40,7 @@ public class CommentController {
 
 
     /**
-     댓글 수정
+     댓글 수정 -> 수정 아직 안됨.
      */
 
    /* public Comment updateComment(@PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
