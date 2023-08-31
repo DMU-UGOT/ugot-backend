@@ -31,7 +31,7 @@ public class CommentController {
     /**
      댓글 추가
      */
-    @PutMapping("/com/{id}/comment")
+    @PostMapping("/com/{id}/comment")
     public Comment createComment(@PathVariable Long id, @RequestBody Comment comment){
         Optional<Community> postItem = communityRepository.findById(id);
         comment.setCommunity(postItem.get());
@@ -42,14 +42,22 @@ public class CommentController {
     /**
      댓글 수정
      */
-    @PostMapping("/com/{id}/comment/{commentID}")
-    public Comment updateComment(@PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
+
+   /* public Comment updateComment(@PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
         Optional<Community> postItem = communityRepository.findById(id);
         comment.setCommunity(postItem.get());
         Comment newComment = commentRepository.findById(commentID).get();
         newComment.setContent(comment.getContent());
-        newComment.setMember(comment.getMember());
+        newComment.setStatus(comment.getStatus());
         return newComment;
+    }*/
+    @PatchMapping("/com/{id}/comment/{commentID}")
+    public Long update(@PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
+        Optional<Community> postItem = communityRepository.findById(id);
+        comment.setCommunity(postItem.get());
+        Comment newComment = commentRepository.findById(commentID).orElseThrow();
+        newComment.update(comment.getContent(),comment.getStatus());
+        return id;
     }
 
     /**

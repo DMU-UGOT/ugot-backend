@@ -62,56 +62,10 @@ public class Comment {
         this.community = community;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    public LocalDateTime getModified_at() {
-        return modified_at;
-    }
-
-    public Member getMember() {
-        return member;
-    }
-
-    public Community getCommunity() {
-        return community;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setContent(String content) {
+    public void update(String content, String status) {
         this.content = content;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
-    }
-
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
-    }
-
-    public void setModified_at(LocalDateTime modified_at) {
-        this.modified_at = modified_at;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
+        this.modified_at = LocalDateTime.now();
     }
 
     public void setCommunity(Community community) {

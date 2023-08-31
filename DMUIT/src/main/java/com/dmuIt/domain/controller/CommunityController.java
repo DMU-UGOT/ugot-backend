@@ -46,7 +46,7 @@ public class CommunityController
      * 게시글 수정
      */
     @PatchMapping("/{id}")
-    public Long save(@PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
+    public Long update(@PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
         return communityService.update(id, params);
     }
 
