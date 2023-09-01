@@ -19,7 +19,7 @@ public class Comment {
     @Column(name = "comment_id", unique = true, nullable = false)
     private Long id;
 
-    @Column(length = 15, nullable = false)
+    @Column(length = 50, nullable = false)
     private String content;
 
     @Column(length = 10, nullable = false)
@@ -62,13 +62,15 @@ public class Comment {
         this.community = community;
     }
 
+    public void setCommunity(Community community) {
+        this.community = community;
+    }
+
     public void update(String content, String status) {
         this.content = content;
         this.status = status;
         this.modified_at = LocalDateTime.now();
     }
 
-    public void setCommunity(Community community) {
-        this.community = community;
-    }
+
 }

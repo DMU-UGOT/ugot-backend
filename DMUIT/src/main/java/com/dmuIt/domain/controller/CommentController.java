@@ -42,18 +42,8 @@ public class CommentController {
      댓글 수정 -> 수정 아직 안됨.
      */
 
-   /* public Comment updateComment(@PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
-        Optional<Community> postItem = communityRepository.findById(id);
-        comment.setCommunity(postItem.get());
-        Comment newComment = commentRepository.findById(commentID).get();
-        newComment.setContent(comment.getContent());
-        newComment.setStatus(comment.getStatus());
-        return newComment;
-    }*/
-
-
     @PatchMapping("/com/{id}/comment/{commentID}")
-    public Long update(@PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
+    public Comment update(@PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
         return commentService.update(id,commentID,comment);
     }
 

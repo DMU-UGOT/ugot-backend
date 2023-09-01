@@ -19,21 +19,23 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final CommunityRepository communityRepository;
 
-    public List<Comment> getComments(Long id) {
+    public List<Comment> getComments(final Long id) {
         Community community = communityRepository.findById(id).get();
         return commentRepository.findCommentsByCommunity(community);
     }
-    public Comment create(Long id, Comment comment){
+
+    public Comment create(final Long id, final Comment comment){
         Optional<Community> postItem = communityRepository.findById(id);
         comment.setCommunity(postItem.get());
         return commentRepository.save(comment);
     }
-    public Long update(Long id, Long commentID, Comment comment){
+
+    public Comment update(final Long id, final Long commentID, final Comment comment){
         Optional<Community> postItem = communityRepository.findById(id);
         comment.setCommunity(postItem.get());
-        Comment newComment = commentRepository.findById(commentID).orElseThrow();
-        newComment.update(comment.getContent(),comment.getStatus());
-        return id;
+        Comment newComment = commentRepository.findById(commentID).get();
+        newComment.update(comment.getContent(), comment.getStatus());
+        return newComment;
     }
 
 }
