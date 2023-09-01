@@ -4,6 +4,7 @@ import com.dmuIt.domain.entity.Comment;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.repository.CommentRepository;
 import com.dmuIt.domain.repository.CommunityRepository;
+import com.dmuIt.domain.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +16,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentController {
 
-    private final CommunityRepository communityRepository;
     private final CommentRepository commentRepository;
+    private final CommentService commentService;
+
 
     /**
     댓글 조회
@@ -24,8 +26,7 @@ public class CommentController {
 
     @GetMapping("/com/{id}/comment")
     public List<Comment> getPostComments(@PathVariable Long id){
-        Community community = communityRepository.findById(id).get();
-        return commentRepository.findCommentsByCommunity(community);
+        return commentService.getComments(id);
     }
 
     /**
@@ -33,9 +34,7 @@ public class CommentController {
      */
     @PostMapping("/com/{id}/comment")
     public Comment createComment(@PathVariable Long id, @RequestBody Comment comment){
-        Optional<Community> postItem = communityRepository.findById(id);
-        comment.setCommunity(postItem.get());
-        return commentRepository.save(comment);
+        return commentService.create(id, comment);
     }
 
 
@@ -51,13 +50,11 @@ public class CommentController {
         newComment.setStatus(comment.getStatus());
         return newComment;
     }*/
+
+
     @PatchMapping("/com/{id}/comment/{commentID}")
     public Long update(@PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
-        Optional<Community> postItem = communityRepository.findById(id);
-        comment.setCommunity(postItem.get());
-        Comment newComment = commentRepository.findById(commentID).orElseThrow();
-        newComment.update(comment.getContent(),comment.getStatus());
-        return id;
+        return commentService.update(id,commentID,comment);
     }
 
     /**
@@ -67,4 +64,5 @@ public class CommentController {
     public void deleteComment(@PathVariable Long id, @PathVariable Long commentID){
         commentRepository.deleteById(commentID);
     }
+
 }
