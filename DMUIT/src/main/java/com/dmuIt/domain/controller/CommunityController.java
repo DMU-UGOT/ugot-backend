@@ -35,10 +35,26 @@ public class CommunityController
     }
 
     /**
+     * 게시글 상세정보 조회
+     */
+    @GetMapping("/{id}")
+    public CommunityResponseDto findById(@PathVariable final Long id) {
+        return communityService.findById(id);
+    }
+
+    /**
      * 게시글 수정
      */
     @PatchMapping("/{id}")
-    public Long save(@PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
+    public Long update(@PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
         return communityService.update(id, params);
+    }
+
+    /**
+     * 게시글 삭제
+     */
+    @DeleteMapping("/{id}")
+    public Long delete(@PathVariable final Long id) {
+        return communityService.delete(id);
     }
 }

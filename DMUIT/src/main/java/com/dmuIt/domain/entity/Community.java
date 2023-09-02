@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,6 +26,9 @@ public class Community extends Auditable {
 
     @Column
     private long viewCount = 0;
+
+    @Column
+    private long voteCount = 0;
 
     @Column(length = 10, nullable = false)
     private Long member_id;
@@ -59,4 +60,11 @@ public class Community extends Auditable {
         this.member_id = member_id;
         this.status = status;
     }
+
+
+    public void increaseViews() { this.viewCount++; }
+    public void delete() {
+        this.deleteYN = 'Y';
+    }
+
 }

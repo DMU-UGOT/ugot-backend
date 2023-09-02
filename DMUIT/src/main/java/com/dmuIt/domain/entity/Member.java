@@ -70,34 +70,4 @@ public class Member extends Auditable {
             inverseJoinColumns = @JoinColumn(name = "project_id"))
     private List<Project> projects;
 
-
-    
-    //빌더
-//    @Builder
-//    public Member(Long memberId, String name, String nickname, String email, String password,
-//                  String phone, String major, Integer grade, String _class, Set<String> skill,
-//                  String role, String status, LocalDateTime modified_at,
-//                  List<Long> votes) {
-//        this.memberId = memberId;
-//        this.name = name;
-//        this.nickname = nickname;
-//        this.email = email;
-//        this.password = password;
-//        this.phone = phone;
-//        this.major = major;
-//        this.grade = grade;
-//        this._class = _class;
-//        this.skill = skill;
-//        this.role = role;
-//        this.status = status;
-//        this.modified_at = modified_at;
-//        this.votes = votes;
-//    }
-
-//    @Builder
-//
-//    public Member(Long id, String name) {
-//        this.id = id;
-//        this.name = name;
-//    }
 }

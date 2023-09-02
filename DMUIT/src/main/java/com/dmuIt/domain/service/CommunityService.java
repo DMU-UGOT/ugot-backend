@@ -33,11 +33,20 @@ public class CommunityService {
      * 게시글 리스트 조회
      */
     public List<CommunityResponseDto> findAll() {
-        //Sort sort = Sort.by(Sort.Direction.DESC, "id", "created_at");
-        //List<Community> list = communityRepository.findAll(sort);
-        List<Community> list = communityRepository.findAll();
+        List<Community> list = communityRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
         return list.stream().map(CommunityResponseDto::new).collect(Collectors.toList());
     }
+
+    /**
+     * 게시글 상세조회
+     */
+    @Transactional
+    public CommunityResponseDto findById(final Long id) {
+        Community entity = communityRepository.findById(id).orElseThrow();
+        entity.increaseViews();
+        return new CommunityResponseDto(entity);
+    }
+
 
     /**
      * 게시글 수정
@@ -50,6 +59,16 @@ public class CommunityService {
         entity.update(params.toEntity().getTitle(),params.toEntity().getContent(),params.toEntity().getMember_id(),
                 params.toEntity().getStatus());
         entity.setModifiedAt(LocalDateTime.now());
+        return id;
+    }
+
+    /**
+     * 게시글 삭제
+     */
+    @Transactional
+    public Long delete(final Long id) {
+        Community entity = communityRepository.findById(id).orElseThrow();
+        entity.delete();
         return id;
     }
 
