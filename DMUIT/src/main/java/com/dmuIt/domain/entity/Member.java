@@ -59,7 +59,10 @@ public class Member extends Auditable {
     private List<ClassChange> classChanges;
 
     @OneToMany(mappedBy = "member")
-    private List<Bookmark> bookmarks;
+    private List<TeamBookmark> teamBookmarks;
+
+    @OneToMany(mappedBy = "member")
+    private List<StudyBookmark> studyBookmarks;
 
     @ElementCollection
     private List<Long> votes;
