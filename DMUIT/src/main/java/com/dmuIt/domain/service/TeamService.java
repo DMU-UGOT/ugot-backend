@@ -1,14 +1,13 @@
 package com.dmuIt.domain.service;
 
-import com.dmuIt.domain.entity.Bookmark;
 import com.dmuIt.domain.entity.Member;
 import com.dmuIt.domain.entity.Team;
-import com.dmuIt.domain.repository.BookmarkRepository;
+import com.dmuIt.domain.entity.TeamBookmark;
+import com.dmuIt.domain.repository.TeamBookmarkRepository;
 import com.dmuIt.domain.repository.TeamRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeamService {
     private final TeamRepository teamRepository;
-    private final BookmarkRepository bookmarkRepository;
+    private final TeamBookmarkRepository bookmarkRepository;
     private final MemberService memberService;
 
     public void createTeam(Team team) {
@@ -44,7 +43,7 @@ public class TeamService {
         Optional.ofNullable(team.getKakaoOpenLink())
                 .ifPresent(kakaoOpenLink -> findTeam.setKakaoOpenLink(kakaoOpenLink));
         Optional.ofNullable(team.getGitHubLink())
-                .ifPresent(gitHubLink -> findTeam.setKakaoOpenLink(gitHubLink));
+                .ifPresent(gitHubLink -> findTeam.setGitHubLink(gitHubLink));
         findTeam.setModifiedAt(LocalDateTime.now());
         teamRepository.save(findTeam);
     }
@@ -72,10 +71,10 @@ public class TeamService {
 
         if (bookmarkRepository.findByTeamAndMember(team, member) == null) {
             team.setBookmarked(team.getBookmarked() + 1);
-            Bookmark bookmark = new Bookmark(team, member);
+            TeamBookmark bookmark = new TeamBookmark(team, member);
             bookmarkRepository.save(bookmark);
         } else {
-            Bookmark bookmark = bookmarkRepository.findBookmarkByTeam(team);
+            TeamBookmark bookmark = bookmarkRepository.findBookmarkByTeam(team);
             bookmark.unBookmark(team);
             bookmarkRepository.delete(bookmark);
         }
