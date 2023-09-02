@@ -9,6 +9,7 @@ public enum ExceptionCode {
     MEMBER_EXISTS(409, "Member exists"),
     NICKNAME_EXISTS(409, "Nickname exists"),
     TEAM_NOT_FOUND(HttpStatus.NOT_FOUND,"팀을 찾을 수 없습니다."),
+    STUDY_NOT_FOUND(HttpStatus.NOT_FOUND, "Study not found"),
     NO_PERMISSION(HttpStatus.FORBIDDEN, "권한이 없습니다.");
 
     @Getter
