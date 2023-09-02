@@ -34,8 +34,8 @@ public class Study extends Auditable {
     @Column
     private Integer nowPersonnel = 1;
 
-    @OneToMany(mappedBy = "study") // 일대다관계
-    private List<Comment> comments;
+//    @OneToMany(mappedBy = "study") // 일대다관계
+//    private List<Comment> comments;
 
     @Column
     private String kakaoOpenLink;
