@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,11 +31,13 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    @Transactional
     public Comment update(final Long id, final Long commentID, final Comment comment){
         Optional<Community> postItem = communityRepository.findById(id);
         comment.setCommunity(postItem.get());
         Comment newComment = commentRepository.findById(commentID).get();
         newComment.update(comment.getContent(), comment.getStatus());
+        newComment.setModifiedAt(LocalDateTime.now());
         return newComment;
     }
 
