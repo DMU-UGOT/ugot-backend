@@ -1,13 +1,11 @@
 package com.dmuIt.domain.entity;
 import com.dmuIt.global.audit.Auditable;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "community")
@@ -30,35 +28,28 @@ public class Community extends Auditable {
     @Column
     private long voteCount = 0;
 
-    @Column(length = 10, nullable = false)
-    private Long member_id;
-
     @Column
     private char deleteYN;
-
-    @Column(length = 10)
-    private String status;
 //    @OneToMany(mappedBy = "community")
 //    private List<Vote> vote;
 //    private List<Comment> comment;
 
+    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
+    @JoinColumn(name = "member_id")
+    private Member member;
 
 
     @Builder
-    public Community(String title, String content, Integer viewCount, Long member_id, char deleteYN, String status) {
+    public Community(String title, String content, Integer viewCount, char deleteYN) {
         this.title = title;
         this.content = content;
         this.viewCount = viewCount;
-        this.member_id = member_id;
         this.deleteYN = deleteYN;
-        this.status = status;
     }
 
-    public void update(String title, String content, Long member_id, String status) {
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
-        this.member_id = member_id;
-        this.status = status;
     }
 
 

@@ -16,6 +16,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -29,17 +30,18 @@ public class StudyController {
     private final StudyService studyService;
 
     @PostMapping
-    public void createStudy(@RequestBody @Valid StudyDto.Post postStudyDto) {
+    public void createStudy(HttpServletRequest request, @RequestBody @Valid StudyDto.Post postStudyDto) {
         Study study = studyMapper.studyPostDtoToStudy(postStudyDto);
-        studyService.createStudy(study);
+        studyService.createStudy(request, study);
     }
 
     @PatchMapping("/{study-id}")
-    public void updateStudy(@RequestBody @Valid StudyDto.Patch patchStudyDto,
+    public void updateStudy(HttpServletRequest request,
+                            @RequestBody @Valid StudyDto.Patch patchStudyDto,
                             @PathVariable("study-id") long studyId) {
         Study study = studyMapper.studyPatchDtoToStudy(patchStudyDto);
         study.setStudyId(studyId);
-        studyService.updateStudy(study);
+        studyService.updateStudy(request, study);
     }
 
     @GetMapping("/{study-id}")
@@ -61,14 +63,13 @@ public class StudyController {
     }
 
     @DeleteMapping("/{study-id}")
-    public void deleteStudy(@PathVariable("study-id") long studyId) {
-        studyService.deleteStudy(studyId);
+    public void deleteStudy(HttpServletRequest request, @PathVariable("study-id") long studyId) {
+        studyService.deleteStudy(request, studyId);
     }
 
-    @PostMapping("/bookmark/{study-id}/{member-id}")
-    public void bookmarkStudy(@PathVariable("study-id") long studyId,
-                              @PathVariable("member-id") long memberId) {
-        studyService.bookmarkStudy(studyId, memberId);
+    @PostMapping("/bookmark/{study-id}")
+    public void bookmarkStudy(HttpServletRequest request, @PathVariable("study-id") long studyId) {
+        studyService.bookmarkStudy(request, studyId);
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")

@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -23,13 +24,18 @@ public class StudyService {
     private final StudyBookmarkRepository bookmarkRepository;
     private final MemberService memberService;
 
-    public void createStudy(Study study) {
+    public void createStudy(HttpServletRequest request, Study study) {
+        study.setMember(memberService.verifiedCurrentMember(request));
         studyRepository.save(study);
     }
 
     @Transactional
-    public void updateStudy(Study study) {
+    public void updateStudy(HttpServletRequest request, Study study) {
         Study findStudy = findVerifiedStudy(study.getStudyId());
+        Member member = memberService.verifiedCurrentMember(request);
+        if (findStudy.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         Optional.ofNullable(study.getTitle())
                 .ifPresent(findStudy::setTitle);
         Optional.ofNullable(study.getContent())
@@ -46,7 +52,12 @@ public class StudyService {
         studyRepository.save(findStudy);
     }
 
-    public void deleteStudy(long studyId) {
+    public void deleteStudy(HttpServletRequest request, long studyId) {
+        Study findStudy = findVerifiedStudy(studyId);
+        Member member = memberService.verifiedCurrentMember(request);
+        if (findStudy.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         studyRepository.delete(findVerifiedStudy(studyId));
     }
 
@@ -62,10 +73,10 @@ public class StudyService {
     }
 
     @Transactional
-    public void bookmarkStudy(long studyId, long memberId) {
+    public void bookmarkStudy(HttpServletRequest request, long studyId) {
         Study study = findVerifiedStudy(studyId);
 
-        Member member = memberService.findVerifiedMember(memberId);
+        Member member = memberService.verifiedCurrentMember(request);
 
         if (bookmarkRepository.findByStudyAndMember(study, member) == null) {
             study.setBookmarked(study.getBookmarked() + 1);

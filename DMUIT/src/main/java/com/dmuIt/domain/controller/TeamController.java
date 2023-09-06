@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -27,17 +28,18 @@ public class TeamController {
     private final TeamMapper teamMapper;
 
     @PostMapping
-    public void createTeam(@RequestBody @Valid TeamDto.Post teamPostDto) {
+    public void createTeam(HttpServletRequest request, @RequestBody @Valid TeamDto.Post teamPostDto) {
         Team team = teamMapper.teamPostDtoToTeam(teamPostDto);
-        teamService.createTeam(team);
+        teamService.createTeam(request, team);
     }
 
     @PatchMapping("/{team-id}")
-    public void patchTeam(@RequestBody @Valid TeamDto.Patch teamPatchDto,
-                           @PathVariable("team-id") long teamId) {
+    public void patchTeam(HttpServletRequest request,
+                          @RequestBody @Valid TeamDto.Patch teamPatchDto,
+                          @PathVariable("team-id") long teamId) {
         Team team = teamMapper.teamPatchDtoToTeam(teamPatchDto);
         team.setId(teamId);
-        teamService.updateTeam(team);
+        teamService.updateTeam(request, team);
     }
 
     @GetMapping("/{team-id}")
@@ -62,14 +64,13 @@ public class TeamController {
     }
 
     @DeleteMapping("/{team-id}")
-    public void deleteTeam(@PathVariable("team-id") long teamId) {
-        teamService.removeTeam(teamId);
+    public void deleteTeam(HttpServletRequest request, @PathVariable("team-id") long teamId) {
+        teamService.removeTeam(request, teamId);
     }
 
-    @PostMapping("/bookmark/{team-id}/{member-id}")
-    public void bookmarkTeam(@PathVariable("team-id") long teamId,
-                             @PathVariable("member-id") long memberId) {
-        teamService.bookmarkTeam(teamId, memberId);
+    @PostMapping("/bookmark/{team-id}")
+    public void bookmarkTeam(HttpServletRequest request, @PathVariable("team-id") long teamId) {
+        teamService.bookmarkTeam(request, teamId);
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")

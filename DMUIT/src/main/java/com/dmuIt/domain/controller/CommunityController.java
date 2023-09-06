@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 @RestController
@@ -22,8 +23,8 @@ public class CommunityController
      * 게시글 생성
      */
     @PostMapping
-    public Long save(@RequestBody final CommunityRequestDto params) {
-        return communityService.save(params);
+    public void save(HttpServletRequest request, @RequestBody final CommunityRequestDto params) {
+        communityService.save(request, params);
     }
 
     /**
@@ -46,15 +47,15 @@ public class CommunityController
      * 게시글 수정
      */
     @PatchMapping("/{id}")
-    public Long update(@PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
-        return communityService.update(id, params);
+    public void update(HttpServletRequest request, @PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
+        communityService.update(request, id, params);
     }
 
     /**
      * 게시글 삭제
      */
     @DeleteMapping("/{id}")
-    public Long delete(@PathVariable final Long id) {
-        return communityService.delete(id);
+    public void delete(HttpServletRequest request, @PathVariable final Long id) {
+        communityService.delete(request, id);
     }
 }

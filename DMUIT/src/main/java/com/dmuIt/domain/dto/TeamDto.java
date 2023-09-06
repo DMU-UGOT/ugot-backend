@@ -51,6 +51,7 @@ public class TeamDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Patch {
         private String title;
         private String content;

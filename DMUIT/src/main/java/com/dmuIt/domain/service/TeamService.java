@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -23,13 +24,18 @@ public class TeamService {
     private final TeamBookmarkRepository bookmarkRepository;
     private final MemberService memberService;
 
-    public void createTeam(Team team) {
+    public void createTeam(HttpServletRequest request, Team team) {
+        team.setMember(memberService.verifiedCurrentMember(request));
         teamRepository.save(team);
     }
 
     @Transactional
-    public void updateTeam(Team team) {
+    public void updateTeam(HttpServletRequest request, Team team) {
         Team findTeam = findVerifiedTeam(team.getId());
+        Member member = memberService.verifiedCurrentMember(request);
+        if (findTeam.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         Optional.ofNullable(team.getTitle())
                 .ifPresent(title -> findTeam.setTitle(title));
         Optional.ofNullable(team.getContent())
@@ -48,8 +54,13 @@ public class TeamService {
         teamRepository.save(findTeam);
     }
 
-    public void removeTeam(long teamId) {
-        teamRepository.delete(findVerifiedTeam(teamId));
+    public void removeTeam(HttpServletRequest request, long teamId) {
+        Team team = findVerifiedTeam(teamId);
+        Member member = memberService.verifiedCurrentMember(request);
+        if (team.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        teamRepository.delete(team);
     }
 
     public Team findTeam(long teamId) {
@@ -64,10 +75,10 @@ public class TeamService {
     }
 
     @Transactional
-    public void bookmarkTeam(long teamId, long memberId) {
+    public void bookmarkTeam(HttpServletRequest request, long teamId) {
         Team team = findVerifiedTeam(teamId);
 
-        Member member = memberService.findVerifiedMember(memberId);
+        Member member = memberService.verifiedCurrentMember(request);
 
         if (bookmarkRepository.findByTeamAndMember(team, member) == null) {
             team.setBookmarked(team.getBookmarked() + 1);
