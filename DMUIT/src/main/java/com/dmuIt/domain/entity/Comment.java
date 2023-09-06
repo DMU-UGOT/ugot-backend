@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -41,6 +40,7 @@ public class Comment extends Auditable {
     private Study study;
 
     */
+
 
     public Comment(Long id, String content, Member member, Community community) {
         this.id = id;
