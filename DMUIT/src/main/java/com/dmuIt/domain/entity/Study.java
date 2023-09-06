@@ -51,5 +51,5 @@ public class Study extends Auditable {
 
     @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "member_id")
-    private Member members;
+    private Member member;
 }

@@ -98,7 +98,11 @@ public class MemberService {
     }
 
     @Transactional
-    public Member updateMember(Member member) {
+    public Member updateMember(HttpServletRequest request, Member member) {
+        Member currentMember = verifiedCurrentMember(request);
+        if (currentMember.getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         Member findMember = findVerifiedMember(member.getMemberId());
         Optional.ofNullable(member.getName())
                 .ifPresent(findMember::setName);
@@ -121,15 +125,19 @@ public class MemberService {
 
     @Transactional
     public void deleteMember(HttpServletRequest request, long memberId) {
-        String accessToken = request.getHeader("Authorization").substring(7);
-        Claims claims = jwtTokenProvider.parseClaims(accessToken);
-        String email = claims.getSubject();
-        Member member = findVerifiedMemberByEmail(email);
+        Member member = verifiedCurrentMember(request);
         if (memberId != member.getMemberId()) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         Member verifiedMember = findVerifiedMember(memberId);
         memberRepository.delete(verifiedMember);
+    }
+
+    public Member verifiedCurrentMember(HttpServletRequest request) {
+        String accessToken = request.getHeader("Authorization").substring(7);
+        Claims claims = jwtTokenProvider.parseClaims(accessToken);
+        String email = claims.getSubject();
+        return findVerifiedMemberByEmail(email);
     }
 
     public Member findVerifiedMember(long memberId) {

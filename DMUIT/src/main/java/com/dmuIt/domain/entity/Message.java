@@ -36,7 +36,7 @@ public class Message {
     private Member sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recevier_id")
+    @JoinColumn(name = "receiver_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member receiver;
 

@@ -46,11 +46,12 @@ public class MemberController {
 
     @PatchMapping("/{member-id}")
     public MemberDto.Response updateMember(@PathVariable("member-id") long memberId,
-                                       @RequestBody MemberDto.Patch memberPatchDto) {
+                                           HttpServletRequest request,
+                                           @RequestBody MemberDto.Patch memberPatchDto) {
         Member findMember = memberService.findVerifiedMember(memberId);
         Member member = memberMapper.memberPatchDtoToMember(memberPatchDto, findMember);
 
-        Member updatedMember = memberService.updateMember(member);
+        Member updatedMember = memberService.updateMember(request, member);
 
         return memberMapper.memberToMemberResponseDto(updatedMember);
     }

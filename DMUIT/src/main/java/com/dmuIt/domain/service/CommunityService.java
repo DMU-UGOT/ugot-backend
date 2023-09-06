@@ -2,31 +2,40 @@ package com.dmuIt.domain.service;
 
 import com.dmuIt.domain.dto.CommunityRequestDto;
 import com.dmuIt.domain.dto.CommunityResponseDto;
+import com.dmuIt.domain.entity.Comment;
 import com.dmuIt.domain.entity.Community;
+import com.dmuIt.domain.entity.Member;
 import com.dmuIt.domain.repository.CommunityRepository;
+import com.dmuIt.global.exception.BusinessLogicException;
+import com.dmuIt.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CommunityService {
     private final CommunityRepository communityRepository;
+    private final MemberService memberService;
 
 
     /**
      * 게시글 생성
      */
     @Transactional
-    public Long save(final CommunityRequestDto params) {
-        Community entity = communityRepository.save(params.toEntity());
-        return entity.getId();
+    public void save(HttpServletRequest request, final CommunityRequestDto params) {
+        Member member = memberService.verifiedCurrentMember(request);
+        Community community = params.toEntity();
+        community.setMember(member);
+        communityRepository.save(community);
     }
 
     /**
@@ -52,25 +61,34 @@ public class CommunityService {
      * 게시글 수정
      */
     @Transactional
-    public Long update(final Long id, final CommunityRequestDto params) {
+    public void update(HttpServletRequest request, final Long id, final CommunityRequestDto params) {
 
         Community entity = communityRepository.findById(id).orElseThrow();
+        Member member = memberService.verifiedCurrentMember(request);
+        if (entity.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         //Community entity = communityRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
-        entity.update(params.toEntity().getTitle(),params.toEntity().getContent(),params.toEntity().getMember_id(),
-                params.toEntity().getStatus());
+        entity.update(params.toEntity().getTitle(), params.toEntity().getContent());
         entity.setModifiedAt(LocalDateTime.now());
-        return id;
     }
 
     /**
      * 게시글 삭제
      */
     @Transactional
-    public Long delete(final Long id) {
+    public void delete(HttpServletRequest request, final Long id) {
         Community entity = communityRepository.findById(id).orElseThrow();
+        Member member = memberService.verifiedCurrentMember(request);
+        if (entity.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         entity.delete();
-        return id;
     }
 
+    public void verifiedCommunity(Long id) {
+        Optional<Community> optionalCommunity = communityRepository.findById(id);
+        optionalCommunity.orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
+    }
 }
 
