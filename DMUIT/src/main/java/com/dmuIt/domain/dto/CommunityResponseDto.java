@@ -12,22 +12,19 @@ public class CommunityResponseDto {
     private String content;
     private int viewCount;
     private int voteCount;
-    private char deleteYN;
     private Long member_id;
-    private String status;
     private LocalDateTime created_at;
     private LocalDateTime modified_at;
+
 
     public CommunityResponseDto(Community entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.content = entity.getContent();
         this.member_id = entity.getMember_id();
-        this.status = entity.getStatus();
         this.created_at = entity.getCreatedAt();
         this.modified_at = entity.getModified_at();
         this.viewCount = (int) entity.getViewCount();
         this.voteCount = (int) entity.getVoteCount();
-        this.deleteYN = entity.getDeleteYN();
     }
 }

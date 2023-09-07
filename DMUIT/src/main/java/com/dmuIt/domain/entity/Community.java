@@ -38,12 +38,6 @@ public class Community {
     private Long member_id;
 
     @Column
-    private char deleteYN;
-
-    @Column
-    private String status;
-
-    @Column
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column
@@ -60,27 +54,21 @@ public class Community {
 
 
     @Builder
-    public Community(String title, String content, Integer viewCount, Long member_id, char deleteYN, String status) {
+    public Community(String title, String content, Integer viewCount, Long member_id) {
         this.title = title;
         this.content = content;
         this.viewCount = viewCount;
         this.member_id = member_id;
-        this.deleteYN = deleteYN;
-        this.status = status;
     }
 
-    public void update(String title, String content, Long member_id, String status) {
+    public void update(String title, String content, Long member_id) {
         this.title = title;
         this.content = content;
         this.member_id = member_id;
-        this.status = status;
         this.modified_at = LocalDateTime.now();
     }
 
 
     public void increaseViews() { this.viewCount++; }
-    public void delete() {
-        this.deleteYN = 'Y';
-    }
 
 }

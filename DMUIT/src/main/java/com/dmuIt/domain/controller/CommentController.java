@@ -14,43 +14,31 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/com")
 public class CommentController {
 
     private final CommentRepository commentRepository;
     private final CommentService commentService;
 
 
-    /**
-    댓글 조회
-    */
-
-    @GetMapping("/com/{id}/comment")
+    @GetMapping("/{id}/comment")
     public List<Comment> getPostComments(@PathVariable Long id){
         return commentService.getComments(id);
     }
 
-    /**
-     댓글 추가
-     */
-    @PostMapping("/com/{id}/comment")
+    @PostMapping("/{id}/comment")
     public Comment createComment(@PathVariable Long id, @RequestBody Comment comment){
         return commentService.create(id, comment);
     }
 
-
-    /**
-     댓글 수정 -> 수정 아직 안됨.
-     */
-
-    @PatchMapping("/com/{id}/comment/{commentID}")
+/*
+    @PatchMapping("/{id}/comment/{commentID}")
     public Comment update(@PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
         return commentService.update(id,commentID,comment);
     }
+*/
 
-    /**
-     댓글 삭제
-     */
-    @DeleteMapping("/com/{id}/comment/{commentID}")
+    @DeleteMapping("/{id}/comment/{commentID}")
     public void deleteComment(@PathVariable Long id, @PathVariable Long commentID){
         commentRepository.deleteById(commentID);
     }
