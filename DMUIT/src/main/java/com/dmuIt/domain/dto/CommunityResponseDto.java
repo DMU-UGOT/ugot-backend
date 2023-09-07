@@ -12,7 +12,6 @@ public class CommunityResponseDto {
     private String content;
     private int viewCount;
     private int voteCount;
-    private char deleteYN;
     private LocalDateTime created_at;
     private LocalDateTime modified_at;
 
@@ -24,6 +23,5 @@ public class CommunityResponseDto {
         this.modified_at = entity.getModifiedAt();
         this.viewCount = (int) entity.getViewCount();
         this.voteCount = (int) entity.getVoteCount();
-        this.deleteYN = entity.getDeleteYN();
     }
 }

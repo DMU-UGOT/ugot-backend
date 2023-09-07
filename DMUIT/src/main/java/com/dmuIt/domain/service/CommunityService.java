@@ -75,7 +75,7 @@ public class CommunityService {
         if (entity.getMember().getMemberId() != member.getMemberId()) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
-        entity.delete();
+        communityRepository.delete(entity);
     }
 
     public void verifiedCommunity(Long id) {

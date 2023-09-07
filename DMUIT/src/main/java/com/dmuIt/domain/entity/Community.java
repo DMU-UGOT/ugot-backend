@@ -28,8 +28,6 @@ public class Community extends Auditable {
     @Column
     private long voteCount = 0;
 
-    @Column
-    private char deleteYN;
 //    @OneToMany(mappedBy = "community")
 //    private List<Vote> vote;
 //    private List<Comment> comment;
@@ -53,8 +51,5 @@ public class Community extends Auditable {
 
 
     public void increaseViews() { this.viewCount++; }
-    public void delete() {
-        this.deleteYN = 'Y';
-    }
 
 }

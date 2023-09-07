@@ -27,7 +27,7 @@ public class CommunityController
     }
 
     @GetMapping
-    public PageDto getCommunity(@Positive @RequestParam int page,
+    public FindAllDto getCommunity(@Positive @RequestParam int page,
                                 @Positive @RequestParam int size) {
 
         Page<Community> communityPage = communityService.findCommunity(page - 1, size);
@@ -36,7 +36,7 @@ public class CommunityController
         List<Community> coms = communityPage.getContent();
         List<Community> responses = communityMapper.ComsToComResponseDtos(coms);
 
-        return new PageDto(responses, pageInfo);
+        return new FindAllDto(responses, pageInfo);
     }
 
     @GetMapping("/{id}")
