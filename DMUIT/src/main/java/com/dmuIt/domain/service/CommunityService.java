@@ -10,6 +10,8 @@ import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +28,6 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
     private final MemberService memberService;
 
-
-    /**
-     * 게시글 생성
-     */
     @Transactional
     public void save(HttpServletRequest request, final CommunityRequestDto params) {
         Member member = memberService.verifiedCurrentMember(request);
@@ -38,28 +36,25 @@ public class CommunityService {
         communityRepository.save(community);
     }
 
-    /**
-     * 게시글 리스트 조회
-     */
+    @Transactional
     public List<CommunityResponseDto> findAll() {
         List<Community> list = communityRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
         return list.stream().map(CommunityResponseDto::new).collect(Collectors.toList());
     }
 
-    /**
-     * 게시글 상세조회
-     */
+
     @Transactional
     public CommunityResponseDto findById(final Long id) {
         Community entity = communityRepository.findById(id).orElseThrow();
         entity.increaseViews();
         return new CommunityResponseDto(entity);
     }
+    @Transactional
+    public Page<Community> findCommunity(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return communityRepository.findAllByOrderByIdDesc(pageRequest);
+    }
 
-
-    /**
-     * 게시글 수정
-     */
     @Transactional
     public void update(HttpServletRequest request, final Long id, final CommunityRequestDto params) {
 
@@ -73,9 +68,6 @@ public class CommunityService {
         entity.setModifiedAt(LocalDateTime.now());
     }
 
-    /**
-     * 게시글 삭제
-     */
     @Transactional
     public void delete(HttpServletRequest request, final Long id) {
         Community entity = communityRepository.findById(id).orElseThrow();
@@ -83,7 +75,7 @@ public class CommunityService {
         if (entity.getMember().getMemberId() != member.getMemberId()) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
-        entity.delete();
+        communityRepository.delete(entity);
     }
 
     public void verifiedCommunity(Long id) {
