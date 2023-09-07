@@ -1,19 +1,19 @@
 package com.dmuIt.domain.service;
 
-import com.dmuIt.domain.entity.Bookmark;
 import com.dmuIt.domain.entity.Member;
 import com.dmuIt.domain.entity.Team;
-import com.dmuIt.domain.repository.BookmarkRepository;
+import com.dmuIt.domain.entity.TeamBookmark;
+import com.dmuIt.domain.repository.TeamBookmarkRepository;
 import com.dmuIt.domain.repository.TeamRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -21,16 +21,21 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeamService {
     private final TeamRepository teamRepository;
-    private final BookmarkRepository bookmarkRepository;
+    private final TeamBookmarkRepository bookmarkRepository;
     private final MemberService memberService;
 
-    public void createTeam(Team team) {
+    public void createTeam(HttpServletRequest request, Team team) {
+        team.setMember(memberService.verifiedCurrentMember(request));
         teamRepository.save(team);
     }
 
     @Transactional
-    public void updateTeam(Team team) {
+    public void updateTeam(HttpServletRequest request, Team team) {
         Team findTeam = findVerifiedTeam(team.getId());
+        Member member = memberService.verifiedCurrentMember(request);
+        if (findTeam.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         Optional.ofNullable(team.getTitle())
                 .ifPresent(title -> findTeam.setTitle(title));
         Optional.ofNullable(team.getContent())
@@ -44,13 +49,18 @@ public class TeamService {
         Optional.ofNullable(team.getKakaoOpenLink())
                 .ifPresent(kakaoOpenLink -> findTeam.setKakaoOpenLink(kakaoOpenLink));
         Optional.ofNullable(team.getGitHubLink())
-                .ifPresent(gitHubLink -> findTeam.setKakaoOpenLink(gitHubLink));
+                .ifPresent(gitHubLink -> findTeam.setGitHubLink(gitHubLink));
         findTeam.setModifiedAt(LocalDateTime.now());
         teamRepository.save(findTeam);
     }
 
-    public void removeTeam(long teamId) {
-        teamRepository.delete(findVerifiedTeam(teamId));
+    public void removeTeam(HttpServletRequest request, long teamId) {
+        Team team = findVerifiedTeam(teamId);
+        Member member = memberService.verifiedCurrentMember(request);
+        if (team.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        teamRepository.delete(team);
     }
 
     public Team findTeam(long teamId) {
@@ -65,17 +75,17 @@ public class TeamService {
     }
 
     @Transactional
-    public void bookmarkTeam(long teamId, long memberId) {
+    public void bookmarkTeam(HttpServletRequest request, long teamId) {
         Team team = findVerifiedTeam(teamId);
 
-        Member member = memberService.findVerifiedMember(memberId);
+        Member member = memberService.verifiedCurrentMember(request);
 
         if (bookmarkRepository.findByTeamAndMember(team, member) == null) {
             team.setBookmarked(team.getBookmarked() + 1);
-            Bookmark bookmark = new Bookmark(team, member);
+            TeamBookmark bookmark = new TeamBookmark(team, member);
             bookmarkRepository.save(bookmark);
         } else {
-            Bookmark bookmark = bookmarkRepository.findBookmarkByTeam(team);
+            TeamBookmark bookmark = bookmarkRepository.findBookmarkByTeam(team);
             bookmark.unBookmark(team);
             bookmarkRepository.delete(bookmark);
         }

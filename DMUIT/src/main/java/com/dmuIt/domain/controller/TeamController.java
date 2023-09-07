@@ -1,7 +1,7 @@
 package com.dmuIt.domain.controller;
 
 import com.dmuIt.domain.dto.PageInfo;
-import com.dmuIt.domain.dto.PageDto;
+import com.dmuIt.domain.dto.FindAllDto;
 import com.dmuIt.domain.dto.TeamDto;
 import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.mapper.TeamMapper;
@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -27,17 +28,18 @@ public class TeamController {
     private final TeamMapper teamMapper;
 
     @PostMapping
-    public void createTeam(@RequestBody @Valid TeamDto.Post teamPostDto) {
+    public void createTeam(HttpServletRequest request, @RequestBody @Valid TeamDto.Post teamPostDto) {
         Team team = teamMapper.teamPostDtoToTeam(teamPostDto);
-        teamService.createTeam(team);
+        teamService.createTeam(request, team);
     }
 
     @PatchMapping("/{team-id}")
-    public void patchTeam(@RequestBody @Valid TeamDto.Patch teamPatchDto,
-                           @PathVariable("team-id") long teamId) {
+    public void patchTeam(HttpServletRequest request,
+                          @RequestBody @Valid TeamDto.Patch teamPatchDto,
+                          @PathVariable("team-id") long teamId) {
         Team team = teamMapper.teamPatchDtoToTeam(teamPatchDto);
         team.setId(teamId);
-        teamService.updateTeam(team);
+        teamService.updateTeam(request, team);
     }
 
     @GetMapping("/{team-id}")
@@ -48,8 +50,8 @@ public class TeamController {
     }
 
     @GetMapping
-    public PageDto getTeams(@Positive @RequestParam int page,
-                            @Positive @RequestParam int size) {
+    public FindAllDto getTeams(@Positive @RequestParam int page,
+                               @Positive @RequestParam int size) {
         // page information
         Page<Team> teamPage = teamService.findTeams(page - 1, size);
         PageInfo pageInfo = new PageInfo(page, size, (int) teamPage.getTotalElements(), teamPage.getTotalPages());
@@ -58,18 +60,17 @@ public class TeamController {
         List<Team> teams = teamPage.getContent();
         List<TeamDto.Response> responses = teamMapper.teamsToTeamResponseDtos(teams);
 
-        return new PageDto(responses, pageInfo);
+        return new FindAllDto(responses, pageInfo);
     }
 
     @DeleteMapping("/{team-id}")
-    public void deleteTeam(@PathVariable("team-id") long teamId) {
-        teamService.removeTeam(teamId);
+    public void deleteTeam(HttpServletRequest request, @PathVariable("team-id") long teamId) {
+        teamService.removeTeam(request, teamId);
     }
 
-    @PostMapping("/bookmark/{team-id}/{member-id}")
-    public void bookmarkTeam(@PathVariable("team-id") long teamId,
-                             @PathVariable("member-id") long memberId) {
-        teamService.bookmarkTeam(teamId, memberId);
+    @PostMapping("/bookmark/{team-id}")
+    public void bookmarkTeam(HttpServletRequest request, @PathVariable("team-id") long teamId) {
+        teamService.bookmarkTeam(request, teamId);
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")

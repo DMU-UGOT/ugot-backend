@@ -98,36 +98,46 @@ public class MemberService {
     }
 
     @Transactional
-    public Member updateMember(Member member) {
+    public Member updateMember(HttpServletRequest request, Member member) {
+        Member currentMember = verifiedCurrentMember(request);
+        if (currentMember.getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         Member findMember = findVerifiedMember(member.getMemberId());
         Optional.ofNullable(member.getName())
-                .ifPresent(name -> findMember.setName(name));
+                .ifPresent(findMember::setName);
         Optional.ofNullable(member.getNickname())
-                .ifPresent(nickname -> findMember.setNickname(nickname));
-        Optional.ofNullable(member.getPhone())
-                .ifPresent(phone -> findMember.setPhone(phone));
+                .ifPresent(findMember::setNickname);
         Optional.ofNullable(member.getMajor())
-                .ifPresent((major -> findMember.setMajor(major)));
+                .ifPresent(findMember::setMajor);
         Optional.ofNullable(member.getGrade())
-                .ifPresent((grade -> findMember.setGrade(grade)));
+                .ifPresent(findMember::setGrade);
         Optional.ofNullable(member.get_class())
-                .ifPresent((_class -> findMember.set_class(_class)));
+                .ifPresent(findMember::set_class);
         Optional.ofNullable(member.getSkill())
-                .ifPresent((skill -> findMember.setSkill(skill)));
+                .ifPresent(findMember::setSkill);
+        Optional.ofNullable(member.getGitHubLink())
+                .ifPresent(findMember::setGitHubLink);
+        Optional.ofNullable(member.getPersonalBlogLink())
+                .ifPresent(findMember::setPersonalBlogLink);
         return memberRepository.save(member);
     }
 
     @Transactional
     public void deleteMember(HttpServletRequest request, long memberId) {
-        String accessToken = request.getHeader("Authorization").substring(7);
-        Claims claims = jwtTokenProvider.parseClaims(accessToken);
-        String email = claims.getSubject();
-        Member member = findVerifiedMemberByEmail(email);
+        Member member = verifiedCurrentMember(request);
         if (memberId != member.getMemberId()) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         Member verifiedMember = findVerifiedMember(memberId);
         memberRepository.delete(verifiedMember);
+    }
+
+    public Member verifiedCurrentMember(HttpServletRequest request) {
+        String accessToken = request.getHeader("Authorization").substring(7);
+        Claims claims = jwtTokenProvider.parseClaims(accessToken);
+        String email = claims.getSubject();
+        return findVerifiedMemberByEmail(email);
     }
 
     public Member findVerifiedMember(long memberId) {
@@ -156,5 +166,13 @@ public class MemberService {
         if (member.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
         }
+    }
+
+    public long getUserNum(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isPresent()) {
+            return member.get().getMemberId();
+        }
+        else return 0;
     }
 }

@@ -8,7 +8,9 @@ public enum ExceptionCode {
     COMMENT_NOT_FOUND(404, "Comment not found"),
     MEMBER_EXISTS(409, "Member exists"),
     NICKNAME_EXISTS(409, "Nickname exists"),
+    COMMUNITY_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."),
     TEAM_NOT_FOUND(HttpStatus.NOT_FOUND,"팀을 찾을 수 없습니다."),
+    STUDY_NOT_FOUND(HttpStatus.NOT_FOUND, "Study not found"),
     NO_PERMISSION(HttpStatus.FORBIDDEN, "권한이 없습니다.");
 
     @Getter

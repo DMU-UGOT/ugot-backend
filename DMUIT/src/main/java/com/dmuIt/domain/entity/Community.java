@@ -1,21 +1,15 @@
 package com.dmuIt.domain.entity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Where;
+import com.dmuIt.global.audit.Auditable;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "community")
-public class Community {
+public class Community extends Auditable {
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,41 +28,33 @@ public class Community {
     @Column
     private long voteCount = 0;
 
-    @Column(length = 10, nullable = false)
-    private Long member_id;
-
     @Column
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Column
-    private LocalDateTime modified_at;
-
-    /*@OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Where(clause = "parent_id is null")
-    private List<Comment> commentList = new ArrayList<>();*/
-
+    private char deleteYN;
 //    @OneToMany(mappedBy = "community")
 //    private List<Vote> vote;
 //    private List<Comment> comment;
 
+    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
+    @JoinColumn(name = "member_id")
+    private Member member;
 
 
     @Builder
-    public Community(String title, String content, Integer viewCount, Long member_id) {
+    public Community(String title, String content, Integer viewCount) {
         this.title = title;
         this.content = content;
         this.viewCount = viewCount;
-        this.member_id = member_id;
     }
 
-    public void update(String title, String content, Long member_id) {
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
-        this.member_id = member_id;
-        this.modified_at = LocalDateTime.now();
     }
 
 
     public void increaseViews() { this.viewCount++; }
+    public void delete() {
+        this.deleteYN = 'Y';
+    }
 
 }

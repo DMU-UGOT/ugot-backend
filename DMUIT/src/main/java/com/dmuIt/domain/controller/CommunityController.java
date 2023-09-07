@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 @RestController
 @RequestMapping("/com")
@@ -18,6 +20,11 @@ public class CommunityController
 {
     private final CommunityService communityService;
     private final CommunityMapper communityMapper;
+
+    @PostMapping
+    public void save(HttpServletRequest request, @RequestBody final CommunityRequestDto params) {
+        communityService.save(request, params);
+    }
 
     @GetMapping
     public PageDto getCommunity(@Positive @RequestParam int page,
@@ -37,19 +44,13 @@ public class CommunityController
         return communityService.findById(id);
     }
 
-
-    @PostMapping
-    public Long save(@RequestBody final CommunityRequestDto params) {
-        return communityService.save(params);
-    }
-
     @PatchMapping("/{id}")
-    public Long update(@PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
-        return communityService.update(id, params);
+    public void update(HttpServletRequest request, @PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
+        communityService.update(request, id, params);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable final Long id) {
-        communityService.delete(id);
+    public void delete(HttpServletRequest request, @PathVariable final Long id) {
+        communityService.delete(request, id);
     }
 }

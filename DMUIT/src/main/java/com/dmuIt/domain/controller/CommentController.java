@@ -1,46 +1,39 @@
 package com.dmuIt.domain.controller;
 
 import com.dmuIt.domain.entity.Comment;
-import com.dmuIt.domain.entity.Community;
-import com.dmuIt.domain.repository.CommentRepository;
-import com.dmuIt.domain.repository.CommunityRepository;
 import com.dmuIt.domain.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/com")
 public class CommentController {
 
-    private final CommentRepository commentRepository;
     private final CommentService commentService;
 
-
-    @GetMapping("/{id}/comment")
+    @GetMapping("/com/{id}/comment")
     public List<Comment> getPostComments(@PathVariable Long id){
         return commentService.getComments(id);
     }
 
-    @PostMapping("/{id}/comment")
-    public Comment createComment(@PathVariable Long id, @RequestBody Comment comment){
-        return commentService.create(id, comment);
+    @PostMapping("/com/{id}/comment")
+    public void createComment(HttpServletRequest request,  @PathVariable Long id, @RequestBody Comment comment){
+        commentService.create(request, id, comment);
     }
 
-/*
-    @PatchMapping("/{id}/comment/{commentID}")
-    public Comment update(@PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
-        return commentService.update(id,commentID,comment);
-    }
-*/
 
-    @DeleteMapping("/{id}/comment/{commentID}")
-    public void deleteComment(@PathVariable Long id, @PathVariable Long commentID){
-        commentRepository.deleteById(commentID);
+    @PatchMapping("/com/{id}/comment/{commentID}")
+    public void update(HttpServletRequest request, @PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
+        commentService.update(request, id,commentID,comment);
+    }
+
+    @DeleteMapping("/com/{id}/comment/{commentID}")
+    public void deleteComment(HttpServletRequest request, @PathVariable Long id, @PathVariable Long commentID){
+        commentService.delete(request, id, commentID);
     }
 
 }

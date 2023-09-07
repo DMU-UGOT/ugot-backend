@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Entity
-public class Bookmark extends Auditable {
+public class TeamBookmark extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookmarkId;
@@ -30,7 +30,7 @@ public class Bookmark extends Auditable {
     @Column(nullable = false)
     private boolean status;
 
-    public Bookmark(Team team, Member member) {
+    public TeamBookmark(Team team, Member member) {
         this.team = team;
         this.member = member;
         this.status = true;

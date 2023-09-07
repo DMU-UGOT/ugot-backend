@@ -30,11 +30,12 @@ public class MemberDto {
         private String nickname;
         private String email;
         private String password;
-        private String phone;
         private String major;
         private Integer grade;
         private String _class;
         private Set<String> skill;
+        private String gitHubLink;
+        private String personalBlogLink;
     }
     @Getter
     @NoArgsConstructor
@@ -42,11 +43,12 @@ public class MemberDto {
     public static class Patch {
         private String name;
         private String nickname;
-        private String phone;
         private String major;
         private Integer grade;
         private String _class;
         private Set<String> skill;
+        private String gitHubLink;
+        private String personalBlogLink;
     }
     @Getter
     @Builder
@@ -56,11 +58,12 @@ public class MemberDto {
         private String name;
         private String nickname;
         private String email;
-        private String phone;
         private String major;
         private Integer grade;
         private String _class;
         private Set<String> skill;
+        private String gitHubLink;
+        private String personalBlogLink;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }

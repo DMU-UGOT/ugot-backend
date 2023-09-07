@@ -34,9 +34,6 @@ public class Member extends Auditable {
     @Column(length = 100, nullable = false)
     private String password;
 
-    @Column(length = 21, nullable = false)
-    private String phone;
-
     @Column(length = 20, nullable = false)
     private String major;
 
@@ -45,6 +42,12 @@ public class Member extends Auditable {
 
     @Column(length = 10, nullable = false)
     private String _class;
+
+    @Column(nullable = false)
+    private String gitHubLink;
+
+    @Column(nullable = false)
+    private String personalBlogLink;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
@@ -56,7 +59,10 @@ public class Member extends Auditable {
     private List<ClassChange> classChanges;
 
     @OneToMany(mappedBy = "member")
-    private List<Bookmark> bookmarks;
+    private List<TeamBookmark> teamBookmarks;
+
+    @OneToMany(mappedBy = "member")
+    private List<StudyBookmark> studyBookmarks;
 
     @ElementCollection
     private List<Long> votes;

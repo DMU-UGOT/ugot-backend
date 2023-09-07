@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 public class CommunityRequestDto {
     private String title;
     private String content;
-    private Long member_id;
+    private char deleteYN;
 
     public Community toEntity() {
         return Community.builder()
                 .title(title)
                 .content(content)
-                .member_id(member_id)
                 .viewCount(0)
+                .deleteYN(deleteYN)
                 .build();
     }
 }

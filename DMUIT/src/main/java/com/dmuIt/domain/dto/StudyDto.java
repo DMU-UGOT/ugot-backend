@@ -5,12 +5,11 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Data
-public class TeamDto {
-    private Long teamId;
+public class StudyDto {
+    private Long studyId;
     private String title;
     private String content;
-    private String field;
-    private String _class;
+    private String isContact;
     private Integer allPersonnel;
     private Integer nowPersonnel;
     private Long viewCount;
@@ -19,14 +18,14 @@ public class TeamDto {
     private String gitHubLink;
     private LocalDateTime createdAt;
 
-    public TeamDto(Long teamId, String title, String content, String field,
-                   String _class, Integer allPersonnel, Integer nowPersonnel, Long viewCount, Long bookmarked,
-                   String kakaoOpenLink, String gitHubLink, LocalDateTime createdAt) {
-        this.teamId = teamId;
+    public StudyDto(Long studyId, String title, String content,
+                    String isContact, Integer allPersonnel, Integer nowPersonnel,
+                    Long viewCount, Long bookmarked, String kakaoOpenLink,
+                    String gitHubLink, LocalDateTime createdAt) {
+        this.studyId = studyId;
         this.title = title;
         this.content = content;
-        this.field = field;
-        this._class = _class;
+        this.isContact = isContact;
         this.allPersonnel = allPersonnel;
         this.nowPersonnel = nowPersonnel;
         this.viewCount = viewCount;
@@ -42,10 +41,8 @@ public class TeamDto {
     public static class Post {
         private String title;
         private String content;
-        private String field;
-        private String _class;
+        private String isContact;
         private Integer allPersonnel;
-        private String kakaoOpenLink;
         private String gitHubLink;
     }
 
@@ -55,8 +52,7 @@ public class TeamDto {
     public static class Patch {
         private String title;
         private String content;
-        private String field;
-        private String _class;
+        private String isContact;
         private Integer allPersonnel;
         private String kakaoOpenLink;
         private String gitHubLink;
@@ -65,11 +61,10 @@ public class TeamDto {
     @Getter
     @Setter
     public static class Response {
-        private Long teamId;
+        private Long studyId;
         private String title;
         private String content;
-        private String field;
-        private String _class;
+        private String isContact;
         private Integer allPersonnel;
         private Integer nowPersonnel;
         private String kakaoOpenLink;
