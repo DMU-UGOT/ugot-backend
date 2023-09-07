@@ -5,6 +5,7 @@ import com.dmuIt.domain.dto.CommunityResponseDto;
 import com.dmuIt.domain.entity.Comment;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.mapper.CommunityMapper;
 import com.dmuIt.domain.repository.CommunityRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommunityService {
     private final CommunityRepository communityRepository;
+    private final CommunityMapper communityMapper;
     private final MemberService memberService;
 
     @Transactional
@@ -36,21 +38,22 @@ public class CommunityService {
         communityRepository.save(community);
     }
 
-    @Transactional
-    public List<CommunityResponseDto> findAll() {
-        List<Community> list = communityRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
-        return list.stream().map(CommunityResponseDto::new).collect(Collectors.toList());
-    }
+//    @Transactional
+//    public List<CommunityResponseDto> findAll() {
+//        List<Community> list = communityRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+//        return list.stream().map(CommunityResponseDto::new).collect(Collectors.toList());
+//    }
 
 
     @Transactional
     public CommunityResponseDto findById(final Long id) {
         Community entity = communityRepository.findById(id).orElseThrow();
         entity.increaseViews();
-        return new CommunityResponseDto(entity);
+        return communityMapper.comToComResponseDto(entity);
     }
+
     @Transactional
-    public Page<Community> findCommunity(int page, int size) {
+    public Page<Community> findCommunities(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return communityRepository.findAllByOrderByIdDesc(pageRequest);
     }
