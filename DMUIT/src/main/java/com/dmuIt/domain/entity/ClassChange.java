@@ -15,7 +15,6 @@ public class ClassChange extends Auditable {
     //필드
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "classChange_id", unique = true, nullable = false)
     private Long classChangeId;
 
