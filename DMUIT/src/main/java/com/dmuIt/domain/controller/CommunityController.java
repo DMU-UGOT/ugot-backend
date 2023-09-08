@@ -27,10 +27,10 @@ public class CommunityController
     }
 
     @GetMapping
-    public FindAllDto getCommunity(@Positive @RequestParam int page,
-                                @Positive @RequestParam int size) {
+    public FindAllDto getCommunities(@Positive @RequestParam int page,
+                                   @Positive @RequestParam int size) {
 
-        Page<Community> communityPage = communityService.findCommunity(page - 1, size);
+        Page<Community> communityPage = communityService.findCommunities(page - 1, size);
         PageInfo pageInfo = new PageInfo(page, size, (int) communityPage.getTotalElements(), communityPage.getTotalPages());
 
         List<Community> coms = communityPage.getContent();

@@ -51,8 +51,9 @@ public class CommunityService {
         entity.increaseViews();
         return communityMapper.comToComResponseDto(entity);
     }
+
     @Transactional
-    public Page<Community> findCommunity(int page, int size) {
+    public Page<Community> findCommunities(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return communityRepository.findAllByOrderByIdDesc(pageRequest);
     }
