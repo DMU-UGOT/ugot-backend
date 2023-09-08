@@ -12,21 +12,23 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CommunityMapper {
     default CommunityResponseDto comToComResponseDto(Community community) {
-        if (community == null) {
+        if ( community == null ) {
             return null;
-        } else {
-            CommunityResponseDto response = new CommunityResponseDto();
-            if (community.getId() != null) {
-                response.setId(community.getId());
-            }
-            response.setTitle(community.getTitle());
-            response.setContent(community.getContent());
-            response.setViewCount(community.getViewCount());
-            response.setVoteCount(community.getVoteCount());
-            response.setCreated_at(community.getCreatedAt());
-            return response;
         }
-    }
 
+        CommunityResponseDto communityResponseDto = new CommunityResponseDto();
+
+        communityResponseDto.setId( community.getId() );
+        communityResponseDto.setTitle( community.getTitle() );
+        communityResponseDto.setContent( community.getContent() );
+        communityResponseDto.setViewCount( community.getViewCount() );
+        communityResponseDto.setVoteCount(  community.getVoteCount() );
+        communityResponseDto.setCommentCount((long) community.getComments().size());
+        communityResponseDto.setNickname(community.getMember().getNickname());
+        communityResponseDto.setCreated_at(community.getCreatedAt());
+        communityResponseDto.setModified_at(community.getModifiedAt());
+
+        return communityResponseDto;
+    }
     List<CommunityResponseDto> ComsToComResponseDtos(List<Community> Community);
 }

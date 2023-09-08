@@ -1,8 +1,10 @@
 package com.dmuIt.domain.service;
 
+import com.dmuIt.domain.dto.CommentDto;
 import com.dmuIt.domain.entity.Comment;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.mapper.CommentMapper;
 import com.dmuIt.domain.repository.CommentRepository;
 import com.dmuIt.domain.repository.CommunityRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
@@ -24,13 +26,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final CommentMapper commentMapper;
     private final CommunityRepository communityRepository;
     private final CommunityService communityService;
     private final MemberService memberService;
 
-    public List<Comment> getComments(final Long id) {
+    public List<CommentDto.Response> getComments(final Long id) {
         Community community = communityRepository.findById(id).get();
-        return commentRepository.findCommentsByCommunity(community);
+        return commentMapper.commentsToCommentResponseDtos(commentRepository.findCommentsByCommunity(community));
     }
 
     public void create(HttpServletRequest request, final Long id, final Comment comment){

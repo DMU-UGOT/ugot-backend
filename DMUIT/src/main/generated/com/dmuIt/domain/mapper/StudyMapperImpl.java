@@ -33,28 +33,6 @@ public class StudyMapperImpl implements StudyMapper {
     }
 
     @Override
-    public StudyDto.Response studyToResponse(Study study) {
-        if ( study == null ) {
-            return null;
-        }
-
-        StudyDto.Response response = new StudyDto.Response();
-
-        response.setStudyId( study.getStudyId() );
-        response.setTitle( study.getTitle() );
-        response.setContent( study.getContent() );
-        response.setIsContact( study.getIsContact() );
-        response.setAllPersonnel( study.getAllPersonnel() );
-        response.setNowPersonnel( study.getNowPersonnel() );
-        response.setKakaoOpenLink( study.getKakaoOpenLink() );
-        response.setGitHubLink( study.getGitHubLink() );
-        response.setViewCount( study.getViewCount() );
-        response.setCreatedAt( study.getCreatedAt() );
-
-        return response;
-    }
-
-    @Override
     public List<StudyDto.Response> studiesToStudyResponseDtos(List<Study> studies) {
         if ( studies == null ) {
             return null;
