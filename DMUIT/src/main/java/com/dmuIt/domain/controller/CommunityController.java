@@ -34,7 +34,7 @@ public class CommunityController
         PageInfo pageInfo = new PageInfo(page, size, (int) communityPage.getTotalElements(), communityPage.getTotalPages());
 
         List<Community> coms = communityPage.getContent();
-        List<Community> responses = communityMapper.ComsToComResponseDtos(coms);
+        List<CommunityResponseDto> responses = communityMapper.ComsToComResponseDtos(coms);
 
         return new FindAllDto(responses, pageInfo);
     }

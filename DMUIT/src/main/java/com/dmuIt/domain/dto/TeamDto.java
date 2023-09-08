@@ -70,6 +70,8 @@ public class TeamDto {
         private String content;
         private String field;
         private String _class;
+        private String nickname;
+        private Long bookmarked;
         private Integer allPersonnel;
         private Integer nowPersonnel;
         private String kakaoOpenLink;

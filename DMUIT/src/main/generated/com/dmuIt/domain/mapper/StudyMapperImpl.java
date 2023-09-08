@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-07T19:47:12+0900",
+    date = "2023-09-08T15:42:12+0900",
     comments = "version: 1.5.1.Final, compiler: javac, environment: Java 11.0.15 (Oracle Corporation)"
 )
 @Component
@@ -30,28 +30,6 @@ public class StudyMapperImpl implements StudyMapper {
         study.setGitHubLink( studyPostDto.getGitHubLink() );
 
         return study;
-    }
-
-    @Override
-    public StudyDto.Response studyToResponse(Study study) {
-        if ( study == null ) {
-            return null;
-        }
-
-        StudyDto.Response response = new StudyDto.Response();
-
-        response.setStudyId( study.getStudyId() );
-        response.setTitle( study.getTitle() );
-        response.setContent( study.getContent() );
-        response.setIsContact( study.getIsContact() );
-        response.setAllPersonnel( study.getAllPersonnel() );
-        response.setNowPersonnel( study.getNowPersonnel() );
-        response.setKakaoOpenLink( study.getKakaoOpenLink() );
-        response.setGitHubLink( study.getGitHubLink() );
-        response.setViewCount( study.getViewCount() );
-        response.setCreatedAt( study.getCreatedAt() );
-
-        return response;
     }
 
     @Override

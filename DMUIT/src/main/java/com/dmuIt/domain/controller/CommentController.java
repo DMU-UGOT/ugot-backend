@@ -1,5 +1,6 @@
 package com.dmuIt.domain.controller;
 
+import com.dmuIt.domain.dto.CommentDto;
 import com.dmuIt.domain.entity.Comment;
 import com.dmuIt.domain.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/com/{id}/comment")
-    public List<Comment> getPostComments(@PathVariable Long id){
+    public List<CommentDto.Response> getPostComments(@PathVariable Long id){
         return commentService.getComments(id);
     }
 

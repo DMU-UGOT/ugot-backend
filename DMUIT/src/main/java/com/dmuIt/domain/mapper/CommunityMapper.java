@@ -11,5 +11,24 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CommunityMapper {
-    List<Community> ComsToComResponseDtos(List<Community> Community);
+    default CommunityResponseDto comToComResponseDto(Community community) {
+        if ( community == null ) {
+            return null;
+        }
+
+        CommunityResponseDto communityResponseDto = new CommunityResponseDto();
+
+        communityResponseDto.setId( community.getId() );
+        communityResponseDto.setTitle( community.getTitle() );
+        communityResponseDto.setContent( community.getContent() );
+        communityResponseDto.setViewCount( community.getViewCount() );
+        communityResponseDto.setVoteCount(  community.getVoteCount() );
+        communityResponseDto.setCommentCount((long) community.getComments().size());
+        communityResponseDto.setNickname(community.getMember().getNickname());
+        communityResponseDto.setCreated_at(community.getCreatedAt());
+        communityResponseDto.setModified_at(community.getModifiedAt());
+
+        return communityResponseDto;
+    }
+    List<CommunityResponseDto> ComsToComResponseDtos(List<Community> Community);
 }

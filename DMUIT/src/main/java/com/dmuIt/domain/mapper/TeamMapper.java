@@ -23,6 +23,8 @@ public interface TeamMapper {
             response.setContent(team.getContent());
             response.setField(team.getField());
             response.set_class(team.get_class());
+            response.setNickname(team.getMember().getNickname());
+            response.setBookmarked(team.getBookmarked());
             response.setAllPersonnel(team.getAllPersonnel());
             response.setNowPersonnel(team.getNowPersonnel());
             response.setViewCount(team.getViewCount());
