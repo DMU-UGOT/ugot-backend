@@ -24,6 +24,29 @@ public interface StudyMapper {
             return study;
         }
     }
-    StudyDto.Response studyToResponse(Study study);
+
+    default StudyDto.Response studyToResponse(Study study) {
+        if (study == null) {
+            return null;
+        } else {
+            StudyDto.Response response = new StudyDto.Response();
+            if (study.getStudyId() != null) {
+                response.setStudyId(study.getStudyId());
+            }
+            response.setStudyId( study.getStudyId() );
+            response.setTitle( study.getTitle() );
+            response.setContent( study.getContent() );
+            response.setIsContact( study.getIsContact() );
+            response.setNickname(study.getMember().getNickname());
+            response.setBookmarked(study.getBookmarked());
+            response.setAllPersonnel( study.getAllPersonnel() );
+            response.setNowPersonnel( study.getNowPersonnel() );
+            response.setKakaoOpenLink( study.getKakaoOpenLink() );
+            response.setGitHubLink( study.getGitHubLink() );
+            response.setViewCount( study.getViewCount() );
+            response.setCreatedAt( study.getCreatedAt() );
+            return response;
+        }
+    }
     List<StudyDto.Response> studiesToStudyResponseDtos(List<Study> studies);
 }

@@ -3,6 +3,8 @@ import com.dmuIt.global.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,6 +38,8 @@ public class Community extends Auditable {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "community")
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Community(String title, String content, Integer viewCount) {
