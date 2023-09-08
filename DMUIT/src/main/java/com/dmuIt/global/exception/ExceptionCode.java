@@ -3,6 +3,7 @@ package com.dmuIt.global.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public enum ExceptionCode {
     MEMBER_NOT_FOUND(404, "Member not found"),
     COMMENT_NOT_FOUND(404, "Comment not found"),
@@ -11,14 +12,12 @@ public enum ExceptionCode {
     COMMUNITY_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."),
     TEAM_NOT_FOUND(HttpStatus.NOT_FOUND,"팀을 찾을 수 없습니다."),
     STUDY_NOT_FOUND(HttpStatus.NOT_FOUND, "Study not found"),
+    CLASS_CHANGE_NOT_FOUND(HttpStatus.NOT_FOUND, "반 변경 게시글을 찾을 수 없습니다."),
     NO_PERMISSION(HttpStatus.FORBIDDEN, "권한이 없습니다.");
 
-    @Getter
     private int status;
-    @Getter
     private HttpStatus httpStatus;
 
-    @Getter
     private String message;
 
     ExceptionCode(int code, String message) {
