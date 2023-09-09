@@ -161,11 +161,12 @@ public class MemberService {
         }
     }
 
-    private void verifyExistsNickname(String nickname) {
+    public String verifyExistsNickname(String nickname) {
         Optional<Member> member = memberRepository.findByNickname(nickname);
         if (member.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
         }
+        return "사용 가능한 닉네임입니다.";
     }
 
     public long getUserNum(String email) {

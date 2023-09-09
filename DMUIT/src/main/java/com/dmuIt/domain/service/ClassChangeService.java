@@ -53,6 +53,16 @@ public class ClassChangeService {
         return classChangeRepository.findAllByOrderByClassChangeIdDesc(pageRequest);
     }
 
+    @Transactional
+    public void delete(HttpServletRequest request, long classChangeId) {
+        ClassChange classChange = findVerifiedClassChange(classChangeId);
+        Member member = memberService.verifiedCurrentMember(request);
+        if (classChange.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        classChangeRepository.delete(classChange);
+    }
+
     public ClassChange findVerifiedClassChange(long classChangeId) {
         Optional<ClassChange> optionalClassChange = classChangeRepository.findById(classChangeId);
         return optionalClassChange.orElseThrow(() ->

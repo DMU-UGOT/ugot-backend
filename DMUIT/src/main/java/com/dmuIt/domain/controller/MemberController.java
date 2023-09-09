@@ -39,6 +39,11 @@ public class MemberController {
         return memberService.signIn(request, signIn);
     }
 
+    @GetMapping("/check/{nickname}")
+    public String checkNickname(@PathVariable("nickname") String nickname) {
+        return memberService.verifyExistsNickname(nickname);
+    }
+
     @PostMapping("/reissue")
     public ResponseEntity reissue(HttpServletRequest request) {
         return memberService.reissue(request);

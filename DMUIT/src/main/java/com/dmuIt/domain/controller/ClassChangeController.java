@@ -56,4 +56,9 @@ public class ClassChangeController {
 
         return new FindAllDto<>(responses, pageInfo);
     }
+
+    @DeleteMapping("/{classChange-id}")
+    public void deleteClassChange(HttpServletRequest request, @PathVariable("classChange-id") long classChangeId) {
+        classChangeService.delete(request, classChangeId);
+    }
 }
