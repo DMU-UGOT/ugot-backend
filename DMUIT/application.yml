@@ -6,20 +6,18 @@ spring:
       cache-null-values: true # null 캐싱 여부
       host: localhost
       port: 6379
-  #
-  #  h2:
-  #    console:
-  #      enabled: true
-  #      path: /h2
+  h2:
+    console:
+      enabled: true
+      path: /h2
   datasource:
-    # jdbc:h2:mem:test
-    url: jdbc:mysql://database-1.c8mntq7qpcmx.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: dmuit2023!
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:h2:mem:test
+  #    username: root
+  #    password: dmuit2023!
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update  # (1) ??? ?? ??
+      ddl-auto: create-drop  # (1) ??? ?? ??
     show-sql: true      # (2) SQL ?? ??
     properties:
       hibernate:
@@ -27,10 +25,9 @@ spring:
   sql:
     init:
       data-locations: classpath*:db/h2/data.sql
-
 mail:
   address:
     admin: admin@gmail.com
-
 jwt:
-  key: dkjalkdlkj23134dklfkjal123ldkal2498084lkdnka28u31mndaiu53j1
+  key: dldldldldldl123dldldldldldldl123dldldldldldl123dldldldldldldl123123
+
