@@ -4,6 +4,7 @@ import com.dmuIt.domain.dto.PageInfo;
 import com.dmuIt.domain.dto.FindAllDto;
 import com.dmuIt.domain.dto.TeamDto;
 import com.dmuIt.domain.entity.Team;
+import com.dmuIt.domain.entity.TeamBookmark;
 import com.dmuIt.domain.mapper.TeamMapper;
 import com.dmuIt.domain.repository.TeamRepository;
 import com.dmuIt.domain.service.TeamService;
@@ -63,6 +64,11 @@ public class TeamController {
         return new FindAllDto(responses, pageInfo);
     }
 
+    @GetMapping("/myTeams")
+    public List<TeamDto.Response> findMyTeams(HttpServletRequest request) {
+        return teamMapper.teamsToTeamResponseDtos(teamService.findMyTeams(request));
+    }
+
     @DeleteMapping("/{team-id}")
     public void deleteTeam(HttpServletRequest request, @PathVariable("team-id") long teamId) {
         teamService.removeTeam(request, teamId);
@@ -71,6 +77,11 @@ public class TeamController {
     @PostMapping("/bookmark/{team-id}")
     public void bookmarkTeam(HttpServletRequest request, @PathVariable("team-id") long teamId) {
         teamService.bookmarkTeam(request, teamId);
+    }
+
+    @GetMapping("/bookmark")
+    public List<TeamDto.Response> findMyTeamBookmarks(HttpServletRequest request) {
+        return teamMapper.teamsToTeamResponseDtos(teamService.findMyTeamBookmarks(request));
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")

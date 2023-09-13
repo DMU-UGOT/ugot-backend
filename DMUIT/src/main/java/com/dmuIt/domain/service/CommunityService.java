@@ -59,6 +59,12 @@ public class CommunityService {
     }
 
     @Transactional
+    public List<Community> findMyCommunities(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        return communityRepository.findCommunitiesByMember(member);
+    }
+
+    @Transactional
     public void update(HttpServletRequest request, final Long id, final CommunityRequestDto params) {
 
         Community entity = communityRepository.findById(id).orElseThrow();

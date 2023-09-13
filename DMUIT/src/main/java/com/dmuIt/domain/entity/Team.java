@@ -1,6 +1,7 @@
 package com.dmuIt.domain.entity;
 
 import com.dmuIt.global.audit.Auditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -49,6 +50,7 @@ public class Team extends Auditable {
     @Column
     private long bookmarked = 0;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "member_id")
     private Member member;

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,6 +52,11 @@ public class ClassChangeService {
     public Page<ClassChange> findClassChanges(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return classChangeRepository.findAllByOrderByClassChangeIdDesc(pageRequest);
+    }
+
+    public List<ClassChange> findMyClassChanges(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        return classChangeRepository.findClassChangeByMember(member);
     }
 
     @Transactional

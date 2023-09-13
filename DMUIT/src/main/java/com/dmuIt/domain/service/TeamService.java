@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,6 +76,11 @@ public class TeamService {
         return teamRepository.findAllByOrderByIdDesc(pageRequest);
     }
 
+    public List<Team> findMyTeams(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        return teamRepository.findTeamsByMember(member);
+    }
+
     @Transactional
     public void bookmarkTeam(HttpServletRequest request, long teamId) {
         Team team = findVerifiedTeam(teamId);
@@ -89,6 +96,17 @@ public class TeamService {
             bookmark.unBookmark(team);
             bookmarkRepository.delete(bookmark);
         }
+    }
+
+
+    public List<Team> findMyTeamBookmarks(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        List<TeamBookmark> teamBookmarksByMember = bookmarkRepository.findTeamBookmarksByMember(member);
+        List<Team> teams = new ArrayList<>();
+        for (int i = 0; i < teamBookmarksByMember.size(); i++) {
+            teams.add(teamBookmarksByMember.get(i).getTeam());
+        }
+        return teams;
     }
 
     public Team findVerifiedTeam(long teamId) {
