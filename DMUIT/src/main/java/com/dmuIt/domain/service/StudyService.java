@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -72,6 +74,11 @@ public class StudyService {
         return studyRepository.findAllByOrderByStudyIdDesc(pageRequest);
     }
 
+    public List<Study> findMyStudies(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        return studyRepository.findStudiesByMember(member);
+    }
+
     @Transactional
     public void bookmarkStudy(HttpServletRequest request, long studyId) {
         Study study = findVerifiedStudy(studyId);
@@ -87,6 +94,16 @@ public class StudyService {
             bookmark.unBookmark(study);
             bookmarkRepository.delete(bookmark);
         }
+    }
+
+    public List<Study> findMyStudyBookmarks(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        List<StudyBookmark> studyBookmarksByMember = bookmarkRepository.findStudyBookmarksByMember(member);
+        List<Study> studies = new ArrayList<>();
+        for (int i = 0; i < studyBookmarksByMember.size(); i++) {
+            studies.add(studyBookmarksByMember.get(i).getStudy());
+        }
+        return studies;
     }
 
     public Study findVerifiedStudy(long studyId) {

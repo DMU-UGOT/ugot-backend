@@ -43,6 +43,7 @@ public class StudyDto {
         private String content;
         private String isContact;
         private Integer allPersonnel;
+        private String kakaoOpenLink;
         private String gitHubLink;
     }
 

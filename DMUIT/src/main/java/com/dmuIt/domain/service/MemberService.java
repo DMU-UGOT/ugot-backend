@@ -3,6 +3,7 @@ package com.dmuIt.domain.service;
 import com.dmuIt.domain.dto.ApiResponseDto;
 import com.dmuIt.domain.dto.MemberDto;
 import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.entity.TeamBookmark;
 import com.dmuIt.domain.repository.MemberRepository;
 import com.dmuIt.global.auth.jwt.JwtTokenProvider;
 import com.dmuIt.global.auth.lib.Helper;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +32,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;

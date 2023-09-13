@@ -39,6 +39,11 @@ public class CommunityController
         return new FindAllDto(responses, pageInfo);
     }
 
+    @GetMapping("/myCommunities")
+    public List<CommunityResponseDto> findMyCommunities(HttpServletRequest request) {
+        return communityMapper.ComsToComResponseDtos(communityService.findMyCommunities(request));
+    }
+
     @GetMapping("/{id}")
     public CommunityResponseDto findById(@PathVariable final Long id) {
         return communityService.findById(id);
