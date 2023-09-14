@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-08T18:21:46+0900",
+    date = "2023-09-14T20:00:24+0900",
     comments = "version: 1.5.1.Final, compiler: javac, environment: Java 11.0.15 (Oracle Corporation)"
 )
 @Component
@@ -28,6 +28,8 @@ public class TeamMapperImpl implements TeamMapper {
         team.setField( teamPostDto.getField() );
         team.set_class( teamPostDto.get_class() );
         team.setAllPersonnel( teamPostDto.getAllPersonnel() );
+        team.setGoal( teamPostDto.getGoal() );
+        team.setLanguage( teamPostDto.getLanguage() );
         team.setKakaoOpenLink( teamPostDto.getKakaoOpenLink() );
         team.setGitHubLink( teamPostDto.getGitHubLink() );
 
@@ -47,6 +49,8 @@ public class TeamMapperImpl implements TeamMapper {
         team.setField( teamPatchDto.getField() );
         team.set_class( teamPatchDto.get_class() );
         team.setAllPersonnel( teamPatchDto.getAllPersonnel() );
+        team.setGoal( teamPatchDto.getGoal() );
+        team.setLanguage( teamPatchDto.getLanguage() );
         team.setKakaoOpenLink( teamPatchDto.getKakaoOpenLink() );
         team.setGitHubLink( teamPatchDto.getGitHubLink() );
 

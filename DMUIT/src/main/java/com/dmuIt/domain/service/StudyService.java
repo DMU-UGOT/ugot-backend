@@ -46,6 +46,10 @@ public class StudyService {
                 .ifPresent(findStudy::setIsContact);
         Optional.ofNullable(study.getAllPersonnel())
                 .ifPresent(findStudy::setAllPersonnel);
+        Optional.ofNullable(study.getSubject())
+                .ifPresent(findStudy::setSubject);
+        Optional.ofNullable(study.getField())
+                .ifPresent(findStudy::setField);
         Optional.ofNullable(study.getKakaoOpenLink())
                 .ifPresent(findStudy::setKakaoOpenLink);
         Optional.ofNullable(study.getGitHubLink())

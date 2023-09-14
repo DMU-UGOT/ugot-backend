@@ -12,6 +12,8 @@ public class StudyDto {
     private String isContact;
     private Integer allPersonnel;
     private Integer nowPersonnel;
+    private String subject;
+    private String field;
     private Long viewCount;
     private Long bookmarked;
     private String kakaoOpenLink;
@@ -20,6 +22,7 @@ public class StudyDto {
 
     public StudyDto(Long studyId, String title, String content,
                     String isContact, Integer allPersonnel, Integer nowPersonnel,
+                    String subject, String field,
                     Long viewCount, Long bookmarked, String kakaoOpenLink,
                     String gitHubLink, LocalDateTime createdAt) {
         this.studyId = studyId;
@@ -28,6 +31,8 @@ public class StudyDto {
         this.isContact = isContact;
         this.allPersonnel = allPersonnel;
         this.nowPersonnel = nowPersonnel;
+        this.subject = subject;
+        this.field = field;
         this.viewCount = viewCount;
         this.bookmarked = bookmarked;
         this.kakaoOpenLink = kakaoOpenLink;
@@ -43,6 +48,8 @@ public class StudyDto {
         private String content;
         private String isContact;
         private Integer allPersonnel;
+        private String subject;
+        private String field;
         private String kakaoOpenLink;
         private String gitHubLink;
     }
@@ -55,6 +62,8 @@ public class StudyDto {
         private String content;
         private String isContact;
         private Integer allPersonnel;
+        private String subject;
+        private String field;
         private String kakaoOpenLink;
         private String gitHubLink;
     }
@@ -70,6 +79,8 @@ public class StudyDto {
         private Long bookmarked;
         private Integer allPersonnel;
         private Integer nowPersonnel;
+        private String subject;
+        private String field;
         private String kakaoOpenLink;
         private String gitHubLink;
         private Long viewCount;

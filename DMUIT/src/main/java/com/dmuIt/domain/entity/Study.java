@@ -34,6 +34,12 @@ public class Study extends Auditable {
     @Column
     private Integer nowPersonnel = 1;
 
+    @Column(nullable = false)
+    private String subject;
+
+    @Column(nullable = false)
+    private String field;
+
 //    @OneToMany(mappedBy = "study") // 일대다관계
 //    private List<Comment> comments;
 

@@ -39,6 +39,12 @@ public class Team extends Auditable {
     private Integer nowPersonnel = 1;
 
     @Column(nullable = false)
+    private String goal;
+
+    @Column(nullable = false)
+    private String language;
+
+    @Column(nullable = false)
     private String kakaoOpenLink;
 
     @Column(nullable = false)

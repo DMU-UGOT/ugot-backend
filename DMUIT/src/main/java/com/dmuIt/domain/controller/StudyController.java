@@ -94,7 +94,8 @@ public class StudyController {
                     study -> new StudyDto(
                             study.getStudyId(), study.getTitle(), study.getContent(),
                             study.getIsContact(),
-                            study.getAllPersonnel(), study.getNowPersonnel(), study.getViewCount(), study.getBookmarked(),
+                            study.getAllPersonnel(), study.getNowPersonnel(), study.getSubject(), study.getField(),
+                            study.getViewCount(), study.getBookmarked(),
                             study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt()
 
                     ));
@@ -104,7 +105,8 @@ public class StudyController {
                     study -> new StudyDto(
                             study.getStudyId(), study.getTitle(), study.getContent(),
                             study.getIsContact(),
-                            study.getAllPersonnel(), study.getNowPersonnel(), study.getViewCount(), study.getBookmarked(),
+                            study.getAllPersonnel(), study.getNowPersonnel(), study.getSubject(), study.getField(),
+                            study.getViewCount(), study.getBookmarked(),
                             study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt()
 
 

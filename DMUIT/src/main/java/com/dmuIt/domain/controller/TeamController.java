@@ -95,7 +95,8 @@ public class TeamController {
                     team -> new TeamDto(
                             team.getId(), team.getTitle(), team.getContent(),
                             team.getField(), team.get_class(),
-                            team.getAllPersonnel(), team.getNowPersonnel(), team.getViewCount(), team.getBookmarked(),
+                            team.getAllPersonnel(), team.getNowPersonnel(), team.getGoal(), team. getLanguage(),
+                            team.getViewCount(), team.getBookmarked(),
                             team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreatedAt()
 
                     ));
@@ -105,7 +106,8 @@ public class TeamController {
                     team -> new TeamDto(
                             team.getId(), team.getTitle(), team.getContent(),
                             team.getField(), team.get_class(),
-                            team.getAllPersonnel(), team.getNowPersonnel(), team.getViewCount(), team.getBookmarked(),
+                            team.getAllPersonnel(), team.getNowPersonnel(), team.getGoal(), team. getLanguage(),
+                            team.getViewCount(), team.getBookmarked(),
                             team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreatedAt()
 
 
