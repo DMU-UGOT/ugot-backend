@@ -9,11 +9,8 @@ public class FavoriteDto {
     private Long memberId;
     private Long groupId;
 
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class Response {
-        private Long memberId;
-        private Long groupId;
+    public FavoriteDto(Long memberId, Long groupId) {
+        this.memberId = memberId;
+        this.groupId = groupId;
     }
 }

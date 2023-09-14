@@ -1,14 +1,15 @@
 package com.dmuIt.domain.controller;
 
+import com.dmuIt.domain.dto.CommentDto;
 import com.dmuIt.domain.dto.FavoriteDto;
 import com.dmuIt.domain.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
-import static jdk.vm.ci.hotspot.HotSpotCompilationRequestResult.success;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -18,16 +19,20 @@ public class FavoriteController {
 
     private final FavoriteService favoriteService;
 
-    @PostMapping
-    public ResponseResult<?> insert(@RequestBody @Valid FavoriteDto heartRequestDTO) {
-        favoriteService.insert(heartRequestDTO);
-        return success(null);
+    @GetMapping
+    public List<FavoriteDto> getList(){
+        return favoriteService.getList();
     }
 
+    @PostMapping
+    public void insert(@RequestBody @Valid FavoriteDto favoriteDto) throws Exception {
+        favoriteService.insert(favoriteDto);
+    }
+
+
     @DeleteMapping
-    public ResponseResult<?> delete(@RequestBody @Valid FavoriteDto heartRequestDTO) {
-        favoriteService.delete(heartRequestDTO);
-        return success(null);
+    public void delete(@RequestBody @Valid FavoriteDto favoriteDto) throws ChangeSetPersister.NotFoundException {
+        favoriteService.delete(favoriteDto);
     }
 
 }

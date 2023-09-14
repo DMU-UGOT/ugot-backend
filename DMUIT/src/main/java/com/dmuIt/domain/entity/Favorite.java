@@ -1,6 +1,7 @@
 package com.dmuIt.domain.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,5 +27,13 @@ public class Favorite {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
+
+    @Builder
+    public Favorite(Long id, Member member, Group group) {
+        this.id = id;
+        this.member = member;
+        this.group = group;
+    }
+
 
 }
