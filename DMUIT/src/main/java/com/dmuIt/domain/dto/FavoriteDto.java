@@ -1,5 +1,7 @@
 package com.dmuIt.domain.dto;
 
+import com.dmuIt.domain.entity.Favorite;
+import com.dmuIt.domain.entity.Group;
 import lombok.*;
 
 @Getter
@@ -9,8 +11,8 @@ public class FavoriteDto {
     private Long memberId;
     private Long groupId;
 
-    public FavoriteDto(Long memberId, Long groupId) {
-        this.memberId = memberId;
-        this.groupId = groupId;
+    public FavoriteDto(Favorite entity) {
+        this.memberId = entity.getMember().getMemberId();
+        this.groupId = entity.getGroup().getId();
     }
 }

@@ -20,7 +20,11 @@ import java.util.stream.Collectors;
 public class GroupService {
     private final GroupRepository groupRepository;
     public void createGroup(GroupDto params) {
-        Group group = Group.builder().id(params.getId()).groupName(params.getGroupName()).githubUrl(params.getGithubUrl()).build();
+        Group group = Group.builder().
+                id(params.getId()).
+                groupName(params.getGroupName()).
+                githubUrl(params.getGithubUrl()).
+                build();
         groupRepository.save(group);
 
     }

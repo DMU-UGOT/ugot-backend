@@ -15,11 +15,6 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "favorite")
 public class Favorite {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "favorite_id")
-    private Long id;
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -29,8 +24,7 @@ public class Favorite {
     private Group group;
 
     @Builder
-    public Favorite(Long id, Member member, Group group) {
-        this.id = id;
+    public Favorite(Member member, Group group) {
         this.member = member;
         this.group = group;
     }
