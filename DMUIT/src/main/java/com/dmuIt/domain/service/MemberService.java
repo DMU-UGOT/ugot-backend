@@ -14,6 +14,7 @@ import com.dmuIt.global.redis.repository.RefreshTokenRedisRepository;
 import com.dmuIt.global.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -162,12 +163,19 @@ public class MemberService {
         }
     }
 
-    public String verifyExistsNickname(String nickname) {
+    public void verifyExistsNickname(String nickname) {
         Optional<Member> member = memberRepository.findByNickname(nickname);
         if (member.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
         }
-        return "사용 가능한 닉네임입니다.";
+    }
+
+    public ResponseEntity<?> checkNickname(String nickname) {
+        Optional<Member> member = memberRepository.findByNickname(nickname);
+        if (member.isPresent()) {
+            return new ResponseEntity<>("존재하는 닉네임입니다.", HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
     }
 
     public long getUserNum(String email) {
