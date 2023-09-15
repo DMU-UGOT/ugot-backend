@@ -15,6 +15,10 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "favorite")
 public class Favorite {
 
+    @Id
+    @GeneratedValue
+    private Long id;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;

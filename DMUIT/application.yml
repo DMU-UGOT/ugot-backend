@@ -24,6 +24,7 @@ spring:
         format_sql: true  # (3) SQL pretty print
   sql:
     init:
+      mode: never
       data-locations: classpath*:db/h2/data.sql
 mail:
   address:

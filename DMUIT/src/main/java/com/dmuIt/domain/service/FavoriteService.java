@@ -1,17 +1,12 @@
 package com.dmuIt.domain.service;
 
-import com.dmuIt.domain.dto.CommentDto;
 import com.dmuIt.domain.dto.FavoriteDto;
-import com.dmuIt.domain.dto.GroupDto;
-import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.entity.Favorite;
-import com.dmuIt.domain.entity.Group;
 import com.dmuIt.domain.entity.Member;
 import com.dmuIt.domain.repository.FavoriteRepository;
 import com.dmuIt.domain.repository.GroupRepository;
 import com.dmuIt.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -27,8 +22,11 @@ public class FavoriteService {
     private final MemberRepository memberRepository;
     private final GroupRepository groupRepository;
     private Member member;
-
-
+    @Transactional
+    public List<Favorite> getFav(){
+        return favoriteRepository.findAll();
+    }
+    @Transactional
     public void heart(FavoriteDto favoriteDto) throws IOException {
 
         Favorite favorite = Favorite.builder()
@@ -37,7 +35,7 @@ public class FavoriteService {
                 .build();
         favoriteRepository.save(favorite);
     }
-
+    @Transactional
     public void unHeart(FavoriteDto favoriteDto) {
 
         Optional<Favorite> heartOpt = findHeartWithUserAndCampaignId(favoriteDto);

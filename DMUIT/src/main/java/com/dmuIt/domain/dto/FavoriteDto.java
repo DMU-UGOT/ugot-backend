@@ -4,6 +4,8 @@ import com.dmuIt.domain.entity.Favorite;
 import com.dmuIt.domain.entity.Group;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FavoriteDto {
@@ -14,5 +16,10 @@ public class FavoriteDto {
     public FavoriteDto(Favorite entity) {
         this.memberId = entity.getMember().getMemberId();
         this.groupId = entity.getGroup().getId();
+    }
+    @Getter
+    @Setter
+    public static class Response {
+        private Long groupId;
     }
 }
