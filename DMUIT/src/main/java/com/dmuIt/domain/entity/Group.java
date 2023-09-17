@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "group")
 public class Group extends Auditable {

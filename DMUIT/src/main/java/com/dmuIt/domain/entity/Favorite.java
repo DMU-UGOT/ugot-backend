@@ -17,6 +17,7 @@ public class Favorite {
 
     @Id
     @GeneratedValue
+    @Column(name = "groupLike_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)

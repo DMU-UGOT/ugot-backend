@@ -73,4 +73,14 @@ public class Member extends Auditable {
             inverseJoinColumns = @JoinColumn(name = "project_id"))
     private List<Project> projects;
 
+    public Member(Long memberId, String name, String nickname, String email, String password, String major, Integer grade, String _class) {
+        this.memberId = memberId;
+        this.name = name;
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.major = major;
+        this.grade = grade;
+        this._class = _class;
+    }
 }

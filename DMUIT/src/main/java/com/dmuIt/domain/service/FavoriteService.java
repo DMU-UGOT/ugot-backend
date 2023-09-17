@@ -1,7 +1,7 @@
 package com.dmuIt.domain.service;
 
-import com.dmuIt.domain.dto.FavoriteDto;
 import com.dmuIt.domain.entity.Favorite;
+import com.dmuIt.domain.entity.Group;
 import com.dmuIt.domain.entity.Member;
 import com.dmuIt.domain.repository.FavoriteRepository;
 import com.dmuIt.domain.repository.GroupRepository;
@@ -10,9 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,32 +18,26 @@ public class FavoriteService {
     private final FavoriteRepository favoriteRepository;
     private final MemberRepository memberRepository;
     private final GroupRepository groupRepository;
-    private Member member;
-    @Transactional
-    public List<Favorite> getFav(){
-        return favoriteRepository.findAll();
-    }
-    @Transactional
-    public void heart(FavoriteDto favoriteDto) throws IOException {
 
-        Favorite favorite = Favorite.builder()
-                .member(memberRepository.findById(favoriteDto.getMemberId()).get())
-                .group(groupRepository.findById(favoriteDto.getGroupId()).get())
-                .build();
-        favoriteRepository.save(favorite);
-    }
     @Transactional
-    public void unHeart(FavoriteDto favoriteDto) {
+    public void addLike(/*String loginId, */Long boardId) {
+        Group group = groupRepository.findById(boardId).get();
+       // Member LoginMember = memberRepository.findByEmail(loginId).get();
 
-        Optional<Favorite> heartOpt = findHeartWithUserAndCampaignId(favoriteDto);
-
-        favoriteRepository.delete(heartOpt.get());
+        favoriteRepository.save(Favorite.builder()
+                //.member(LoginMember)
+                .group(group)
+                .build());
     }
 
+    @Transactional
+    public void deleteLike(/*String loginId,*/ Long groupId) {
+        Group group = groupRepository.findById(groupId).get();
+        favoriteRepository.deleteByUserLoginIdAndBoardId(/*loginId, */groupId);
+    }
 
-    public Optional<Favorite> findHeartWithUserAndCampaignId(FavoriteDto heartDto) {
-        return favoriteRepository
-                .findHeartByUserAndCampaignId(member, heartDto.getGroupId().toString());
+    public Boolean checkLike(String loginId, Long boardId) {
+        return favoriteRepository.existsByUserLoginIdAndBoardId(loginId, boardId);
     }
 
 
