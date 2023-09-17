@@ -1,10 +1,16 @@
 package com.dmuIt.domain.dto;
 
 import com.dmuIt.domain.entity.Group;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
 @Getter
+@AllArgsConstructor
+@Data
+@NoArgsConstructor
 public class GroupDto {
     private Long id;
     private String groupName;
@@ -12,7 +18,7 @@ public class GroupDto {
     private String githubUrl;
 
     public GroupDto(Group entity) {
-        this.id = entity.getId();
+        this.id = entity.getGroupId();
         this.groupName = entity.getGroupName();
         this.person = entity.getPerson();
         this.githubUrl = entity.getGithubUrl();

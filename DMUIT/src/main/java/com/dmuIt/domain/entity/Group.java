@@ -9,12 +9,12 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "group")
+@Table(name = "_group")
 public class Group extends Auditable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long groupId;
 
     @Column(length = 30, nullable = false)
     private String groupName;
@@ -24,9 +24,11 @@ public class Group extends Auditable {
 
     @Column(length = 50, nullable = false)
     private String githubUrl;
+
+
     @Builder
-    public Group(Long id, String groupName, Integer person, String githubUrl) {
-        this.id = id;
+    public Group(Long groupId, String groupName, Integer person, String githubUrl) {
+        this.groupId = groupId;
         this.groupName = groupName;
         this.person = person;
         this.githubUrl = githubUrl;

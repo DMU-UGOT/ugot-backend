@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/group")
 @RequiredArgsConstructor
 public class GroupController {
-    private GroupService groupService;
+    private final GroupService groupService;
     @GetMapping
     public List<GroupDto> findAll() {
         return groupService.findAll();
@@ -26,5 +26,8 @@ public class GroupController {
         groupService.createGroup(params);
     }
 
-
+    @DeleteMapping("/{group_id}")
+    public void deleteGroup(@PathVariable("group_id") long groupId) {
+        groupService.deleteGroup(groupId);
+    }
 }

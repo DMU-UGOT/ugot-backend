@@ -15,7 +15,7 @@ public class FavoriteDto {
 
     public FavoriteDto(Favorite entity) {
         this.memberId = entity.getMember().getMemberId();
-        this.groupId = entity.getGroup().getId();
+        this.groupId = entity.getGroup().getGroupId();
     }
     @Getter
     @Setter

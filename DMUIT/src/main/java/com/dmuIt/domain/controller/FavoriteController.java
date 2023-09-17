@@ -1,11 +1,14 @@
 package com.dmuIt.domain.controller;
 
+
+import com.dmuIt.domain.dto.FavoriteDto;
+import com.dmuIt.domain.dto.GroupDto;
+import com.dmuIt.domain.entity.Favorite;
 import com.dmuIt.domain.service.FavoriteService;
-import com.dmuIt.domain.service.GroupService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/fav")
@@ -13,9 +16,13 @@ import org.springframework.web.bind.annotation.*;
 public class FavoriteController {
 
     private final FavoriteService favoriteService;
+    @GetMapping
+    public List<FavoriteDto> getList(){
+        return favoriteService.findAll();
+    }
     @GetMapping("/add/{groupId}")
-    public void addLike(@PathVariable Long groupId) {
-        favoriteService.addLike(groupId);
+    public void addLike(@PathVariable Long groupId, @RequestBody Favorite favorite) {
+        favoriteService.addLike(groupId, favorite);
     }
 
     @GetMapping("/delete/{groupId}")
