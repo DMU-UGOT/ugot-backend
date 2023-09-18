@@ -23,6 +23,8 @@ public class FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
     private final GroupRepository groupRepository;
+
+
     @Transactional
     public List<FavoriteDto> findAll(){
         List<Favorite> list = favoriteRepository.findAll();
@@ -30,20 +32,29 @@ public class FavoriteService {
     }
 
 
-    public void addLike(final Long groupid, final Favorite favorite) {
-        Optional<Group> item = groupRepository.findByGroupId(groupid);
-        favorite.Like(item.get());
-        favoriteRepository.save(favorite);
+    public void addLike(final Long groupid, final Favorite favorite){
+
+        Optional<Favorite> optionalFavorite = favoriteRepository.findByGId(groupid);
+
+        optionalFavorite.ifPresentOrElse(
+                like -> {
+                    favoriteRepository.delete(like);
+                },
+                ()-> {
+                    Optional<Group> item = groupRepository.findByGroupId(groupid);
+                    favorite.Like(item.get().getGroupId(), item.get().getGroupName());
+                    favoriteRepository.save(favorite);
+                }
+        );
+
     }
 
-    @Transactional
-    public void deleteLike(/*String loginId,*/ Long groupId) {
-        Group group = groupRepository.findByGroupId(groupId).get();
-        favoriteRepository.deleteByLikeId(/*loginId, */groupId);
-    }
-
-/*    public Boolean checkLike(String loginId, Long boardId) {
-        return favoriteRepository.existsByUserLoginIdAndBoardId(loginId, boardId);
+ /*   @Transactional
+    public void deleteLike(Long likeId) {
+        Optional<Favorite> optionalFavorite = favoriteRepository.findById(likeId);
+        Favorite findFav = optionalFavorite.orElseThrow(()
+                -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+        favoriteRepository.delete(findFav);
     }*/
 
 

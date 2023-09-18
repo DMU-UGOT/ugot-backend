@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public interface FavoriteRepository extends JpaRepository<Favorite, Long>{
-    void deleteByLikeId(/*String loginId, */Long groupLikeId);
+
+    Optional<Favorite> findByGId(Long GId);
     //Boolean existsByUserLoginIdAndGoardId(String loginId, Long groupId);
    // List<Favorite> findAllByUserLoginId(String loginId);
 }

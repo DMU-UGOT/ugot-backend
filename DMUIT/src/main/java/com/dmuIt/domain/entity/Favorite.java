@@ -17,6 +17,12 @@ public class Favorite {
     @Column(name = "like_id")
     private Long likeId;
 
+    @Column(length = 30, nullable = false)
+    private Long GId;
+
+    @Column(length = 30, nullable = false)
+    private String gName;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -27,13 +33,18 @@ public class Favorite {
 
 
     @Builder
-    public Favorite(Long likeId, Group group) {
+    public Favorite(Long likeId, Member member, Group group) {
         this.likeId = likeId;
-        //this.member = member;
+        this.member = member;
         this.group = group;
     }
 
-    public void Like(Group group){
-        this.group = group;
+    public void Like(Long id, String name){
+        this.GId = id;
+        this.gName = name;
+    }
+
+    public boolean isPresent() {
+        return false;
     }
 }

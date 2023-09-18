@@ -21,12 +21,12 @@ public class FavoriteController {
         return favoriteService.findAll();
     }
     @GetMapping("/add/{groupId}")
-    public void addLike(@PathVariable Long groupId, Favorite favorite) {
+    public void addLike(@PathVariable Long groupId, Favorite favorite) throws Exception {
         favoriteService.addLike(groupId, favorite);
     }
 
-    @GetMapping("/delete/{groupId}")
-    public void deleteLike(@PathVariable Long groupId) {
-        favoriteService.deleteLike(groupId);
+    @DeleteMapping("/delete/{likeId}")
+    public void deleteLike(@PathVariable Long likeId) {
+        favoriteService.deleteLike(likeId);
     }
 }
