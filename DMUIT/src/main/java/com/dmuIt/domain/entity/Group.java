@@ -9,16 +9,11 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@SequenceGenerator(name = "GROUP_SEQ_GEN",
-        sequenceName = "GROUP_SEQ", //매핑할 데이터베이스 시퀀스 이름
-        initialValue = 1,
-        allocationSize = 1)
 @Table(name = "_group")
 public class Group extends Auditable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "GROUP_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long groupId;
 
     @Column(length = 30, nullable = false)

@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class GroupDto {
-    private Long id;
+    private Long groupId;
     private String groupName;
     private Integer person;
     private String githubUrl;
 
     public GroupDto(Group entity) {
-        this.id = entity.getGroupId();
+        this.groupId = entity.getGroupId();
         this.groupName = entity.getGroupName();
         this.person = entity.getPerson();
         this.githubUrl = entity.getGithubUrl();

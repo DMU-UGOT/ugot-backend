@@ -14,8 +14,8 @@ public class Favorite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "groupLike_id")
-    private Long groupLikeId;
+    @Column(name = "like_id")
+    private Long likeId;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
@@ -27,8 +27,13 @@ public class Favorite {
 
 
     @Builder
-    public Favorite(Group group) {
+    public Favorite(Long likeId, Group group) {
+        this.likeId = likeId;
         //this.member = member;
+        this.group = group;
+    }
+
+    public void Like(Group group){
         this.group = group;
     }
 }
