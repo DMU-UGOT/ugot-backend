@@ -21,7 +21,7 @@ public class FavoriteController {
         return favoriteService.findAll();
     }
     @GetMapping("/add/{groupId}")
-    public void addLike(@PathVariable Long groupId, @RequestBody Favorite favorite) {
+    public void addLike(@PathVariable Long groupId, Favorite favorite) {
         favoriteService.addLike(groupId, favorite);
     }
 

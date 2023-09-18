@@ -1,14 +1,11 @@
 package com.dmuIt.domain.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
-
+@Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -16,7 +13,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Favorite {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "groupLike_id")
     private Long groupLikeId;
 
@@ -28,14 +25,10 @@ public class Favorite {
     @JoinColumn(name = "group_id")
     private Group group;
 
-    public void setGroup(Group group) {
-        this.group = group;
-    }
+
     @Builder
     public Favorite(Group group) {
         //this.member = member;
         this.group = group;
     }
-
-
 }

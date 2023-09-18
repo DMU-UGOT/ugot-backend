@@ -2,10 +2,7 @@ package com.dmuIt.domain.service;
 
 import com.dmuIt.domain.dto.FavoriteDto;
 import com.dmuIt.domain.dto.GroupDto;
-import com.dmuIt.domain.entity.Community;
-import com.dmuIt.domain.entity.Favorite;
-import com.dmuIt.domain.entity.Group;
-import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.entity.*;
 import com.dmuIt.domain.repository.FavoriteRepository;
 import com.dmuIt.domain.repository.GroupRepository;
 import com.dmuIt.domain.repository.MemberRepository;
@@ -22,9 +19,7 @@ import java.util.stream.Collectors;
 public class FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
-    private final MemberRepository memberRepository;
     private final GroupRepository groupRepository;
-
 
     @Transactional
     public List<FavoriteDto> findAll(){
@@ -32,13 +27,10 @@ public class FavoriteService {
         return list.stream().map(FavoriteDto::new).collect(Collectors.toList());
     }
 
-    @Transactional
-    public void addLike(/*String loginId, */final Long id, final Favorite favorite) {
-        Optional<Group> item = groupRepository.findById(id);
-        favorite.setGroup(item.get());
 
-       // Member LoginMember = memberRepository.findByEmail(loginId).get();
-
+    public void addLike(final Long groupid, final Favorite favorite) {
+        Group item = groupRepository.findByGroupId(groupid);
+        favorite.setGroup(item);
         favoriteRepository.save(favorite);
     }
 
