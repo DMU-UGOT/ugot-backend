@@ -2,7 +2,10 @@ package com.dmuIt.domain.service;
 
 import com.dmuIt.domain.dto.ApiResponseDto;
 import com.dmuIt.domain.dto.MemberDto;
+import com.dmuIt.domain.entity.Favorite;
 import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.repository.FavoriteRepository;
+
 import com.dmuIt.domain.entity.TeamBookmark;
 import com.dmuIt.domain.repository.MemberRepository;
 import com.dmuIt.global.auth.jwt.JwtTokenProvider;
@@ -185,4 +188,7 @@ public class MemberService {
         }
         else return 0;
     }
+
+
+
 }
