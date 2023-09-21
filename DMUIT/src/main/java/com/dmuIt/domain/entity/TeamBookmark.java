@@ -1,6 +1,7 @@
 package com.dmuIt.domain.entity;
 
 import com.dmuIt.global.audit.Auditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -18,6 +19,7 @@ public class TeamBookmark extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookmarkId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;

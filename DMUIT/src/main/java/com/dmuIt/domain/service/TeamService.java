@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,19 +39,23 @@ public class TeamService {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         Optional.ofNullable(team.getTitle())
-                .ifPresent(title -> findTeam.setTitle(title));
+                .ifPresent(findTeam::setTitle);
         Optional.ofNullable(team.getContent())
-                .ifPresent(content -> findTeam.setContent(content));
+                .ifPresent(findTeam::setContent);
         Optional.ofNullable(team.getField())
-                .ifPresent(field -> findTeam.setField(field));
+                .ifPresent(findTeam::setField);
         Optional.ofNullable(team.get_class())
-                .ifPresent(_class -> findTeam.set_class(_class));
+                .ifPresent(findTeam::set_class);
         Optional.ofNullable(team.getAllPersonnel())
-                .ifPresent(allPersonnel -> findTeam.setAllPersonnel(allPersonnel));
+                .ifPresent(findTeam::setAllPersonnel);
+        Optional.ofNullable(team.getGoal())
+                .ifPresent(findTeam::setGoal);
+        Optional.ofNullable(team.getLanguage())
+                .ifPresent(findTeam::setLanguage);
         Optional.ofNullable(team.getKakaoOpenLink())
-                .ifPresent(kakaoOpenLink -> findTeam.setKakaoOpenLink(kakaoOpenLink));
+                .ifPresent(findTeam::setKakaoOpenLink);
         Optional.ofNullable(team.getGitHubLink())
-                .ifPresent(gitHubLink -> findTeam.setGitHubLink(gitHubLink));
+                .ifPresent(findTeam::setGitHubLink);
         findTeam.setModifiedAt(LocalDateTime.now());
         teamRepository.save(findTeam);
     }
@@ -74,6 +80,11 @@ public class TeamService {
         return teamRepository.findAllByOrderByIdDesc(pageRequest);
     }
 
+    public List<Team> findMyTeams(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        return teamRepository.findTeamsByMember(member);
+    }
+
     @Transactional
     public void bookmarkTeam(HttpServletRequest request, long teamId) {
         Team team = findVerifiedTeam(teamId);
@@ -89,6 +100,17 @@ public class TeamService {
             bookmark.unBookmark(team);
             bookmarkRepository.delete(bookmark);
         }
+    }
+
+
+    public List<Team> findMyTeamBookmarks(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        List<TeamBookmark> teamBookmarksByMember = bookmarkRepository.findTeamBookmarksByMember(member);
+        List<Team> teams = new ArrayList<>();
+        for (int i = 0; i < teamBookmarksByMember.size(); i++) {
+            teams.add(teamBookmarksByMember.get(i).getTeam());
+        }
+        return teams;
     }
 
     public Team findVerifiedTeam(long teamId) {

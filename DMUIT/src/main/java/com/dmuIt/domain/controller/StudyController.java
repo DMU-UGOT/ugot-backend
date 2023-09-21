@@ -62,6 +62,11 @@ public class StudyController {
         return new FindAllDto<>(responses, pageInfo);
     }
 
+    @GetMapping("/myStudies")
+    public List<StudyDto.Response> findMyStudies(HttpServletRequest request) {
+        return studyMapper.studiesToStudyResponseDtos(studyService.findMyStudies(request));
+    }
+
     @DeleteMapping("/{study-id}")
     public void deleteStudy(HttpServletRequest request, @PathVariable("study-id") long studyId) {
         studyService.deleteStudy(request, studyId);
@@ -70,6 +75,12 @@ public class StudyController {
     @PostMapping("/bookmark/{study-id}")
     public void bookmarkStudy(HttpServletRequest request, @PathVariable("study-id") long studyId) {
         studyService.bookmarkStudy(request, studyId);
+    }
+
+    @GetMapping("/bookmark")
+    public List<StudyDto.Response> findMyStudyBookmarks(HttpServletRequest request) {
+        List<Study> myStudyBookmarks = studyService.findMyStudyBookmarks(request);
+        return studyMapper.studiesToStudyResponseDtos(myStudyBookmarks);
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -83,7 +94,8 @@ public class StudyController {
                     study -> new StudyDto(
                             study.getStudyId(), study.getTitle(), study.getContent(),
                             study.getIsContact(),
-                            study.getAllPersonnel(), study.getNowPersonnel(), study.getViewCount(), study.getBookmarked(),
+                            study.getAllPersonnel(), study.getNowPersonnel(), study.getSubject(), study.getField(),
+                            study.getViewCount(), study.getBookmarked(),
                             study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt()
 
                     ));
@@ -93,7 +105,8 @@ public class StudyController {
                     study -> new StudyDto(
                             study.getStudyId(), study.getTitle(), study.getContent(),
                             study.getIsContact(),
-                            study.getAllPersonnel(), study.getNowPersonnel(), study.getViewCount(), study.getBookmarked(),
+                            study.getAllPersonnel(), study.getNowPersonnel(), study.getSubject(), study.getField(),
+                            study.getViewCount(), study.getBookmarked(),
                             study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt()
 
 

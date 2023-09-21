@@ -13,6 +13,8 @@ public class TeamDto {
     private String _class;
     private Integer allPersonnel;
     private Integer nowPersonnel;
+    private String goal;
+    private String language;
     private Long viewCount;
     private Long bookmarked;
     private String kakaoOpenLink;
@@ -20,8 +22,8 @@ public class TeamDto {
     private LocalDateTime createdAt;
 
     public TeamDto(Long teamId, String title, String content, String field,
-                   String _class, Integer allPersonnel, Integer nowPersonnel, Long viewCount, Long bookmarked,
-                   String kakaoOpenLink, String gitHubLink, LocalDateTime createdAt) {
+                   String _class, Integer allPersonnel, Integer nowPersonnel, String goal, String language,
+                   Long viewCount, Long bookmarked, String kakaoOpenLink, String gitHubLink, LocalDateTime createdAt) {
         this.teamId = teamId;
         this.title = title;
         this.content = content;
@@ -29,6 +31,8 @@ public class TeamDto {
         this._class = _class;
         this.allPersonnel = allPersonnel;
         this.nowPersonnel = nowPersonnel;
+        this.goal = goal;
+        this.language = language;
         this.viewCount = viewCount;
         this.bookmarked = bookmarked;
         this.kakaoOpenLink = kakaoOpenLink;
@@ -45,6 +49,8 @@ public class TeamDto {
         private String field;
         private String _class;
         private Integer allPersonnel;
+        private String goal;
+        private String language;
         private String kakaoOpenLink;
         private String gitHubLink;
     }
@@ -58,6 +64,8 @@ public class TeamDto {
         private String field;
         private String _class;
         private Integer allPersonnel;
+        private String goal;
+        private String language;
         private String kakaoOpenLink;
         private String gitHubLink;
     }
@@ -74,6 +82,8 @@ public class TeamDto {
         private Long bookmarked;
         private Integer allPersonnel;
         private Integer nowPersonnel;
+        private String goal;
+        private String language;
         private String kakaoOpenLink;
         private String gitHubLink;
         private Long viewCount;

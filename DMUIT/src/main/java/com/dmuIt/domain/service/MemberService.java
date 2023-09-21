@@ -5,6 +5,8 @@ import com.dmuIt.domain.dto.MemberDto;
 import com.dmuIt.domain.entity.Favorite;
 import com.dmuIt.domain.entity.Member;
 import com.dmuIt.domain.repository.FavoriteRepository;
+
+import com.dmuIt.domain.entity.TeamBookmark;
 import com.dmuIt.domain.repository.MemberRepository;
 import com.dmuIt.global.auth.jwt.JwtTokenProvider;
 import com.dmuIt.global.auth.lib.Helper;
@@ -15,6 +17,7 @@ import com.dmuIt.global.redis.repository.RefreshTokenRedisRepository;
 import com.dmuIt.global.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +36,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
@@ -163,12 +166,19 @@ public class MemberService {
         }
     }
 
-    public String verifyExistsNickname(String nickname) {
+    public void verifyExistsNickname(String nickname) {
         Optional<Member> member = memberRepository.findByNickname(nickname);
         if (member.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
         }
-        return "사용 가능한 닉네임입니다.";
+    }
+
+    public ResponseEntity<?> checkNickname(String nickname) {
+        Optional<Member> member = memberRepository.findByNickname(nickname);
+        if (member.isPresent()) {
+            return new ResponseEntity<>("존재하는 닉네임입니다.", HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
     }
 
     public long getUserNum(String email) {

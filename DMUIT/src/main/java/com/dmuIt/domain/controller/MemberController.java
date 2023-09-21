@@ -5,6 +5,7 @@ import com.dmuIt.domain.dto.MemberDto;
 import com.dmuIt.domain.entity.Member;
 import com.dmuIt.domain.mapper.MemberMapper;
 import com.dmuIt.domain.service.MemberService;
+import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,8 @@ public class MemberController {
     }
 
     @GetMapping("/check/{nickname}")
-    public String checkNickname(@PathVariable("nickname") String nickname) {
-        return memberService.verifyExistsNickname(nickname);
+    public ResponseEntity<?> checkNickname(@PathVariable("nickname") String nickname) {
+        return memberService.checkNickname(nickname);
     }
 
     @PostMapping("/reissue")

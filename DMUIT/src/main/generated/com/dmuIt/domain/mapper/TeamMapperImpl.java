@@ -28,6 +28,8 @@ public class TeamMapperImpl implements TeamMapper {
         team.setField( teamPostDto.getField() );
         team.set_class( teamPostDto.get_class() );
         team.setAllPersonnel( teamPostDto.getAllPersonnel() );
+        team.setGoal( teamPostDto.getGoal() );
+        team.setLanguage( teamPostDto.getLanguage() );
         team.setKakaoOpenLink( teamPostDto.getKakaoOpenLink() );
         team.setGitHubLink( teamPostDto.getGitHubLink() );
 
@@ -47,6 +49,8 @@ public class TeamMapperImpl implements TeamMapper {
         team.setField( teamPatchDto.getField() );
         team.set_class( teamPatchDto.get_class() );
         team.setAllPersonnel( teamPatchDto.getAllPersonnel() );
+        team.setGoal( teamPatchDto.getGoal() );
+        team.setLanguage( teamPatchDto.getLanguage() );
         team.setKakaoOpenLink( teamPatchDto.getKakaoOpenLink() );
         team.setGitHubLink( teamPatchDto.getGitHubLink() );
 

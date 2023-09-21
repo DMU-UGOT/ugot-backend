@@ -27,6 +27,8 @@ public interface TeamMapper {
             response.setBookmarked(team.getBookmarked());
             response.setAllPersonnel(team.getAllPersonnel());
             response.setNowPersonnel(team.getNowPersonnel());
+            response.setGoal(team.getGoal());
+            response.setLanguage(team.getLanguage());
             response.setViewCount(team.getViewCount());
             response.setKakaoOpenLink(team.getKakaoOpenLink());
             response.setGitHubLink(team.getGitHubLink());

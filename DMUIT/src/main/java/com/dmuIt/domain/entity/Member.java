@@ -1,6 +1,7 @@
 package com.dmuIt.domain.entity;
 
 import com.dmuIt.global.audit.Auditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,12 +56,15 @@ public class Member extends Auditable {
     @ElementCollection
     private Set<String> skill = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "member") // 일대다관계
     private List<ClassChange> classChanges;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<TeamBookmark> teamBookmarks;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<StudyBookmark> studyBookmarks;
 
