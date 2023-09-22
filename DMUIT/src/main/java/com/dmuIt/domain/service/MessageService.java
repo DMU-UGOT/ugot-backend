@@ -39,6 +39,9 @@ public class MessageService {
         message.setReceiver(receiver);
         message.setSender(sender);
 
+        message.setSenderName(message.getSenderName());
+        message.setReceiverName(message.getReceiverName());
+
         message.setTitle(messageDto.getTitle());
         message.setContent(messageDto.getContent());
         message.setDeletedByReceiver(false);
@@ -49,7 +52,7 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public List<MessageDto> receivedMessage(Member member) {
+    public List<MessageDto> allReceivedMessage(Member member) {
         // 받은 편지함 불러오기
         // 한 명의 유저가 받은 모든 메시지
         // 추후 JWT를 이용해서 재구현 예정
@@ -64,7 +67,21 @@ public class MessageService {
         }
         return messageDtos;
     }
+    @Transactional(readOnly = true)
+    public List<MessageDto> receivedMessage(Member member, String nickname) {
 
+
+        List<Message> messages = messageRepository.findAllByReceiver(member);
+        List<MessageDto> messageDtos = new ArrayList<>();
+
+        for (Message message : messages) {
+            // message 에서 받은 편지함에서 삭제하지 않았으면 보낼 때 추가해서 보내줌
+            if (!message.isDeletedByReceiver()) {
+                messageDtos.add(MessageDto.toDto(message));
+            }
+        }
+        return messageDtos;
+    }
     // 받은 편지 삭제
     @Transactional
     public Object deleteMessageByReceiver(long id, Member member) {

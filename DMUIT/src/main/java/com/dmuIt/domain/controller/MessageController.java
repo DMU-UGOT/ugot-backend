@@ -20,8 +20,12 @@ public class MessageController {
     private final MemberRepository memberRepository;
     private final ApiResponseDto apiResponseDto;
 
+   /* @GetMapping("/{receiver}")
+    public String findByReceiverName(@PathVariable("receiver") long receiver){
+        return
+    }*/
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping("/send")
     public ResponseEntity<?> sendMessage(HttpServletRequest request, @RequestBody MessageDto messageDto) {
         Member currentMember = messageService.verifiedCurrentMember(request);
         messageDto.setSenderName(currentMember.getNickname());
@@ -31,14 +35,20 @@ public class MessageController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/received")
-    public ResponseEntity<?> getReceivedMessage(HttpServletRequest request) {
+    public ResponseEntity<?> getAllReceivedMessage(HttpServletRequest request) {
         Member currentMember = messageService.verifiedCurrentMember(request);
-
-        return apiResponseDto.success("받은 쪽지를 불러왔습니다.", messageService.receivedMessage(currentMember));
+        return apiResponseDto.success("받은 쪽지를 불러왔습니다.", messageService.allReceivedMessage(currentMember));
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/received/{message-id}")
+    @GetMapping("/{nickname}/received")
+    public ResponseEntity<?> getReceivedMessage(HttpServletRequest request, @PathVariable("nickname") String nickname) {
+        Member currentMember = messageService.verifiedCurrentMember(request);
+        return apiResponseDto.success("받은 쪽지를 불러왔습니다.", messageService.receivedMessage(currentMember, nickname));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{receiver}/received/{message-id}")
     public ResponseEntity<?> deleteReceivedMessage(HttpServletRequest request, @PathVariable("message-id") long messageId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
 
@@ -47,7 +57,7 @@ public class MessageController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/sent")
+    @GetMapping("/{receiver}/sent")
     public ResponseEntity<?> getSentMessage(HttpServletRequest request) {
         Member currentMember = messageService.verifiedCurrentMember(request);
 
@@ -55,10 +65,12 @@ public class MessageController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/sent/{message-id}")
+    @DeleteMapping("/{receiver}/sent/{message-id}")
     public ResponseEntity<?> deleteSentMessage(HttpServletRequest request, @PathVariable("message-id") long messageId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
 
         return apiResponseDto.success("보낸 쪽지인, " + messageId + "번 쪽지를 삭제했습니다.", messageService.deleteMessageBySender(messageId, currentMember));
     }
+
+
 }

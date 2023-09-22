@@ -1,14 +1,13 @@
 package com.dmuIt.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.yaml.snakeyaml.events.Event;
 
 import javax.persistence.*;
-
+@Getter
+@Setter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +16,12 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
+
+    @Column(nullable = false)
+    private String senderName;
+
+    @Column(nullable = false)
+    private String receiverName;
 
     @Column(nullable = false)
     private String title;
