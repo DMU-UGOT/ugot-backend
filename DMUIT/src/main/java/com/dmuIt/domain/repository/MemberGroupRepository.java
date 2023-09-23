@@ -11,5 +11,5 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Long> 
     List<MemberGroup> findMemberGroupsByMember(Member member);
     List<MemberGroup> findMemberGroupsByGroup(Group group);
     MemberGroup findMemberGroupByGroup(Group group);
-    MemberGroup findMemberGroupByMember(Member member);
+    MemberGroup findMemberGroupByMemberAndGroup(Member member, Group group);
 }

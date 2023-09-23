@@ -102,7 +102,7 @@ public class GroupService {
         }
         Group group = verifiedGroup(groupId);
         group.setNowPersonnel(group.getNowPersonnel() - 1);
-        memberGroupRepository.delete(memberGroupRepository.findMemberGroupByMember(member));
+        memberGroupRepository.delete(memberGroupRepository.findMemberGroupByMemberAndGroup(member, group));
     }
 
     public List<MemberGroup> findMembers(long groupId) {
