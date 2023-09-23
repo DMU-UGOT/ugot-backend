@@ -112,11 +112,11 @@ public class GroupService {
     @Transactional
     public void deleteGroup(HttpServletRequest request, final Long groupId) {
         Member member = memberService.verifiedCurrentMember(request);
-        MemberGroup memberGroup = memberGroupRepository.findMemberGroupByGroup(verifiedGroup(groupId));
-        if (member.getMemberId() != memberGroup.getMember().getMemberId()) {
+        Group group = verifiedGroup(groupId);
+        if (!member.getNickname().equals(group.getNickname())) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
-        groupRepository.delete(memberGroup.getGroup());
+        groupRepository.delete(group);
     }
 
     public void createNotice(NoticeDto.Post noticePostDto, long groupId) {
