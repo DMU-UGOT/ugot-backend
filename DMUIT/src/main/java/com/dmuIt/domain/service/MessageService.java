@@ -26,7 +26,18 @@ public class MessageService {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
+    
+    //방 번호 구분
+    public void roomChecking(Message message, MessageDto messageDto){
 
+        if(messageRepository.findRoomNum(messageDto.getReceiverName(), messageDto.getSenderName()) == null){
+            //신규방 설정
+
+        }else{
+            //기존방!
+            message.setRoom(messageRepository.findRoomNum(messageDto.getReceiverName(), messageDto.getSenderName()));
+        }
+    }
     @Transactional
     public MessageDto write(MessageDto messageDto) {
         Optional<Member> optionalMember1 = memberRepository.findByNickname(messageDto.getReceiverName());
@@ -37,6 +48,7 @@ public class MessageService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         Message message = new Message();
+        message.setRoom(messageDto.getRoom());
         message.setReceiver(receiver);
         message.setSender(sender);
         message.setSenderName(sender.getNickname());
@@ -51,8 +63,8 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public List<MessageDto> allMessage(Member member, String recvName) {
-        List<Message> messages = messageRepository.findAllByReceiver(member, recvName);
+    public List<MessageDto> allMessage(Member member, Integer room) {
+        List<Message> messages = messageRepository.findAllByRoom(member, room);
         List<MessageDto> messageDtos = new ArrayList<>();
 
         for (Message message : messages) {

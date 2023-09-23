@@ -23,7 +23,7 @@ public class Message {
     private Long messageId;
 
     @Column(nullable = false)
-    private Integer room = 0;
+    private Integer room;
 
     @Column(nullable = false)
     private String senderName;
