@@ -30,5 +30,4 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     )
     Integer findRoomNum(@Param("recvName") String recvName, @Param("sendName") String sendName);
 
-    List<Message> findByReceiver(String sender);
 }

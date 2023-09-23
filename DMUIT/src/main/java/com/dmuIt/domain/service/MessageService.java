@@ -40,6 +40,8 @@ public class MessageService {
             message.setRoom(messageRepository.findRoomNum(messageDto.getReceiverName(), messageDto.getSenderName()));
         }
     }
+
+
     @Transactional
     public MessageDto write(MessageDto messageDto) {
         Optional<Member> optionalMember1 = memberRepository.findByNickname(messageDto.getReceiverName());
@@ -66,6 +68,20 @@ public class MessageService {
         return MessageDto.toDto(message);
     }
 
+    //쪽지함
+    public List<MessageDto> receivedMessage(Member member){
+        List<Message> messages = messageRepository.findAllBySender(member.getNickname());
+        List<MessageDto> messageDtos = new ArrayList<>();
+        for (Message message : messages) {
+            // message 에서 받은 편지함에서 삭제하지 않았으면 보낼 때 추가해서 보내줌
+            if (!message.isDeletedByReceiver()) {
+                messageDtos.add(MessageDto.toDto(message));
+            }
+        }
+        return messageDtos;
+    }
+
+    //쪽지 상세보기
     @Transactional(readOnly = true)
     public List<MessageDto> allMessage(Member member, Integer room) {
         List<Message> messages = messageRepository.findAllByRoom(member, room);
@@ -80,17 +96,7 @@ public class MessageService {
         return messageDtos;
     }
 
-    public List<MessageDto> receivedMessage(Member member){
-        List<Message> messages = messageRepository.findAllBySender(member.getNickname());
-        List<MessageDto> messageDtos = new ArrayList<>();
-        for (Message message : messages) {
-            // message 에서 받은 편지함에서 삭제하지 않았으면 보낼 때 추가해서 보내줌
-            if (!message.isDeletedByReceiver()) {
-                messageDtos.add(MessageDto.toDto(message));
-            }
-        }
-        return messageDtos;
-    }
+
 
     // 받은 편지 삭제
     @Transactional
@@ -110,21 +116,6 @@ public class MessageService {
             return new IllegalArgumentException("유저 정보가 일치하지 않습니다.");
         }
     }
-
- /*   @Transactional(readOnly = true)
-    public List<MessageDto> sentMessage(Member member) {
-
-        List<Message> messages = messageRepository.findAllBySender(member);
-        List<MessageDto> messageDtos = new ArrayList<>();
-
-        for (Message message : messages) {
-            // message 에서 받은 편지함에서 삭제하지 않았으면 보낼 때 추가해서 보내줌
-            if (!message.isDeletedBySender()) {
-                messageDtos.add(MessageDto.toDto(message));
-            }
-        }
-        return messageDtos;
-    }*/
 
     @Transactional
     public Object deleteMessageBySender(long id, Member member) {
