@@ -24,9 +24,4 @@ public class FavoriteController {
     public void addLike(@PathVariable Long groupId, Favorite favorite) throws Exception {
         favoriteService.addLike(groupId, favorite);
     }
-
-//    @DeleteMapping("/delete/{likeId}")
-//    public void deleteLike(@PathVariable Long likeId) {
-//        favoriteService.deleteLike(likeId);
-//    }
 }
