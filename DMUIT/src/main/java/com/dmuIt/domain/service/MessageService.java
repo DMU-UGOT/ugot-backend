@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +40,8 @@ public class MessageService {
         message.setReceiver(receiver);
         message.setSender(sender);
 
-        message.setSenderName(message.getSenderName());
-        message.setReceiverName(message.getReceiverName());
-
+        message.setSenderName(sender.getNickname());
+        message.setReceiverName(receiver.getNickname());
         message.setTitle(messageDto.getTitle());
         message.setContent(messageDto.getContent());
         message.setDeletedByReceiver(false);
@@ -67,13 +67,10 @@ public class MessageService {
         }
         return messageDtos;
     }
-    @Transactional(readOnly = true)
-    public List<MessageDto> receivedMessage(Member member, String nickname) {
 
-
-        List<Message> messages = messageRepository.findAllByReceiver(member);
+    public List<MessageDto> receivedMessage(Member member){
+        List<Message> messages = messageRepository.findAllBySender(member);
         List<MessageDto> messageDtos = new ArrayList<>();
-
         for (Message message : messages) {
             // message 에서 받은 편지함에서 삭제하지 않았으면 보낼 때 추가해서 보내줌
             if (!message.isDeletedByReceiver()) {
@@ -82,6 +79,7 @@ public class MessageService {
         }
         return messageDtos;
     }
+
     // 받은 편지 삭제
     @Transactional
     public Object deleteMessageByReceiver(long id, Member member) {
