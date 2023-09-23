@@ -23,6 +23,9 @@ public class Message {
     private Long messageId;
 
     @Column(nullable = false)
+    private Integer room = 0;
+
+    @Column(nullable = false)
     private String senderName;
 
     @Column(nullable = false)
@@ -65,4 +68,9 @@ public class Message {
     public boolean isDeleted() {
         return isDeletedBySender() && isDeletedByReceiver();
     }
+/*    public boolean chatRoom(Message m) { if(m.getReceiverName()==m.getSenderName()){room = room + 1;}
+        return true; }
+    public boolean isRoomPresent() { return chatRoom();}*/
+
+
 }

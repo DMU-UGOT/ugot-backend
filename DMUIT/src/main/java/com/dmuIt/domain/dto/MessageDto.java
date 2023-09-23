@@ -12,6 +12,8 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageDto {
+    private long id;
+    private Integer room;
     private String title;
     private String content;
     private String senderName;
@@ -20,6 +22,8 @@ public class MessageDto {
 
     public static MessageDto toDto(Message message) {
         return new MessageDto(
+                message.getMessageId(),
+                message.getRoom(),
                 message.getTitle(),
                 message.getContent(),
                 message.getSender().getNickname(),

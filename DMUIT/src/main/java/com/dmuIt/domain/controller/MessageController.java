@@ -19,6 +19,7 @@ import static io.lettuce.core.pubsub.PubSubOutput.Type.message;
 @RequiredArgsConstructor
 public class MessageController {
     private final MessageService messageService;
+    private final MemberRepository memberRepository;
     private final ApiResponseDto apiResponseDto;
 
 
@@ -43,7 +44,33 @@ public class MessageController {
     @GetMapping("/{received-name}")
     public ResponseEntity<?> getAllReceivedMessage(HttpServletRequest request, @PathVariable("received-name") String recvName) {
         Member currentMember = messageService.verifiedCurrentMember(request);
-        return apiResponseDto.success("받은 쪽지를 불러왔습니다.", messageService.allReceivedMessage(currentMember, recvName));
+        return apiResponseDto.success("받은 쪽지를 불러왔습니다.", messageService.allMessage(currentMember, recvName));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{receiver}/sent")
+    public ResponseEntity<?> getSentMessage(HttpServletRequest request) {
+        Member currentMember = messageService.verifiedCurrentMember(request);
+        return apiResponseDto.success("보낸 쪽지를 불러왔습니다..", messageService.sentMessage(currentMember));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/delete/{message-id}")
+    public ResponseEntity<?> deleteReceivedMessage(HttpServletRequest request, @PathVariable("message-id") long messageId) {
+        Member currentMember = messageService.verifiedCurrentMember(request);
+
+        return apiResponseDto.success("받은 쪽지인, " + messageId + "번 쪽지를 삭제했습니다.", messageService.deleteMessageByReceiver(messageId, currentMember));
+    }
+
+/*
+    }*/
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/delete/{message-id}")
+    public ResponseEntity<?> deleteSentMessage(HttpServletRequest request, @PathVariable("message-id") long messageId) {
+        Member currentMember = messageService.verifiedCurrentMember(request);
+
+        return apiResponseDto.success("보낸 쪽지인, " + messageId + "번 쪽지를 삭제했습니다.", messageService.deleteMessageBySender(messageId, currentMember));
     }
 
 
