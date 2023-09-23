@@ -25,8 +25,8 @@ public interface TeamMapper {
             response.set_class(team.get_class());
             response.setNickname(team.getMember().getNickname());
             response.setBookmarked(team.getBookmarked());
-            response.setAllPersonnel(team.getAllPersonnel());
-            response.setNowPersonnel(team.getNowPersonnel());
+            response.setAllPersonnel(team.getGroup().getAllPersonnel());
+            response.setNowPersonnel(team.getGroup().getNowPersonnel());
             response.setGoal(team.getGoal());
             response.setLanguage(team.getLanguage());
             response.setViewCount(team.getViewCount());

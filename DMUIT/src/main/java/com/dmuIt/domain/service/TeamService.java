@@ -1,8 +1,10 @@
 package com.dmuIt.domain.service;
 
 import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.entity.MemberGroup;
 import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.entity.TeamBookmark;
+import com.dmuIt.domain.repository.MemberGroupRepository;
 import com.dmuIt.domain.repository.TeamBookmarkRepository;
 import com.dmuIt.domain.repository.TeamRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
@@ -25,6 +27,8 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final TeamBookmarkRepository bookmarkRepository;
     private final MemberService memberService;
+    private final MemberGroupRepository memberGroupRepository;
+    private final GroupService groupService;
 
     public void createTeam(HttpServletRequest request, Team team) {
         team.setMember(memberService.verifiedCurrentMember(request));
@@ -46,8 +50,6 @@ public class TeamService {
                 .ifPresent(findTeam::setField);
         Optional.ofNullable(team.get_class())
                 .ifPresent(findTeam::set_class);
-        Optional.ofNullable(team.getAllPersonnel())
-                .ifPresent(findTeam::setAllPersonnel);
         Optional.ofNullable(team.getGoal())
                 .ifPresent(findTeam::setGoal);
         Optional.ofNullable(team.getLanguage())
@@ -83,6 +85,11 @@ public class TeamService {
     public List<Team> findMyTeams(HttpServletRequest request) {
         Member member = memberService.verifiedCurrentMember(request);
         return teamRepository.findTeamsByMember(member);
+    }
+
+    public List<MemberGroup> findMembers(long teamId) {
+        Team team = findVerifiedTeam(teamId);
+        return memberGroupRepository.findMemberGroupsByGroup(groupService.verifiedGroup(team.getGroup().getGroupId()));
     }
 
     @Transactional

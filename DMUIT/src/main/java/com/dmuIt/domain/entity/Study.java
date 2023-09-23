@@ -28,12 +28,6 @@ public class Study extends Auditable {
     @Column(nullable = false)
     private String isContact;
 
-    @Column(length = 20, nullable = false)
-    private Integer allPersonnel;
-
-    @Column
-    private Integer nowPersonnel = 1;
-
     @Column(nullable = false)
     private String subject;
 
@@ -55,7 +49,13 @@ public class Study extends Auditable {
     @Column
     private long bookmarked = 0;
 
-    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private Group group;
+
+
 }

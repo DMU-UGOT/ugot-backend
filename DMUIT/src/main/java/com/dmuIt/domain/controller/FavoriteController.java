@@ -24,6 +24,4 @@ public class FavoriteController {
     public void addLike(@PathVariable Long groupId, Favorite favorite) throws Exception {
         favoriteService.addLike(groupId, favorite);
     }
-
-
 }

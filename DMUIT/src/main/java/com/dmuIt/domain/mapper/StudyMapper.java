@@ -18,7 +18,6 @@ public interface StudyMapper {
             study.setTitle(studyPatchDto.getTitle());
             study.setContent(studyPatchDto.getContent());
             study.setIsContact(studyPatchDto.getIsContact());
-            study.setAllPersonnel(studyPatchDto.getAllPersonnel());
             study.setSubject(studyPatchDto.getSubject());
             study.setField(studyPatchDto.getField());
             study.setKakaoOpenLink(studyPatchDto.getKakaoOpenLink());
@@ -41,8 +40,8 @@ public interface StudyMapper {
             response.setIsContact( study.getIsContact() );
             response.setNickname(study.getMember().getNickname());
             response.setBookmarked(study.getBookmarked());
-            response.setAllPersonnel( study.getAllPersonnel() );
-            response.setNowPersonnel( study.getNowPersonnel() );
+            response.setAllPersonnel( study.getGroup().getAllPersonnel() );
+            response.setNowPersonnel( study.getGroup().getNowPersonnel());
             response.setSubject(study.getSubject());
             response.setField(study.getField());
             response.setKakaoOpenLink( study.getKakaoOpenLink() );
