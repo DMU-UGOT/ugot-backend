@@ -48,11 +48,11 @@ public class TeamDto {
         private String content;
         private String field;
         private String _class;
-        private Integer allPersonnel;
         private String goal;
         private String language;
         private String kakaoOpenLink;
         private String gitHubLink;
+        private Long groupId;
     }
 
     @Getter
@@ -63,7 +63,6 @@ public class TeamDto {
         private String content;
         private String field;
         private String _class;
-        private Integer allPersonnel;
         private String goal;
         private String language;
         private String kakaoOpenLink;

@@ -1,13 +1,12 @@
 package com.dmuIt.domain.controller;
 
-import com.dmuIt.domain.dto.FindAllDto;
-import com.dmuIt.domain.dto.PageInfo;
-import com.dmuIt.domain.dto.StudyDto;
-import com.dmuIt.domain.dto.TeamDto;
+import com.dmuIt.domain.dto.*;
 import com.dmuIt.domain.entity.Study;
 import com.dmuIt.domain.entity.Team;
+import com.dmuIt.domain.mapper.MemberGroupMapper;
 import com.dmuIt.domain.mapper.StudyMapper;
 import com.dmuIt.domain.repository.StudyRepository;
+import com.dmuIt.domain.service.GroupService;
 import com.dmuIt.domain.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,10 +27,13 @@ public class StudyController {
     private final StudyRepository studyRepository;
     private final StudyMapper studyMapper;
     private final StudyService studyService;
+    private final GroupService groupService;
+    private final MemberGroupMapper memberGroupMapper;
 
     @PostMapping
     public void createStudy(HttpServletRequest request, @RequestBody @Valid StudyDto.Post postStudyDto) {
         Study study = studyMapper.studyPostDtoToStudy(postStudyDto);
+        study.setGroup(groupService.verifiedGroup(postStudyDto.getGroupId()));
         studyService.createStudy(request, study);
     }
 
@@ -67,6 +69,11 @@ public class StudyController {
         return studyMapper.studiesToStudyResponseDtos(studyService.findMyStudies(request));
     }
 
+    @GetMapping("/{study-id}/findMembers")
+    public List<MemberGroupDto.MemberResponse> findMembers(@PathVariable("study-id") long studyId) {
+        return memberGroupMapper.membersToMemberResponse(studyService.findMembers(studyId));
+    }
+
     @DeleteMapping("/{study-id}")
     public void deleteStudy(HttpServletRequest request, @PathVariable("study-id") long studyId) {
         studyService.deleteStudy(request, studyId);
@@ -94,7 +101,7 @@ public class StudyController {
                     study -> new StudyDto(
                             study.getStudyId(), study.getTitle(), study.getContent(),
                             study.getIsContact(),
-                            study.getAllPersonnel(), study.getNowPersonnel(), study.getSubject(), study.getField(),
+                            study.getGroup().getAllPersonnel(), study.getGroup().getNowPersonnel(), study.getSubject(), study.getField(),
                             study.getViewCount(), study.getBookmarked(),
                             study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt()
 
@@ -105,7 +112,7 @@ public class StudyController {
                     study -> new StudyDto(
                             study.getStudyId(), study.getTitle(), study.getContent(),
                             study.getIsContact(),
-                            study.getAllPersonnel(), study.getNowPersonnel(), study.getSubject(), study.getField(),
+                            study.getGroup().getAllPersonnel(), study.getGroup().getNowPersonnel(), study.getSubject(), study.getField(),
                             study.getViewCount(), study.getBookmarked(),
                             study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt()
 

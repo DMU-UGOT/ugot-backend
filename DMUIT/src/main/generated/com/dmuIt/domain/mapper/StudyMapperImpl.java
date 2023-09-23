@@ -9,9 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-18T09:35:37+0900",
-    comments = "version: 1.5.1.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
-
+    date = "2023-09-24T00:19:12+0900",
+    comments = "version: 1.5.1.Final, compiler: javac, environment: Java 11.0.15 (Oracle Corporation)"
 )
 @Component
 public class StudyMapperImpl implements StudyMapper {
@@ -27,7 +26,6 @@ public class StudyMapperImpl implements StudyMapper {
         study.setTitle( studyPostDto.getTitle() );
         study.setContent( studyPostDto.getContent() );
         study.setIsContact( studyPostDto.getIsContact() );
-        study.setAllPersonnel( studyPostDto.getAllPersonnel() );
         study.setSubject( studyPostDto.getSubject() );
         study.setField( studyPostDto.getField() );
         study.setKakaoOpenLink( studyPostDto.getKakaoOpenLink() );

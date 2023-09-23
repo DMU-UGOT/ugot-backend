@@ -47,11 +47,11 @@ public class StudyDto {
         private String title;
         private String content;
         private String isContact;
-        private Integer allPersonnel;
         private String subject;
         private String field;
         private String kakaoOpenLink;
         private String gitHubLink;
+        private Long groupId;
     }
 
     @Getter
@@ -61,7 +61,6 @@ public class StudyDto {
         private String title;
         private String content;
         private String isContact;
-        private Integer allPersonnel;
         private String subject;
         private String field;
         private String kakaoOpenLink;

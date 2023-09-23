@@ -1,8 +1,10 @@
 package com.dmuIt.domain.service;
 
 import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.entity.MemberGroup;
 import com.dmuIt.domain.entity.Study;
 import com.dmuIt.domain.entity.StudyBookmark;
+import com.dmuIt.domain.repository.MemberGroupRepository;
 import com.dmuIt.domain.repository.StudyBookmarkRepository;
 import com.dmuIt.domain.repository.StudyRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
@@ -25,6 +27,8 @@ public class StudyService {
     private final StudyRepository studyRepository;
     private final StudyBookmarkRepository bookmarkRepository;
     private final MemberService memberService;
+    private final MemberGroupRepository memberGroupRepository;
+    private final GroupService groupService;
 
     public void createStudy(HttpServletRequest request, Study study) {
         study.setMember(memberService.verifiedCurrentMember(request));
@@ -44,8 +48,6 @@ public class StudyService {
                 .ifPresent(findStudy::setContent);
         Optional.ofNullable(study.getIsContact())
                 .ifPresent(findStudy::setIsContact);
-        Optional.ofNullable(study.getAllPersonnel())
-                .ifPresent(findStudy::setAllPersonnel);
         Optional.ofNullable(study.getSubject())
                 .ifPresent(findStudy::setSubject);
         Optional.ofNullable(study.getField())
@@ -81,6 +83,11 @@ public class StudyService {
     public List<Study> findMyStudies(HttpServletRequest request) {
         Member member = memberService.verifiedCurrentMember(request);
         return studyRepository.findStudiesByMember(member);
+    }
+
+    public List<MemberGroup> findMembers(long studyId) {
+        Study study = findVerifiedStudy(studyId);
+        return memberGroupRepository.findMemberGroupsByGroup(groupService.verifiedGroup(study.getGroup().getGroupId()));
     }
 
     @Transactional
