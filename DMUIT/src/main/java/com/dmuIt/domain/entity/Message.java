@@ -22,8 +22,8 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
-    @Column(nullable = false)
-    private Integer room;
+    @Column
+    private int room;
 
     @Column(nullable = false)
     private String senderName;

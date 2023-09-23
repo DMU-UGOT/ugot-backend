@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class MessageDto {
     private long id;
-    private Integer room;
+    private int room;
     private String title;
     private String content;
     private String senderName;

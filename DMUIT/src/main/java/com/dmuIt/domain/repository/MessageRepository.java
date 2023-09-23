@@ -20,13 +20,15 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
                     "         SELECT *,\n" +
                     "               ROW_NUMBER() OVER(PARTITION BY room ORDER BY created_at DESC) AS rn\n" +
                     "           FROM message\n" +
-                    "       ) tt WHERE rn = 1", nativeQuery = true
+                    "       ) tt WHERE rn = 1 AND (tt.receiver_name LIKE :name OR tt.sender_name LIKE :name)", nativeQuery = true
     )
-    List<Message> findAllBySender(Member member);
+    List<Message> findAllBySender(@Param("name") String name);
 
     @Query(
-            value = "SELECT room FROM message p WHERE p.receiver_name LIKE :recvName AND p.sender_name Like :sendName", nativeQuery = true
+            value = "SELECT room FROM message p WHERE (p.receiver_name LIKE :recvName AND p.sender_name Like :sendName) OR " +
+                    "(p.receiver_name LIKE :sendName AND p.sender_name Like :recvName)", nativeQuery = true
     )
     Integer findRoomNum(@Param("recvName") String recvName, @Param("sendName") String sendName);
+
     List<Message> findByReceiver(String sender);
 }

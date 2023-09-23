@@ -15,9 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -29,10 +27,14 @@ public class MessageService {
     
     //방 번호 구분
     public void roomChecking(Message message, MessageDto messageDto){
-
         if(messageRepository.findRoomNum(messageDto.getReceiverName(), messageDto.getSenderName()) == null){
             //신규방 설정
-
+            //랜덤 방 숫자를 주되 중복되지 않게
+            Integer a;
+            do{
+               a = (int) (Math.random()*100+1);
+            }while(messageRepository.findRoomNum(messageDto.getReceiverName(), messageDto.getSenderName()) == a);
+            message.setRoom(a);
         }else{
             //기존방!
             message.setRoom(messageRepository.findRoomNum(messageDto.getReceiverName(), messageDto.getSenderName()));
@@ -48,7 +50,9 @@ public class MessageService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         Message message = new Message();
-        message.setRoom(messageDto.getRoom());
+
+        roomChecking(message,messageDto);
+
         message.setReceiver(receiver);
         message.setSender(sender);
         message.setSenderName(sender.getNickname());
@@ -77,7 +81,7 @@ public class MessageService {
     }
 
     public List<MessageDto> receivedMessage(Member member){
-        List<Message> messages = messageRepository.findAllBySender(member);
+        List<Message> messages = messageRepository.findAllBySender(member.getNickname());
         List<MessageDto> messageDtos = new ArrayList<>();
         for (Message message : messages) {
             // message 에서 받은 편지함에서 삭제하지 않았으면 보낼 때 추가해서 보내줌
@@ -107,7 +111,7 @@ public class MessageService {
         }
     }
 
-    @Transactional(readOnly = true)
+ /*   @Transactional(readOnly = true)
     public List<MessageDto> sentMessage(Member member) {
 
         List<Message> messages = messageRepository.findAllBySender(member);
@@ -120,7 +124,7 @@ public class MessageService {
             }
         }
         return messageDtos;
-    }
+    }*/
 
     @Transactional
     public Object deleteMessageBySender(long id, Member member) {
