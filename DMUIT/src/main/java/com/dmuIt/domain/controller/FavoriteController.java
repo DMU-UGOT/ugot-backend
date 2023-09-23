@@ -25,8 +25,5 @@ public class FavoriteController {
         favoriteService.addLike(groupId, favorite);
     }
 
-    @DeleteMapping("/delete/{likeId}")
-    public void deleteLike(@PathVariable Long likeId) {
-        favoriteService.deleteLike(likeId);
-    }
+
 }
