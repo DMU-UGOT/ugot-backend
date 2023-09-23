@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Data
@@ -15,13 +16,15 @@ public class MessageDto {
     private String content;
     private String senderName;
     private String receiverName;
+    private LocalDateTime created_at;
 
     public static MessageDto toDto(Message message) {
         return new MessageDto(
                 message.getTitle(),
                 message.getContent(),
                 message.getSender().getNickname(),
-                message.getReceiver().getNickname()
+                message.getReceiver().getNickname(),
+                message.getCreatedAt()
         );
 
     }
