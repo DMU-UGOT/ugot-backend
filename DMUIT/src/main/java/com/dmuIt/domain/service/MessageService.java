@@ -39,7 +39,6 @@ public class MessageService {
         Message message = new Message();
         message.setReceiver(receiver);
         message.setSender(sender);
-
         message.setSenderName(sender.getNickname());
         message.setReceiverName(receiver.getNickname());
         message.setTitle(messageDto.getTitle());
@@ -52,11 +51,8 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public List<MessageDto> allReceivedMessage(Member member) {
-        // 받은 편지함 불러오기
-        // 한 명의 유저가 받은 모든 메시지
-        // 추후 JWT를 이용해서 재구현 예정
-        List<Message> messages = messageRepository.findAllByReceiver(member);
+    public List<MessageDto> allReceivedMessage(Member member, String recvName) {
+        List<Message> messages = messageRepository.findAllByReceiver(member, recvName);
         List<MessageDto> messageDtos = new ArrayList<>();
 
         for (Message message : messages) {
@@ -78,60 +74,6 @@ public class MessageService {
             }
         }
         return messageDtos;
-    }
-
-    // 받은 편지 삭제
-    @Transactional
-    public Object deleteMessageByReceiver(long id, Member member) {
-        Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("메시지를 찾을 수 없습니다."));
-
-        if (member.getMemberId() == message.getReceiver().getMemberId()) {
-            message.deletedByReceiver(); // 받은 사람에게 메시지 삭제
-            if (message.isDeleted()) {
-                // 받은 사람과 보낸 사람 모두 삭제했으면, 데이터베이스에서 삭제 요청
-                messageRepository.delete(message);
-                return "양쪽 모두 삭제";
-            }
-            return "한쪽만 삭제";
-        } else {
-            return new IllegalArgumentException("유저 정보가 일치하지 않습니다.");
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public List<MessageDto> sentMessage(Member member) {
-        // 보낸 편지함 불러오기
-        // 한 명의 유저가 보낸 모든 메시지
-        // 추후 JWT를 이용해서 재구현 예정
-        List<Message> messages = messageRepository.findAllBySender(member);
-        List<MessageDto> messageDtos = new ArrayList<>();
-
-        for (Message message : messages) {
-            // message 에서 받은 편지함에서 삭제하지 않았으면 보낼 때 추가해서 보내줌
-            if (!message.isDeletedBySender()) {
-                messageDtos.add(MessageDto.toDto(message));
-            }
-        }
-        return messageDtos;
-    }
-
-    @Transactional
-    public Object deleteMessageBySender(long id, Member member) {
-        Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("메시지를 찾을 수 없습니다."));
-
-        if (member == message.getSender()) {
-            message.deletedBySender(); // 받은 사람에게 메시지 삭제
-            if (message.isDeleted()) {
-                // 받은 사람과 보낸 사람 모두 삭제했으면, 데이터베이스에서 삭제 요청
-                messageRepository.delete(message);
-                return "양쪽 모두 삭제";
-            }
-            return "한쪽만 삭제";
-        } else {
-            return new IllegalArgumentException("유저 정보가 일치하지 않습니다.");
-        }
     }
 
     public Member verifiedCurrentMember(HttpServletRequest request) {
