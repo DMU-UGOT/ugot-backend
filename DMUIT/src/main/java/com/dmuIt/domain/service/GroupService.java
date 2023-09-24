@@ -53,10 +53,19 @@ public class GroupService {
         groupRepository.save(group);
     }
 
-//    public List<GroupDto> findAll() {
-//        List<Group> list = groupRepository.findAll();
-//        return list.stream().map(GroupDto::new).collect(Collectors.toList());
-//    }
+    @Transactional
+    public void updateGroup(HttpServletRequest request, GroupDto params, long groupId) {
+        Member member = memberService.verifiedCurrentMember(request);
+        Group group = verifiedGroup(groupId);
+        if (!member.getNickname().equals(group.getNickname())) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        group.setGroupName(params.getGroupName());
+        group.setContent(params.getContent());
+        group.setAllPersonnel(params.getAllPersonnel());
+        group.setGithubUrl(params.getGithubUrl());
+        groupRepository.save(group);
+    }
 
     public Group groupDetailPage(long groupId) {
         return verifiedGroup(groupId);
@@ -119,16 +128,26 @@ public class GroupService {
         groupRepository.delete(group);
     }
 
-    public void createNotice(NoticeDto.Post noticePostDto, long groupId) {
+    public void createNotice(HttpServletRequest request, NoticeDto.Post noticePostDto, long groupId) {
+        Member member = memberService.verifiedCurrentMember(request);
+        Group group = verifiedGroup(groupId);
+        if (!member.getNickname().equals(group.getNickname())) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         Notice notice = new Notice();
         LocalDate date = LocalDate.of(noticePostDto.getYear(), noticePostDto.getMonth(), noticePostDto.getDateOfMonth());
         notice.setDate(date);
         notice.setContent(noticePostDto.getContent());
-        notice.setGroup(verifiedGroup(groupId));
+        notice.setGroup(group);
         noticeRepository.save(notice);
     }
 
-    public void updateNotice(NoticeDto.Post noticePostDto, long noticeId) {
+    public void updateNotice(HttpServletRequest request, NoticeDto.Post noticePostDto, long groupId, long noticeId) {
+        Member member = memberService.verifiedCurrentMember(request);
+        Group group = verifiedGroup(groupId);
+        if (!member.getNickname().equals(group.getNickname())) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         Notice notice = verifiedNotice(noticeId);
         LocalDate date = LocalDate.of(noticePostDto.getYear(), noticePostDto.getMonth(), noticePostDto.getDateOfMonth());
         notice.setDate(date);
@@ -136,8 +155,8 @@ public class GroupService {
         noticeRepository.save(notice);
     }
 
-    public List<NoticeDto.Response> getNotices() {
-        return noticeMapper.NoticesToNoticeResponseDtos(noticeRepository.findAll());
+    public List<NoticeDto.Response> getNotices(long groupId) {
+        return noticeMapper.NoticesToNoticeResponseDtos(noticeRepository.findNoticesByGroup(verifiedGroup(groupId)));
     }
 
     public void deleteNotice(Long noticeId) {
@@ -146,6 +165,10 @@ public class GroupService {
 
     public void createConversation(HttpServletRequest request, long groupId, Conversation conversation) {
         Member member = memberService.verifiedCurrentMember(request);
+        Group group = verifiedGroup(groupId);
+        if (memberGroupRepository.findMemberGroupByMemberAndGroup(member, group) == null) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         conversation.setMember(member);
         conversation.setGroup(verifiedGroup(groupId));
         conversationRepository.save(conversation);

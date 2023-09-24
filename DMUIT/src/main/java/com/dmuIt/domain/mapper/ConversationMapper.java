@@ -16,6 +16,7 @@ public interface ConversationMapper {
             return null;
         } else {
             ConversationDto.Response response = new ConversationDto.Response();
+            response.setConversationId(conversation.getConversationId());
             response.setNickname(conversation.getMember().getNickname());
             response.setContent(conversation.getContent());
             response.setCreatedAt(conversation.getCreatedAt());

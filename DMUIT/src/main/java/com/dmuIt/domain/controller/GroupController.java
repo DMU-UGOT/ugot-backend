@@ -32,6 +32,12 @@ public class GroupController {
         groupService.createGroup(request, params);
     }
 
+    @PatchMapping("/{group-id}")
+    public void update(HttpServletRequest request, @RequestBody @Valid GroupDto params,
+                       @PathVariable("group-id") long groupId) {
+        groupService.updateGroup(request, params, groupId);
+    }
+
     @GetMapping
     public List<MemberGroupDto.GroupResponse> findMyGroups(HttpServletRequest request) {
         List<MemberGroup> groups = groupService.findMyGroups(request);
@@ -43,17 +49,17 @@ public class GroupController {
         return groupMapper.groupToResponse(groupService.groupDetailPage(groupId));
     }
 
-    @GetMapping("/findMembers/{group-id}")
+    @GetMapping("/{group-id}/findMembers")
     public List<MemberGroupDto.MemberResponse> findMembers(@PathVariable("group-id") long groupId) {
         return memberGroupMapper.membersToMemberResponse(groupService.findMembers(groupId));
     }
 
-    @PostMapping("/join/{group-id}")
+    @PostMapping("/{group-id}/join")
     public void joinGroup(HttpServletRequest request, @PathVariable("group-id") long groupId) {
         groupService.joinGroup(request, groupId);
     }
 
-    @DeleteMapping("/quit/{group-id}")
+    @DeleteMapping("/{group-id}/quit")
     public void quitGroup(HttpServletRequest request, @PathVariable("group-id") long groupId) {
         groupService.quitGroup(request, groupId);
     }
@@ -64,21 +70,22 @@ public class GroupController {
     }
 
     @PostMapping("/{group-id}/notice")
-    public void createNotice(@PathVariable("group-id") long groupId, @RequestBody @Valid NoticeDto.Post noticePostDto) {
-        groupService.createNotice(noticePostDto, groupId);
+    public void createNotice(HttpServletRequest request, @PathVariable("group-id") long groupId, @RequestBody @Valid NoticeDto.Post noticePostDto) {
+        groupService.createNotice(request, noticePostDto, groupId);
     }
 
-    @PatchMapping("/{notice-id}")
-    public void updateNotice(@PathVariable("notice-id") long noticeId, @RequestBody @Valid NoticeDto.Post noticePatchDto) {
-        groupService.updateNotice(noticePatchDto, noticeId);
+    @PatchMapping("/{group-id}/{notice-id}")
+    public void updateNotice(HttpServletRequest request, @PathVariable("group-id") long groupId,
+                             @PathVariable("notice-id") long noticeId, @RequestBody @Valid NoticeDto.Post noticePatchDto) {
+        groupService.updateNotice(request, noticePatchDto, groupId, noticeId);
     }
 
-    @GetMapping("/findAllNotices")
-    public List<NoticeDto.Response> getNotices() {
-        return groupService.getNotices();
+    @GetMapping("/{group-id}/findNotices")
+    public List<NoticeDto.Response> getNotices(@PathVariable("group-id") long groupId) {
+        return groupService.getNotices(groupId);
     }
 
-    @DeleteMapping("/deleteNotice/{notice-id}")
+    @DeleteMapping("/{notice-id}/deleteNotice")
     public void deleteNotice(@PathVariable("notice-id") long noticeId) {
         groupService.deleteNotice(noticeId);
     }
@@ -96,7 +103,7 @@ public class GroupController {
         return conversationMapper.conversationsToResponse(groupService.findConversation(groupId));
     }
 
-    @DeleteMapping("/deleteConversation/{conversation-id}")
+    @DeleteMapping("/{conversation-id}/deleteConversation")
     public void deleteConversation(HttpServletRequest request, @PathVariable("conversation-id") long conversationId) {
         groupService.deleteConversation(request, conversationId);
     }

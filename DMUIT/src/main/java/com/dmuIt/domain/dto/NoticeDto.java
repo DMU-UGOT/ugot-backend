@@ -23,6 +23,7 @@ public class NoticeDto {
     @Getter
     @Setter
     public static class Response {
+        private Long noticeId;
         private LocalDate date;
         private String content;
     }

@@ -19,6 +19,7 @@ public class ConversationDto {
     @Getter
     @Setter
     public static class Response {
+        private Long conversationId;
         private String nickname;
         private String content;
         private LocalDateTime createdAt;

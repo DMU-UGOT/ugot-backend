@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-24T01:42:04+0900",
+    date = "2023-09-24T15:26:47+0900",
     comments = "version: 1.5.1.Final, compiler: javac, environment: Java 11.0.15 (Oracle Corporation)"
 )
 @Component
@@ -27,18 +27,5 @@ public class NoticeMapperImpl implements NoticeMapper {
         }
 
         return list;
-    }
-
-    protected NoticeDto.Response noticeToResponse(Notice notice) {
-        if ( notice == null ) {
-            return null;
-        }
-
-        NoticeDto.Response response = new NoticeDto.Response();
-
-        response.setDate( notice.getDate() );
-        response.setContent( notice.getContent() );
-
-        return response;
     }
 }
