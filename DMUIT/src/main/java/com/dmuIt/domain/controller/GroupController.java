@@ -99,8 +99,8 @@ public class GroupController {
     }
 
     @GetMapping("/{group-id}/conversations")
-    public List<ConversationDto.Response> findConversations(@PathVariable("group-id") long groupId) {
-        return conversationMapper.conversationsToResponse(groupService.findConversation(groupId));
+    public List<ConversationDto.Response> findConversations(HttpServletRequest request, @PathVariable("group-id") long groupId) {
+        return conversationMapper.conversationsToResponse(groupService.findConversation(request, groupId));
     }
 
     @DeleteMapping("/{conversation-id}/deleteConversation")

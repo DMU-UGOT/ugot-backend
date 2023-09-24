@@ -174,7 +174,12 @@ public class GroupService {
         conversationRepository.save(conversation);
     }
 
-    public List<Conversation> findConversation(long groupId) {
+    public List<Conversation> findConversation(HttpServletRequest request, long groupId) {
+        Member member = memberService.verifiedCurrentMember(request);
+        Group group = verifiedGroup(groupId);
+        if (memberGroupRepository.findMemberGroupByMemberAndGroup(member, group) == null) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         return conversationRepository.findConversationByGroup(verifiedGroup(groupId));
     }
 
