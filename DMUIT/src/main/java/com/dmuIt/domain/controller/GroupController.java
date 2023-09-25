@@ -3,8 +3,10 @@ import com.dmuIt.domain.dto.*;
 import com.dmuIt.domain.entity.Conversation;
 import com.dmuIt.domain.entity.MemberGroup;
 import com.dmuIt.domain.mapper.ConversationMapper;
+import com.dmuIt.domain.mapper.FavoriteMapper;
 import com.dmuIt.domain.mapper.GroupMapper;
 import com.dmuIt.domain.mapper.MemberGroupMapper;
+import com.dmuIt.domain.service.FavoriteService;
 import com.dmuIt.domain.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +20,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GroupController {
     private final GroupService groupService;
+    private final FavoriteService favoriteService;
     private final MemberGroupMapper memberGroupMapper;
     private final ConversationMapper conversationMapper;
     private final GroupMapper groupMapper;
+    private final FavoriteMapper favoriteMapper;
 
 //    @GetMapping
 //    public List<GroupDto> findAll() {
@@ -106,5 +110,15 @@ public class GroupController {
     @DeleteMapping("/{conversation-id}/deleteConversation")
     public void deleteConversation(HttpServletRequest request, @PathVariable("conversation-id") long conversationId) {
         groupService.deleteConversation(request, conversationId);
+    }
+
+    @PostMapping("/{group-id}/addFavorites")
+    public void createFavorites(HttpServletRequest request, @PathVariable("group-id") long groupId) {
+        favoriteService.addFavorites(request, groupId);
+    }
+
+    @GetMapping("/myFavorites")
+    public List<FavoriteDto.Response> myFavorites(HttpServletRequest request) {
+        return favoriteMapper.favoritesToResponses(favoriteService.myFavorites(request));
     }
 }
