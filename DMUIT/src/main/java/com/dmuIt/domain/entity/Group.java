@@ -19,17 +19,13 @@ public class Group extends Auditable {
     @Column(length = 30, nullable = false)
     private String groupName;
 
-    @Column(length = 30, nullable = false)
-    private Integer person;
-
     @Column(length = 50, nullable = false)
     private String githubUrl;
 
     @Builder
-    public Group(Long groupId, String groupName, Integer person, String githubUrl) {
+    public Group(Long groupId, String groupName, String githubUrl) {
         this.groupId = groupId;
         this.groupName = groupName;
-        this.person = person;
         this.githubUrl = githubUrl;
     }
 }

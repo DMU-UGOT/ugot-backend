@@ -25,7 +25,6 @@ public class GroupService {
     public void createGroup(GroupDto params) {
         Group group = Group.builder().
                 groupName(params.getGroupName()).
-                person(params.getPerson()).
                 githubUrl(params.getGithubUrl()).
                 build();
         groupRepository.save(group);
