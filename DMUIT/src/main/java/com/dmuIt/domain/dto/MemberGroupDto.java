@@ -11,6 +11,7 @@ public class MemberGroupDto {
         private String groupName;
         private String content;
         private Integer nowPersonnel;
+        private String githubUrl;
     }
 
     @Getter

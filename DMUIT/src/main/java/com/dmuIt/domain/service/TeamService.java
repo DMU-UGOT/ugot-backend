@@ -71,6 +71,17 @@ public class TeamService {
         teamRepository.delete(team);
     }
 
+    @Transactional
+    public void refreshTeam(HttpServletRequest request, long teamId) {
+        Team team = findVerifiedTeam(teamId);
+        Member member = memberService.verifiedCurrentMember(request);
+        if (team.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        team.setCreatedAt(LocalDateTime.now());
+        teamRepository.save(team);
+    }
+
     public Team findTeam(long teamId) {
         Team team = findVerifiedTeam(teamId);
         team.setViewCount(team.getViewCount() + 1);
@@ -79,7 +90,7 @@ public class TeamService {
 
     public Page<Team> findTeams(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return teamRepository.findAllByOrderByIdDesc(pageRequest);
+        return teamRepository.findAllByOrderByCreatedAtDesc(pageRequest);
     }
 
     public List<Team> findMyTeams(HttpServletRequest request) {

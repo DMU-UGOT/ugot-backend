@@ -18,6 +18,7 @@ public interface MemberGroupMapper {
             groupResponse.setGroupName(memberGroup.getGroup().getGroupName());
             groupResponse.setNowPersonnel(memberGroup.getGroup().getNowPersonnel());
             groupResponse.setContent(memberGroup.getGroup().getContent());
+            groupResponse.setGithubUrl(memberGroup.getGroup().getGithubUrl());
             return groupResponse;
         }
     }

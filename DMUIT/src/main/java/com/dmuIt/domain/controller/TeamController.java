@@ -49,6 +49,12 @@ public class TeamController {
         teamService.updateTeam(request, team);
     }
 
+    @PatchMapping("/{team-id}/refresh")
+    public void refreshTeam(HttpServletRequest request,
+                            @PathVariable("team-id") long teamId) {
+        teamService.refreshTeam(request, teamId);
+    }
+
     @GetMapping("/{team-id}")
     public TeamDto.Response getTeam(@PathVariable("team-id") long teamId) {
         Team team = teamService.findTeam(teamId);
