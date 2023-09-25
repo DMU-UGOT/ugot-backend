@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class MessageDto {
     private long id;
     private int room;
-    private String title;
     private String content;
     private String senderName;
     private String receiverName;
@@ -24,7 +23,6 @@ public class MessageDto {
         return new MessageDto(
                 message.getMessageId(),
                 message.getRoom(),
-                message.getTitle(),
                 message.getContent(),
                 message.getSender().getNickname(),
                 message.getReceiver().getNickname(),

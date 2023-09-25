@@ -22,6 +22,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
+
     @Column
     private int room;
 
@@ -32,16 +33,8 @@ public class Message {
     private String receiverName;
 
     @Column(nullable = false)
-    private String title;
-
-    @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private boolean deletedBySender;
-
-    @Column(nullable = false)
-    private boolean deletedByReceiver;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -56,21 +49,6 @@ public class Message {
     @JoinColumn(name = "receiver_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member receiver;
-
-    public void deletedBySender() {
-        this.deletedBySender = true;
-    }
-
-    public void deletedByReceiver() {
-        this.deletedByReceiver = true;
-    }
-
-    public boolean isDeleted() {
-        return isDeletedBySender() && isDeletedByReceiver();
-    }
-/*    public boolean chatRoom(Message m) { if(m.getReceiverName()==m.getSenderName()){room = room + 1;}
-        return true; }
-    public boolean isRoomPresent() { return chatRoom();}*/
 
 
 }
