@@ -54,7 +54,7 @@ public class Member extends Auditable {
     private List<String> roles = new ArrayList<>();
 
     @ElementCollection
-    private Set<String> skill = new HashSet<>();
+    private List<String> skill = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "member") // 일대다관계
@@ -68,14 +68,8 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member")
     private List<StudyBookmark> studyBookmarks;
 
-    @ElementCollection
-    private List<Long> votes;
-
-    @ManyToMany                     // 다대다관계
-    @JoinTable(name = "member_project",
-            joinColumns = @JoinColumn(name = "member_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id"))
-    private List<Project> projects;
+    @OneToMany(mappedBy = "member")
+    private List<MemberGroup> memberGroups = new ArrayList<>();
 
     public Member(Long memberId, String name, String nickname, String email, String password, String major, Integer grade, String _class) {
         this.memberId = memberId;

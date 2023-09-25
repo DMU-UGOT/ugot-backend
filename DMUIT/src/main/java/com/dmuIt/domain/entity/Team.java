@@ -32,12 +32,6 @@ public class Team extends Auditable {
     @Column(length = 20, nullable = false)
     private String _class;
 
-    @Column(length = 20, nullable = false)
-    private Integer allPersonnel;
-
-    @Column
-    private Integer nowPersonnel = 1;
-
     @Column(nullable = false)
     private String goal;
 
@@ -60,4 +54,9 @@ public class Team extends Auditable {
     @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private Group group;
+
 }

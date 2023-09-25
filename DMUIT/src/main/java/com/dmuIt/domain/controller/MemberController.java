@@ -41,7 +41,7 @@ public class MemberController {
     }
 
     @GetMapping("/check/{nickname}")
-    public ResponseEntity<?> checkNickname(@PathVariable("nickname") String nickname) {
+    public String checkNickname(@PathVariable("nickname") String nickname) {
         return memberService.checkNickname(nickname);
     }
 

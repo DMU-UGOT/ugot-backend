@@ -5,6 +5,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 public class MemberDto {
@@ -33,7 +34,7 @@ public class MemberDto {
         private String major;
         private Integer grade;
         private String _class;
-        private Set<String> skill;
+        private List<String> skill;
         private String gitHubLink;
         private String personalBlogLink;
     }
@@ -46,7 +47,7 @@ public class MemberDto {
         private String major;
         private Integer grade;
         private String _class;
-        private Set<String> skill;
+        private List<String> skill;
         private String gitHubLink;
         private String personalBlogLink;
     }
@@ -61,12 +62,13 @@ public class MemberDto {
         private String major;
         private Integer grade;
         private String _class;
-        private Set<String> skill;
+        private List<String> skill;
         private String gitHubLink;
         private String personalBlogLink;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
+
     @Getter
     @Setter
     @Builder

@@ -1,12 +1,14 @@
 package com.dmuIt.domain.controller;
 
+import com.dmuIt.domain.dto.MemberGroupDto;
 import com.dmuIt.domain.dto.PageInfo;
 import com.dmuIt.domain.dto.FindAllDto;
 import com.dmuIt.domain.dto.TeamDto;
 import com.dmuIt.domain.entity.Team;
-import com.dmuIt.domain.entity.TeamBookmark;
+import com.dmuIt.domain.mapper.MemberGroupMapper;
 import com.dmuIt.domain.mapper.TeamMapper;
 import com.dmuIt.domain.repository.TeamRepository;
+import com.dmuIt.domain.service.GroupService;
 import com.dmuIt.domain.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,10 +29,14 @@ public class TeamController {
     private final TeamRepository teamRepository;
     private final TeamService teamService;
     private final TeamMapper teamMapper;
+    private final MemberGroupMapper memberGroupMapper;
+    private final GroupService groupService;
 
     @PostMapping
-    public void createTeam(HttpServletRequest request, @RequestBody @Valid TeamDto.Post teamPostDto) {
+    public void createTeam(HttpServletRequest request,
+                           @RequestBody @Valid TeamDto.Post teamPostDto) {
         Team team = teamMapper.teamPostDtoToTeam(teamPostDto);
+        team.setGroup(groupService.verifiedGroup(teamPostDto.getGroupId()));
         teamService.createTeam(request, team);
     }
 
@@ -41,6 +47,12 @@ public class TeamController {
         Team team = teamMapper.teamPatchDtoToTeam(teamPatchDto);
         team.setId(teamId);
         teamService.updateTeam(request, team);
+    }
+
+    @PatchMapping("/{team-id}/refresh")
+    public void refreshTeam(HttpServletRequest request,
+                            @PathVariable("team-id") long teamId) {
+        teamService.refreshTeam(request, teamId);
     }
 
     @GetMapping("/{team-id}")
@@ -62,6 +74,11 @@ public class TeamController {
         List<TeamDto.Response> responses = teamMapper.teamsToTeamResponseDtos(teams);
 
         return new FindAllDto(responses, pageInfo);
+    }
+
+    @GetMapping("/{team-id}/findMembers")
+    public List<MemberGroupDto.MemberResponse> findMembers(@PathVariable("team-id") long teamId) {
+        return memberGroupMapper.membersToMemberResponse(teamService.findMembers(teamId));
     }
 
     @GetMapping("/myTeams")
@@ -95,7 +112,7 @@ public class TeamController {
                     team -> new TeamDto(
                             team.getId(), team.getTitle(), team.getContent(),
                             team.getField(), team.get_class(),
-                            team.getAllPersonnel(), team.getNowPersonnel(), team.getGoal(), team. getLanguage(),
+                            team.getGroup().getAllPersonnel(), team.getGroup().getNowPersonnel(), team.getGoal(), team. getLanguage(),
                             team.getViewCount(), team.getBookmarked(),
                             team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreatedAt()
 
@@ -106,7 +123,7 @@ public class TeamController {
                     team -> new TeamDto(
                             team.getId(), team.getTitle(), team.getContent(),
                             team.getField(), team.get_class(),
-                            team.getAllPersonnel(), team.getNowPersonnel(), team.getGoal(), team. getLanguage(),
+                            team.getGroup().getAllPersonnel(), team.getGroup().getNowPersonnel(), team.getGoal(), team. getLanguage(),
                             team.getViewCount(), team.getBookmarked(),
                             team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreatedAt()
 

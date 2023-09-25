@@ -173,12 +173,12 @@ public class MemberService {
         }
     }
 
-    public ResponseEntity<?> checkNickname(String nickname) {
+    public String checkNickname(String nickname) {
         Optional<Member> member = memberRepository.findByNickname(nickname);
         if (member.isPresent()) {
-            return new ResponseEntity<>("존재하는 닉네임입니다.", HttpStatus.CONFLICT);
+            return "존재하는 닉네임입니다.";
         }
-        return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
+        return "사용 가능한 닉네임입니다.";
     }
 
     public long getUserNum(String email) {
