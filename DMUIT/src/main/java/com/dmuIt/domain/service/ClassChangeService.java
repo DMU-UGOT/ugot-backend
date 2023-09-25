@@ -2,6 +2,7 @@ package com.dmuIt.domain.service;
 
 import com.dmuIt.domain.entity.ClassChange;
 import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.repository.ClassChangeRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
@@ -51,12 +52,22 @@ public class ClassChangeService {
 
     public Page<ClassChange> findClassChanges(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return classChangeRepository.findAllByOrderByClassChangeIdDesc(pageRequest);
+        return classChangeRepository.findAllByOrderByCreatedAtDesc(pageRequest);
     }
 
     public List<ClassChange> findMyClassChanges(HttpServletRequest request) {
         Member member = memberService.verifiedCurrentMember(request);
         return classChangeRepository.findClassChangeByMember(member);
+    }
+
+    @Transactional
+    public void refreshClassChange(HttpServletRequest request, long classChangeId) {
+        ClassChange classChange = findVerifiedClassChange(classChangeId);
+        Member member = memberService.verifiedCurrentMember(request);
+        if (classChange.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        classChange.setCreatedAt(LocalDateTime.now());
     }
 
     @Transactional

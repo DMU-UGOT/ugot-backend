@@ -22,7 +22,6 @@ public interface CommunityMapper {
         communityResponseDto.setTitle( community.getTitle() );
         communityResponseDto.setContent( community.getContent() );
         communityResponseDto.setViewCount( community.getViewCount() );
-        communityResponseDto.setVoteCount(  community.getVoteCount() );
         communityResponseDto.setCommentCount((long) community.getComments().size());
         communityResponseDto.setNickname(community.getMember().getNickname());
         communityResponseDto.setCreated_at(community.getCreatedAt());

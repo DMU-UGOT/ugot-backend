@@ -5,6 +5,7 @@ import com.dmuIt.domain.dto.CommunityResponseDto;
 import com.dmuIt.domain.entity.Comment;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.mapper.CommunityMapper;
 import com.dmuIt.domain.repository.CommunityRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
@@ -15,9 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -55,7 +56,7 @@ public class CommunityService {
     @Transactional
     public Page<Community> findCommunities(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return communityRepository.findAllByOrderByIdDesc(pageRequest);
+        return communityRepository.findAllByOrderByCreatedAtDesc(pageRequest);
     }
 
     @Transactional
@@ -87,9 +88,24 @@ public class CommunityService {
         communityRepository.delete(entity);
     }
 
+    @Transactional
+    public void refreshCommunity(HttpServletRequest request, long communityId) {
+        Community community = findVerifiedCommunity(communityId);
+        Member member = memberService.verifiedCurrentMember(request);
+        if (community.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        community.setCreatedAt(LocalDateTime.now());
+    }
+
     public void verifiedCommunity(Long id) {
         Optional<Community> optionalCommunity = communityRepository.findById(id);
         optionalCommunity.orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
+    }
+
+    public Community findVerifiedCommunity(Long communityId) {
+        Optional<Community> optionalCommunity = communityRepository.findById(communityId);
+        return optionalCommunity.orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
     }
 }
 

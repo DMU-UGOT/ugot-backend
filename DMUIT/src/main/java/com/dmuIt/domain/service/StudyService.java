@@ -1,9 +1,6 @@
 package com.dmuIt.domain.service;
 
-import com.dmuIt.domain.entity.Member;
-import com.dmuIt.domain.entity.MemberGroup;
-import com.dmuIt.domain.entity.Study;
-import com.dmuIt.domain.entity.StudyBookmark;
+import com.dmuIt.domain.entity.*;
 import com.dmuIt.domain.repository.MemberGroupRepository;
 import com.dmuIt.domain.repository.StudyBookmarkRepository;
 import com.dmuIt.domain.repository.StudyRepository;
@@ -69,6 +66,16 @@ public class StudyService {
         studyRepository.delete(findVerifiedStudy(studyId));
     }
 
+    @Transactional
+    public void refreshStudy(HttpServletRequest request, long studyId) {
+        Study study = findVerifiedStudy(studyId);
+        Member member = memberService.verifiedCurrentMember(request);
+        if (study.getMember().getMemberId() != member.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        study.setCreatedAt(LocalDateTime.now());
+    }
+
     public Study findStudy(long studyId) {
         Study study = findVerifiedStudy(studyId);
         study.setViewCount(study.getViewCount() + 1);
@@ -77,7 +84,7 @@ public class StudyService {
 
     public Page<Study> findStudies(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return studyRepository.findAllByOrderByStudyIdDesc(pageRequest);
+        return studyRepository.findAllByOrderByCreatedAtDesc(pageRequest);
     }
 
     public List<Study> findMyStudies(HttpServletRequest request) {

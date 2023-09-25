@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ClassChangeRepository extends JpaRepository<ClassChange, Long> {
-    Page<ClassChange> findAllByOrderByClassChangeIdDesc(Pageable pageable);
+    Page<ClassChange> findAllByOrderByCreatedAtDesc(Pageable pageable);
     List<ClassChange> findClassChangeByMember(Member member);
 }

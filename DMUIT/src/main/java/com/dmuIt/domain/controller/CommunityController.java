@@ -58,4 +58,10 @@ public class CommunityController
     public void delete(HttpServletRequest request, @PathVariable final Long id) {
         communityService.delete(request, id);
     }
+
+    @PatchMapping("/{community-id}/refresh")
+    public void refreshCommunity(HttpServletRequest request,
+                            @PathVariable("community-id") long communityId) {
+        communityService.refreshCommunity(request, communityId);
+    }
 }

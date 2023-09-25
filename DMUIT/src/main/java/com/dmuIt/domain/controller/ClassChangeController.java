@@ -66,4 +66,10 @@ public class ClassChangeController {
     public void deleteClassChange(HttpServletRequest request, @PathVariable("classChange-id") long classChangeId) {
         classChangeService.delete(request, classChangeId);
     }
+
+    @PatchMapping("/{classChange-id}/refresh")
+    public void refreshClassChange(HttpServletRequest request,
+                            @PathVariable("classChange-id") long classChangeId) {
+        classChangeService.refreshClassChange(request, classChangeId);
+    }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface CommunityRepository extends JpaRepository<Community, Long> {
 
-    Page<Community> findAllByOrderByIdDesc(Pageable pageable);
+    Page<Community> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
     List<Community> findCommunitiesByMember(Member member);
 }

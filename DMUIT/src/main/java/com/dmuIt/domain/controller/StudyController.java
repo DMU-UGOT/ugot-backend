@@ -46,6 +46,12 @@ public class StudyController {
         studyService.updateStudy(request, study);
     }
 
+    @PatchMapping("/{study-id}/refresh")
+    public void refreshStudy(HttpServletRequest request,
+                            @PathVariable("study-id") long studyId) {
+        studyService.refreshStudy(request, studyId);
+    }
+
     @GetMapping("/{study-id}")
     public StudyDto.Response getStudy(@PathVariable("study-id") long studyId) {
         Study study = studyService.findStudy(studyId);
