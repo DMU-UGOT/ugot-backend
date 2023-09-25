@@ -47,21 +47,13 @@ public class MessageController {
 
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/delete/rec/{message-id}")
+    @DeleteMapping("/delete/{message-id}")
     public ResponseEntity<?> deleteReceivedMessage(HttpServletRequest request, @PathVariable("message-id") long messageId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
 
-        return apiResponseDto.success("받은 쪽지인, " + messageId + "번 쪽지를 삭제했습니다.", messageService.deleteMessageByReceiver(messageId, currentMember));
+        return apiResponseDto.success( messageId + "번 쪽지를 삭제했습니다.", messageService.deleteMessage(messageId, currentMember));
     }
 
-
-    @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/delete/send/{message-id}")
-    public ResponseEntity<?> deleteSentMessage(HttpServletRequest request, @PathVariable("message-id") long messageId) {
-        Member currentMember = messageService.verifiedCurrentMember(request);
-
-        return apiResponseDto.success("보낸 쪽지인, " + messageId + "번 쪽지를 삭제했습니다.", messageService.deleteMessageBySender(messageId, currentMember));
-    }
 
 
 }
