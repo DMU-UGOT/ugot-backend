@@ -15,6 +15,11 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             value = "SELECT * FROM message p WHERE p.room LIKE :room OR p.room LIKE :k", nativeQuery = true
     )
     List<Message> findAllByRoom(@Param("k") Member member, @Param("room") Integer room);
+
+    @Query(
+            value = "SELECT * FROM message p WHERE p.room LIKE :room", nativeQuery = true
+    )
+    List<Message> findByRoom(@Param("room") Integer room);
     @Query(
             value = "SELECT * FROM (\n" +
                     "         SELECT *,\n" +
