@@ -8,18 +8,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
 import org.springframework.data.repository.query.Param;
+
 
 import java.util.List;
 
 
 public interface CommunityRepository extends JpaRepository<Community, Long> {
 
-    Page<Community> findAllByOrderByCreatedAtDesc(Pageable pageable);
     @Query(
-            value = "SELECT p FROM Community p WHERE p.title LIKE %:keyword% OR p.content LIKE %:keyword%",
-            countQuery = "SELECT COUNT(p.id) FROM Community p WHERE p.title LIKE %:keyword% OR p.content LIKE %:keyword%"
+            value = "SELECT * FROM community p WHERE p.comId LIKE :comId", nativeQuery = true
     )
-    Page<Community> findAllSearch(@Param("keyword") String keyword, Pageable pageable);
+    Community findMemberById(Long comId);
+    Page<Community> findAllByOrderByCreatedAtDesc(Pageable pageable);
     List<Community> findCommunitiesByMember(Member member);
 }
