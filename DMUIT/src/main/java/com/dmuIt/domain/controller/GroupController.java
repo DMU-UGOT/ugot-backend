@@ -81,6 +81,11 @@ public class GroupController {
         groupService.handOverAuthority(request, groupId, memberId);
     }
 
+    @DeleteMapping("/{group-id}/{member-id}/expulsion")
+    public void expulsion(HttpServletRequest request, @PathVariable("group-id") long groupId, @PathVariable("member-id") long memberId) {
+        groupService.expulsion(request, groupId, memberId);
+    }
+
     @DeleteMapping("/{group-id}")
     public void deleteGroup(HttpServletRequest request, @PathVariable("group-id") long groupId) {
         groupService.deleteGroup(request, groupId);
