@@ -1,9 +1,6 @@
 package com.dmuIt.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -37,5 +34,6 @@ public class ClassChangeDto {
         private String currentClass;
         private String changeClass;
         private String status;
+        private Long memberId;
     }
 }

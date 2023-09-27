@@ -109,7 +109,7 @@ public class StudyController {
                             study.getIsContact(),
                             study.getGroup().getAllPersonnel(), study.getGroup().getNowPersonnel(), study.getSubject(), study.getField(),
                             study.getViewCount(), study.getBookmarked(),
-                            study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt()
+                            study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt(), study.getMember().getMemberId()
 
                     ));
         }else{
@@ -120,7 +120,7 @@ public class StudyController {
                             study.getIsContact(),
                             study.getGroup().getAllPersonnel(), study.getGroup().getNowPersonnel(), study.getSubject(), study.getField(),
                             study.getViewCount(), study.getBookmarked(),
-                            study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt()
+                            study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt(), study.getMember().getMemberId()
 
 
                     ));

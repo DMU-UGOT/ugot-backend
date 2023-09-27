@@ -114,7 +114,7 @@ public class TeamController {
                             team.getField(), team.get_class(),
                             team.getGroup().getAllPersonnel(), team.getGroup().getNowPersonnel(), team.getGoal(), team. getLanguage(),
                             team.getViewCount(), team.getBookmarked(),
-                            team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreatedAt()
+                            team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreatedAt(), team.getMember().getMemberId()
 
                     ));
         }else{
@@ -125,7 +125,7 @@ public class TeamController {
                             team.getField(), team.get_class(),
                             team.getGroup().getAllPersonnel(), team.getGroup().getNowPersonnel(), team.getGoal(), team. getLanguage(),
                             team.getViewCount(), team.getBookmarked(),
-                            team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreatedAt()
+                            team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreatedAt(), team.getMember().getMemberId()
 
 
                     ));

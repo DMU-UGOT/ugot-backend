@@ -33,6 +33,7 @@ public interface TeamMapper {
             response.setKakaoOpenLink(team.getKakaoOpenLink());
             response.setGitHubLink(team.getGitHubLink());
             response.setCreatedAt(team.getCreatedAt());
+            response.setMemberId(team.getMember().getMemberId());
             return response;
         }
     }

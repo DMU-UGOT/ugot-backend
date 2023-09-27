@@ -5,19 +5,17 @@ import com.dmuIt.domain.dto.MemberDto;
 import com.dmuIt.domain.dto.MemberGroupDto;
 import com.dmuIt.domain.dto.NoticeDto;
 import com.dmuIt.domain.entity.*;
+import com.dmuIt.domain.mapper.ApplicationMapper;
 import com.dmuIt.domain.mapper.GroupMapper;
 import com.dmuIt.domain.mapper.NoticeMapper;
-import com.dmuIt.domain.repository.ConversationRepository;
-import com.dmuIt.domain.repository.GroupRepository;
-import com.dmuIt.domain.repository.MemberGroupRepository;
-import com.dmuIt.domain.repository.NoticeRepository;
+import com.dmuIt.domain.repository.*;
 import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +29,10 @@ public class GroupService {
     private final NoticeRepository noticeRepository;
     private final MemberGroupRepository memberGroupRepository;
     private final ConversationRepository conversationRepository;
+    private final ApplicationRepository applicationRepository;
     private final MemberService memberService;
     private final NoticeMapper noticeMapper;
-    private final GroupMapper groupMapper;
+
 
     public void createGroup(HttpServletRequest request, GroupDto params) {
         Member member = memberService.verifiedCurrentMember(request);
@@ -77,7 +76,7 @@ public class GroupService {
     }
 
     @Transactional
-    public void joinGroup(HttpServletRequest request, long groupId) {
+    public void applicationGroup(HttpServletRequest request, long groupId) {
         Member member = memberService.verifiedCurrentMember(request);
         List<MemberGroup> members = findMembers(groupId);
         for (MemberGroup value : members) {
@@ -89,11 +88,39 @@ public class GroupService {
         if (group.getNowPersonnel() == group.getAllPersonnel()) {
             throw new BusinessLogicException(ExceptionCode.GROUP_IS_FULL);
         }
-        group.setNowPersonnel(group.getNowPersonnel() + 1);
+        Application application = new Application();
+        application.setMember(member);
+        application.setGroup(group);
+        applicationRepository.save(application);
+//        MemberGroup memberGroup = new MemberGroup();
+//        memberGroup.setMember(member);
+//        memberGroup.setGroup(group);
+//        memberGroupRepository.save(memberGroup);
+    }
+
+    public List<Application> getApplications(HttpServletRequest request, long groupId) {
+        Member member = memberService.verifiedCurrentMember(request);
+        Group group = verifiedGroup(groupId);
+        if (!member.getNickname().equals(group.getNickname())) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        return applicationRepository.findApplicationsByGroup(group);
+    }
+
+    @Transactional
+    public void accept(HttpServletRequest request, long groupId, long applicationId) {
+        Member member = memberService.verifiedCurrentMember(request);
+        Group group = verifiedGroup(groupId);
+        if (!member.getNickname().equals(group.getNickname())) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        Application application = verifiedApplication(applicationId);
         MemberGroup memberGroup = new MemberGroup();
-        memberGroup.setMember(member);
-        memberGroup.setGroup(group);
+        memberGroup.setMember(application.getMember());
+        memberGroup.setGroup(application.getGroup());
+        application.getGroup().setNowPersonnel(application.getGroup().getNowPersonnel() + 1);
         memberGroupRepository.save(memberGroup);
+        applicationRepository.delete(application);
     }
 
     @Transactional
@@ -208,5 +235,11 @@ public class GroupService {
         Optional<Conversation> optionalConversation = conversationRepository.findById(conversationId);
         return optionalConversation.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.CONVERSATION_NOT_FOUND));
+    }
+
+    public Application verifiedApplication(Long applicationId) {
+        Optional<Application> optionalApplication = applicationRepository.findById(applicationId);
+        return optionalApplication.orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.APPLICATION_NOT_FOUND));
     }
 }

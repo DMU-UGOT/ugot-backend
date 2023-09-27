@@ -19,12 +19,13 @@ public class StudyDto {
     private String kakaoOpenLink;
     private String gitHubLink;
     private LocalDateTime createdAt;
+    private Long memberId;
 
     public StudyDto(Long studyId, String title, String content,
                     String isContact, Integer allPersonnel, Integer nowPersonnel,
                     String subject, String field,
                     Long viewCount, Long bookmarked, String kakaoOpenLink,
-                    String gitHubLink, LocalDateTime createdAt) {
+                    String gitHubLink, LocalDateTime createdAt, Long memberId) {
         this.studyId = studyId;
         this.title = title;
         this.content = content;
@@ -38,6 +39,7 @@ public class StudyDto {
         this.kakaoOpenLink = kakaoOpenLink;
         this.gitHubLink = gitHubLink;
         this.createdAt = createdAt;
+        this.memberId = memberId;
     }
 
     @AllArgsConstructor
@@ -84,5 +86,6 @@ public class StudyDto {
         private String gitHubLink;
         private Long viewCount;
         private LocalDateTime createdAt;
+        private Long memberId;
     }
 }

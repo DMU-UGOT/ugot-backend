@@ -14,6 +14,7 @@ public enum ExceptionCode {
     GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "Group not found"),
     NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "Notice not found"),
     CONVERSATION_NOT_FOUND(HttpStatus.NOT_FOUND, "Conversation not found"),
+    APPLICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "Application not found"),
     MEMBER_EXISTS(409, "Member exists"),
     NICKNAME_EXISTS(409, "Nickname exists"),
     GROUP_IS_FULL(409, "Group is full"),

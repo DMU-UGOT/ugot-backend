@@ -25,6 +25,7 @@ public interface ClassChangeMapper {
             response.setCurrentClass(classChange.getCurrentClass());
             response.setChangeClass(classChange.getChangeClass());
             response.setStatus(classChange.getStatus());
+            response.setMemberId(classChange.getMember().getMemberId());
 
             return response;
         }
