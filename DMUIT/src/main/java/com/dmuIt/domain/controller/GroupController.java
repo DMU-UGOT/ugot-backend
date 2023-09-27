@@ -48,7 +48,7 @@ public class GroupController {
 
     @GetMapping("/{group-id}")
     public GroupDto.Response groupDetailPage(@PathVariable("group-id") long groupId) {
-        return groupMapper.groupToResponse(groupService.groupDetailPage(groupId));
+        return groupMapper.groupToResponse(groupService.groupDetailPage(groupId), groupService.findMembers(groupId));
     }
 
     @GetMapping("/{group-id}/findMembers")
@@ -74,6 +74,11 @@ public class GroupController {
     @DeleteMapping("/{group-id}/quit")
     public void quitGroup(HttpServletRequest request, @PathVariable("group-id") long groupId) {
         groupService.quitGroup(request, groupId);
+    }
+
+    @PatchMapping("/{group-id}/{member-id}/handOver")
+    public void handOverAuthority(HttpServletRequest request, @PathVariable("group-id") long groupId, @PathVariable("member-id") long memberId) {
+        groupService.handOverAuthority(request, groupId, memberId);
     }
 
     @DeleteMapping("/{group-id}")

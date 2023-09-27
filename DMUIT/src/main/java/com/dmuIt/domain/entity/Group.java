@@ -26,9 +26,6 @@ public class Group extends Auditable {
     private String content;
 
     @Column(nullable = false)
-    private String nickname;
-
-    @Column(nullable = false)
     private Integer allPersonnel;
 
     @Column(nullable = false)

@@ -15,6 +15,9 @@ public class MemberGroup extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberGroupId;
 
+    @Column(nullable = false)
+    private String role = "USER";
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;

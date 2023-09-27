@@ -42,10 +42,10 @@ public class GroupService {
                 allPersonnel(params.getAllPersonnel()).
                 githubUrl(params.getGithubUrl()).
                 build();
-        group.setNickname(member.getNickname());
         MemberGroup memberGroup = new MemberGroup();
         memberGroup.setMember(member);
         memberGroup.setGroup(group);
+        memberGroup.setRole("ADMIN");
         List<MemberGroup> memberGroups = new ArrayList<>();
         memberGroups.add(memberGroup);
         group.setMemberGroups(memberGroups);
@@ -56,7 +56,8 @@ public class GroupService {
     public void updateGroup(HttpServletRequest request, GroupDto params, long groupId) {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
-        if (!member.getNickname().equals(group.getNickname())) {
+        MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
+        if (!memberGroup.getRole().equals("ADMIN")) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         group.setGroupName(params.getGroupName());
@@ -92,16 +93,13 @@ public class GroupService {
         application.setMember(member);
         application.setGroup(group);
         applicationRepository.save(application);
-//        MemberGroup memberGroup = new MemberGroup();
-//        memberGroup.setMember(member);
-//        memberGroup.setGroup(group);
-//        memberGroupRepository.save(memberGroup);
     }
 
     public List<Application> getApplications(HttpServletRequest request, long groupId) {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
-        if (!member.getNickname().equals(group.getNickname())) {
+        MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
+        if (!memberGroup.getRole().equals("ADMIN")) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         return applicationRepository.findApplicationsByGroup(group);
@@ -111,7 +109,8 @@ public class GroupService {
     public void accept(HttpServletRequest request, long groupId, long applicationId) {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
-        if (!member.getNickname().equals(group.getNickname())) {
+        MemberGroup findmemberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
+        if (!findmemberGroup.getRole().equals("ADMIN")) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         Application application = verifiedApplication(applicationId);
@@ -137,8 +136,26 @@ public class GroupService {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         Group group = verifiedGroup(groupId);
+        MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
+        if (memberGroup.getRole().equals("ADMIN")) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         group.setNowPersonnel(group.getNowPersonnel() - 1);
         memberGroupRepository.delete(memberGroupRepository.findMemberGroupByMemberAndGroup(member, group));
+    }
+
+    @Transactional
+    public void handOverAuthority(HttpServletRequest request, long groupId, long memberId) {
+        Member member = memberService.verifiedCurrentMember(request);
+        Group group = verifiedGroup(groupId);
+        MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
+        if (!memberGroup.getRole().equals("ADMIN")) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        memberGroup.setRole("USER");
+        Member verifiedMember = memberService.findVerifiedMember(memberId);
+        MemberGroup findMemberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(verifiedMember, group);
+        findMemberGroup.setRole("ADMIN");
     }
 
     public List<MemberGroup> findMembers(long groupId) {
@@ -149,7 +166,8 @@ public class GroupService {
     public void deleteGroup(HttpServletRequest request, final Long groupId) {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
-        if (!member.getNickname().equals(group.getNickname())) {
+        MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
+        if (!memberGroup.getRole().equals("ADMIN")) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         groupRepository.delete(group);
@@ -158,7 +176,8 @@ public class GroupService {
     public void createNotice(HttpServletRequest request, NoticeDto.Post noticePostDto, long groupId) {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
-        if (!member.getNickname().equals(group.getNickname())) {
+        MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
+        if (!memberGroup.getRole().equals("ADMIN")) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         Notice notice = new Notice();
@@ -172,7 +191,8 @@ public class GroupService {
     public void updateNotice(HttpServletRequest request, NoticeDto.Post noticePostDto, long groupId, long noticeId) {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
-        if (!member.getNickname().equals(group.getNickname())) {
+        MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
+        if (!memberGroup.getRole().equals("ADMIN")) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         Notice notice = verifiedNotice(noticeId);
