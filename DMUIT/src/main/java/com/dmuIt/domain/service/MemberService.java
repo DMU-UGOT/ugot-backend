@@ -2,11 +2,9 @@ package com.dmuIt.domain.service;
 
 import com.dmuIt.domain.dto.ApiResponseDto;
 import com.dmuIt.domain.dto.MemberDto;
-import com.dmuIt.domain.entity.Favorite;
 import com.dmuIt.domain.entity.Member;
-import com.dmuIt.domain.repository.FavoriteRepository;
+import com.dmuIt.domain.mapper.MemberMapper;
 
-import com.dmuIt.domain.entity.TeamBookmark;
 import com.dmuIt.domain.repository.MemberRepository;
 import com.dmuIt.global.auth.jwt.JwtTokenProvider;
 import com.dmuIt.global.auth.lib.Helper;
@@ -17,7 +15,6 @@ import com.dmuIt.global.redis.repository.RefreshTokenRedisRepository;
 import com.dmuIt.global.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,9 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +37,7 @@ public class MemberService {
     private final ApiResponseDto response;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final MemberMapper memberMapper;
 
     public ResponseEntity<?> signIn(HttpServletRequest request, MemberDto.SignIn signIn) {
         UsernamePasswordAuthenticationToken authenticationToken = signIn.toAuthentication();
@@ -89,7 +85,7 @@ public class MemberService {
         return response.fail("토큰 갱신에 실패했습니다.");
     }
 
-    public Member createMember(Member member) {
+    public MemberDto.Response createMember(Member member) {
         verifyExistsEmail(member.getEmail());
         verifyExistsNickname(member.getNickname());
 
@@ -99,7 +95,7 @@ public class MemberService {
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
 
-        return memberRepository.save(member);
+        return memberMapper.memberToMemberResponseDto(memberRepository.save(member));
     }
 
     @Transactional
@@ -147,16 +143,13 @@ public class MemberService {
 
     public Member findVerifiedMember(long memberId) {
         Optional<Member> optionalMember = memberRepository.findById(memberId);
-        Member findMember = optionalMember.orElseThrow(() ->
+        return optionalMember.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-
-        return findMember;
     }
 
     public Member findVerifiedMemberByEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
-        Member findMember = member.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        return findMember;
+        return member.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
     private void verifyExistsEmail(String email) {

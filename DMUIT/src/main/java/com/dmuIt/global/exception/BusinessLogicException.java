@@ -1,13 +1,12 @@
 package com.dmuIt.global.exception;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public class BusinessLogicException extends RuntimeException{
-    @Getter
-    private ExceptionCode exceptionCode;
+@Getter
+@RequiredArgsConstructor
+public class BusinessLogicException extends RuntimeException {
 
-    public BusinessLogicException(ExceptionCode exceptionCode) {
-        super(exceptionCode.getMessage());
-        this.exceptionCode = exceptionCode;
-    }
+    private final ErrorCode errorCode;
+
 }

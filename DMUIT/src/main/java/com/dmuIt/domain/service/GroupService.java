@@ -94,6 +94,9 @@ public class GroupService {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
         MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
+        if (memberGroup == null) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         if (!memberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
