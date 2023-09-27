@@ -21,6 +21,12 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
             value = "SELECT * FROM community p WHERE p.comId LIKE :comId", nativeQuery = true
     )
     Community findMemberById(Long comId);
+
+    @Query(
+            value = "SELECT p FROM Community p WHERE p.title LIKE %:keyword% OR p.content LIKE %:keyword%",
+            countQuery = "SELECT COUNT(p.id) FROM Community p WHERE p.title LIKE %:keyword% OR p.content LIKE %:keyword%"
+    )
+    Page<Community> findAllSearch(@Param("keyword") String keyword, Pageable pageable);
     Page<Community> findAllByOrderByCreatedAtDesc(Pageable pageable);
     List<Community> findCommunitiesByMember(Member member);
 }
