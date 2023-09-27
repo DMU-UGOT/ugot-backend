@@ -21,14 +21,25 @@ public class MessageController {
     private final MessageService messageService;
     private final ApiResponseDto apiResponseDto;
 
-
+    //게시글 보고 send
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/send")
-    public ResponseEntity<?> sendMessage(HttpServletRequest request, @RequestBody MessageDto messageDto) {
+    @PostMapping("/send/{community-id}")
+    public ResponseEntity<?> sendMessage1(HttpServletRequest request, @RequestBody MessageDto messageDto
+            ,@PathVariable("community-id") Long comId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
         messageDto.setSenderName(currentMember.getNickname());
-        return apiResponseDto.success("쪽지를 보냈습니다.", messageService.write(messageDto));
+        return apiResponseDto.success("쪽지를 보냈습니다.", messageService.write(messageDto, comId));
     }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/send/room/{room-id}")
+    public ResponseEntity<?> sendMessage2(HttpServletRequest request, @RequestBody MessageDto messageDto
+            ,@PathVariable("room-id") Integer roomId) {
+        Member currentMember = messageService.verifiedCurrentMember(request);
+        messageDto.setSenderName(currentMember.getNickname());
+        return apiResponseDto.success("쪽지를 보냈습니다.", messageService.writeInRoom(messageDto, roomId));
+    }
+
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()

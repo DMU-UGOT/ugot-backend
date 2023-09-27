@@ -1,5 +1,7 @@
 package com.dmuIt.domain.mapper;
 
+import com.dmuIt.domain.dto.GroupDto;
+import com.dmuIt.domain.entity.Group;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
