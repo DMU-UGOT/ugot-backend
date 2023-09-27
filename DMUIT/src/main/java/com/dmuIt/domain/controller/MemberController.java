@@ -5,9 +5,7 @@ import com.dmuIt.domain.dto.MemberDto;
 import com.dmuIt.domain.entity.Member;
 import com.dmuIt.domain.mapper.MemberMapper;
 import com.dmuIt.domain.service.MemberService;
-import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +25,11 @@ public class MemberController {
     @PostMapping
     private MemberDto.Response signUp(@RequestBody MemberDto.Post memberPostDto) {
         Member member = memberMapper.memberPostDtoToMember(memberPostDto);
-        Member createdMember = memberService.createMember(member);
-        return memberMapper.memberToMemberResponseDto(createdMember);
+        return memberService.createMember(member);
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity signIn(HttpServletRequest request,
+    public ResponseEntity<?> signIn(HttpServletRequest request,
                                  @RequestBody @Valid MemberDto.SignIn signIn, Errors errors) {
         if (errors.hasErrors()) {
             return apiResponseDto.fail(errors);
