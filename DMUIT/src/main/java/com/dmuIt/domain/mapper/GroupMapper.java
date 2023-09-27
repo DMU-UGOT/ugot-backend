@@ -18,7 +18,7 @@ public interface GroupMapper {
             response.setGroupId(group.getGroupId());
             response.setGroupName(group.getGroupName());
             for (MemberGroup memberGroup : memberGroups) {
-                if (memberGroup.getRole().equals("ADMIN")) {
+                if (memberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
                     response.setNickname(memberGroup.getMember().getNickname());
                 }
             }
