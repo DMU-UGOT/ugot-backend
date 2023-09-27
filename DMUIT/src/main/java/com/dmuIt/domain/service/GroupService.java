@@ -1,12 +1,8 @@
 package com.dmuIt.domain.service;
 
 import com.dmuIt.domain.dto.GroupDto;
-import com.dmuIt.domain.dto.MemberDto;
-import com.dmuIt.domain.dto.MemberGroupDto;
 import com.dmuIt.domain.dto.NoticeDto;
 import com.dmuIt.domain.entity.*;
-import com.dmuIt.domain.mapper.ApplicationMapper;
-import com.dmuIt.domain.mapper.GroupMapper;
 import com.dmuIt.domain.mapper.NoticeMapper;
 import com.dmuIt.domain.repository.*;
 import com.dmuIt.global.exception.BusinessLogicException;
@@ -20,7 +16,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +40,7 @@ public class GroupService {
         MemberGroup memberGroup = new MemberGroup();
         memberGroup.setMember(member);
         memberGroup.setGroup(group);
-        memberGroup.setRole("ADMIN");
+        memberGroup.setRole(MemberGroup.RoleInGroup.ADMIN);
         List<MemberGroup> memberGroups = new ArrayList<>();
         memberGroups.add(memberGroup);
         group.setMemberGroups(memberGroups);
@@ -57,7 +52,7 @@ public class GroupService {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
         MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
-        if (!memberGroup.getRole().equals("ADMIN")) {
+        if (!memberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         group.setGroupName(params.getGroupName());
@@ -99,7 +94,7 @@ public class GroupService {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
         MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
-        if (!memberGroup.getRole().equals("ADMIN")) {
+        if (!memberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         return applicationRepository.findApplicationsByGroup(group);
@@ -110,7 +105,7 @@ public class GroupService {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
         MemberGroup findmemberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
-        if (!findmemberGroup.getRole().equals("ADMIN")) {
+        if (!findmemberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         Application application = verifiedApplication(applicationId);
@@ -137,7 +132,7 @@ public class GroupService {
         }
         Group group = verifiedGroup(groupId);
         MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
-        if (memberGroup.getRole().equals("ADMIN")) {
+        if (memberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         group.setNowPersonnel(group.getNowPersonnel() - 1);
@@ -149,13 +144,29 @@ public class GroupService {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
         MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
-        if (!memberGroup.getRole().equals("ADMIN")) {
+        if (!memberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
-        memberGroup.setRole("USER");
+        memberGroup.setRole(MemberGroup.RoleInGroup.USER);
         Member verifiedMember = memberService.findVerifiedMember(memberId);
         MemberGroup findMemberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(verifiedMember, group);
-        findMemberGroup.setRole("ADMIN");
+        findMemberGroup.setRole(MemberGroup.RoleInGroup.ADMIN);
+    }
+
+    @Transactional
+    public void expulsion(HttpServletRequest request, long groupId, long memberId) {
+        Member member = memberService.verifiedCurrentMember(request);
+        Group group = verifiedGroup(groupId);
+        MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
+        if (!memberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        Member findMember = memberService.findVerifiedMember(memberId);
+        MemberGroup findMemberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(findMember, group);
+        if (findMemberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        memberGroupRepository.delete(findMemberGroup);
     }
 
     public List<MemberGroup> findMembers(long groupId) {
@@ -167,7 +178,7 @@ public class GroupService {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
         MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
-        if (!memberGroup.getRole().equals("ADMIN")) {
+        if (!memberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         groupRepository.delete(group);
@@ -177,7 +188,7 @@ public class GroupService {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
         MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
-        if (!memberGroup.getRole().equals("ADMIN")) {
+        if (!memberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         Notice notice = new Notice();
@@ -192,7 +203,7 @@ public class GroupService {
         Member member = memberService.verifiedCurrentMember(request);
         Group group = verifiedGroup(groupId);
         MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
-        if (!memberGroup.getRole().equals("ADMIN")) {
+        if (!memberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         Notice notice = verifiedNotice(noticeId);
