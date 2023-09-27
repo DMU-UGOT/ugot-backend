@@ -48,6 +48,7 @@ public interface StudyMapper {
             response.setGitHubLink( study.getGitHubLink() );
             response.setViewCount( study.getViewCount() );
             response.setCreatedAt( study.getCreatedAt() );
+            response.setMemberId(study.getMember().getMemberId());
             return response;
         }
     }

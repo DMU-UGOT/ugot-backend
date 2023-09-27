@@ -27,13 +27,6 @@ public class Community extends Auditable {
     @Column
     private long viewCount = 0;
 
-    @Column
-    private long voteCount = 0;
-
-//    @OneToMany(mappedBy = "community")
-//    private List<Vote> vote;
-//    private List<Comment> comment;
-
     @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
     @JoinColumn(name = "member_id")
     private Member member;

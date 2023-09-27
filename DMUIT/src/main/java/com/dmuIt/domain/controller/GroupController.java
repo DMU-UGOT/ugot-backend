@@ -2,9 +2,8 @@ package com.dmuIt.domain.controller;
 import com.dmuIt.domain.dto.*;
 import com.dmuIt.domain.entity.Conversation;
 import com.dmuIt.domain.entity.MemberGroup;
-import com.dmuIt.domain.mapper.ConversationMapper;
-import com.dmuIt.domain.mapper.GroupMapper;
-import com.dmuIt.domain.mapper.MemberGroupMapper;
+import com.dmuIt.domain.mapper.*;
+import com.dmuIt.domain.service.FavoriteService;
 import com.dmuIt.domain.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +17,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GroupController {
     private final GroupService groupService;
+    private final FavoriteService favoriteService;
     private final MemberGroupMapper memberGroupMapper;
     private final ConversationMapper conversationMapper;
     private final GroupMapper groupMapper;
+    private final FavoriteMapper favoriteMapper;
+    private final ApplicationMapper applicationMapper;
 
 //    @GetMapping
 //    public List<GroupDto> findAll() {
@@ -46,7 +48,7 @@ public class GroupController {
 
     @GetMapping("/{group-id}")
     public GroupDto.Response groupDetailPage(@PathVariable("group-id") long groupId) {
-        return groupMapper.groupToResponse(groupService.groupDetailPage(groupId));
+        return groupMapper.groupToResponse(groupService.groupDetailPage(groupId), groupService.findMembers(groupId));
     }
 
     @GetMapping("/{group-id}/findMembers")
@@ -54,14 +56,29 @@ public class GroupController {
         return memberGroupMapper.membersToMemberResponse(groupService.findMembers(groupId));
     }
 
-    @PostMapping("/{group-id}/join")
-    public void joinGroup(HttpServletRequest request, @PathVariable("group-id") long groupId) {
-        groupService.joinGroup(request, groupId);
+    @PostMapping("/{group-id}/application")
+    public void applicationGroup(HttpServletRequest request, @PathVariable("group-id") long groupId) {
+        groupService.applicationGroup(request, groupId);
+    }
+
+    @GetMapping("/{group-id}/applications")
+    public List<ApplicationDto.Response> getApplications(HttpServletRequest request, @PathVariable("group-id") long groupId) {
+        return applicationMapper.applicationsToResponses(groupService.getApplications(request, groupId));
+    }
+
+    @PostMapping("/{group-id}/{application-id}/accept")
+    public void accept(HttpServletRequest request, @PathVariable("group-id") long groupId, @PathVariable("application-id") long applicationId) {
+        groupService.accept(request, groupId, applicationId);
     }
 
     @DeleteMapping("/{group-id}/quit")
     public void quitGroup(HttpServletRequest request, @PathVariable("group-id") long groupId) {
         groupService.quitGroup(request, groupId);
+    }
+
+    @PatchMapping("/{group-id}/{member-id}/handOver")
+    public void handOverAuthority(HttpServletRequest request, @PathVariable("group-id") long groupId, @PathVariable("member-id") long memberId) {
+        groupService.handOverAuthority(request, groupId, memberId);
     }
 
     @DeleteMapping("/{group-id}")
@@ -106,5 +123,15 @@ public class GroupController {
     @DeleteMapping("/{conversation-id}/deleteConversation")
     public void deleteConversation(HttpServletRequest request, @PathVariable("conversation-id") long conversationId) {
         groupService.deleteConversation(request, conversationId);
+    }
+
+    @PostMapping("/{group-id}/addFavorites")
+    public void createFavorites(HttpServletRequest request, @PathVariable("group-id") long groupId) {
+        favoriteService.addFavorites(request, groupId);
+    }
+
+    @GetMapping("/myFavorites")
+    public List<FavoriteDto.Response> myFavorites(HttpServletRequest request) {
+        return favoriteMapper.favoritesToResponses(favoriteService.myFavorites(request));
     }
 }

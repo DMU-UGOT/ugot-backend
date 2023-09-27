@@ -22,27 +22,28 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class NaverOauth {
-    private final RestTemplate restTemplate;
+public class KakaoOauth {
     private final ObjectMapper objectMapper;
+    private final RestTemplate restTemplate;
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RandomPassword randomPassword;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final JwtTokenProvider jwtTokenProvider;
+
     public ResponseEntity<String> requestUserInfo(String accessToken) {
-        String NAVER_USERINFO_REQUEST_URL = "https://openapi.naver.com/v1/nid/me";
+        String KAKAO_USERINFO_REQUEST_URL = "https://kapi.kakao.com/v2/user/me";
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset-utf-8");
 
         HttpEntity request = new HttpEntity(headers);
-        ResponseEntity<String> response = restTemplate.exchange(NAVER_USERINFO_REQUEST_URL, HttpMethod.POST, request, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(KAKAO_USERINFO_REQUEST_URL, HttpMethod.GET, request, String.class);
         System.out.println("response.getBody() = " + response.getBody());
         return response;
     }
@@ -52,14 +53,14 @@ public class NaverOauth {
         System.out.println(jsonNode.get("response"));
         return jsonNode;
     }
+
     public GetSocialOAuthRes oAuthLogin(String accessToken) throws IOException {
 
         ResponseEntity<String> userInfoResponse = requestUserInfo(accessToken);
-
         JsonNode userInfo = getUserInfo(userInfoResponse);
 
-        String user_id = userInfo.get("response").get("email").asText();
-        String name = userInfo.get("response").get("name").asText();
+        String user_id = userInfo.get("kakao_account").get("email").asText();
+        String name = userInfo.get("kakao_account").get("profile").get("nickname").asText();
 
         long user_num = memberService.getUserNum(user_id);
 

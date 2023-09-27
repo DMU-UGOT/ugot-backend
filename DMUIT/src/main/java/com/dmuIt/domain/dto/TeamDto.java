@@ -20,10 +20,11 @@ public class TeamDto {
     private String kakaoOpenLink;
     private String gitHubLink;
     private LocalDateTime createdAt;
+    private Long memberId;
 
     public TeamDto(Long teamId, String title, String content, String field,
                    String _class, Integer allPersonnel, Integer nowPersonnel, String goal, String language,
-                   Long viewCount, Long bookmarked, String kakaoOpenLink, String gitHubLink, LocalDateTime createdAt) {
+                   Long viewCount, Long bookmarked, String kakaoOpenLink, String gitHubLink, LocalDateTime createdAt, Long memberId) {
         this.teamId = teamId;
         this.title = title;
         this.content = content;
@@ -38,6 +39,7 @@ public class TeamDto {
         this.kakaoOpenLink = kakaoOpenLink;
         this.gitHubLink = gitHubLink;
         this.createdAt = createdAt;
+        this.memberId = memberId;
     }
 
     @AllArgsConstructor
@@ -87,5 +89,6 @@ public class TeamDto {
         private String gitHubLink;
         private Long viewCount;
         private LocalDateTime createdAt;
+        private Long memberId;
     }
 }

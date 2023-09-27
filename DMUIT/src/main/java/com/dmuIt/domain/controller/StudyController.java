@@ -46,6 +46,12 @@ public class StudyController {
         studyService.updateStudy(request, study);
     }
 
+    @PatchMapping("/{study-id}/refresh")
+    public void refreshStudy(HttpServletRequest request,
+                            @PathVariable("study-id") long studyId) {
+        studyService.refreshStudy(request, studyId);
+    }
+
     @GetMapping("/{study-id}")
     public StudyDto.Response getStudy(@PathVariable("study-id") long studyId) {
         Study study = studyService.findStudy(studyId);
@@ -103,7 +109,7 @@ public class StudyController {
                             study.getIsContact(),
                             study.getGroup().getAllPersonnel(), study.getGroup().getNowPersonnel(), study.getSubject(), study.getField(),
                             study.getViewCount(), study.getBookmarked(),
-                            study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt()
+                            study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt(), study.getMember().getMemberId()
 
                     ));
         }else{
@@ -114,7 +120,7 @@ public class StudyController {
                             study.getIsContact(),
                             study.getGroup().getAllPersonnel(), study.getGroup().getNowPersonnel(), study.getSubject(), study.getField(),
                             study.getViewCount(), study.getBookmarked(),
-                            study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt()
+                            study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt(), study.getMember().getMemberId()
 
 
                     ));

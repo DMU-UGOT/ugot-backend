@@ -1,7 +1,7 @@
 package com.dmuIt.domain.mapper;
 
-import com.dmuIt.domain.dto.CommunityResponseDto;
-import com.dmuIt.domain.entity.Community;
+import com.dmuIt.domain.dto.FavoriteDto;
+import com.dmuIt.domain.entity.Favorite;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -13,17 +13,17 @@ import org.springframework.stereotype.Component;
     comments = "version: 1.5.1.Final, compiler: javac, environment: Java 11.0.15 (Oracle Corporation)"
 )
 @Component
-public class CommunityMapperImpl implements CommunityMapper {
+public class FavoriteMapperImpl implements FavoriteMapper {
 
     @Override
-    public List<CommunityResponseDto> ComsToComResponseDtos(List<Community> Community) {
-        if ( Community == null ) {
+    public List<FavoriteDto.Response> favoritesToResponses(List<Favorite> favorites) {
+        if ( favorites == null ) {
             return null;
         }
 
-        List<CommunityResponseDto> list = new ArrayList<CommunityResponseDto>( Community.size() );
-        for ( Community community : Community ) {
-            list.add( comToComResponseDto( community ) );
+        List<FavoriteDto.Response> list = new ArrayList<FavoriteDto.Response>( favorites.size() );
+        for ( Favorite favorite : favorites ) {
+            list.add( favoriteToResponse( favorite ) );
         }
 
         return list;

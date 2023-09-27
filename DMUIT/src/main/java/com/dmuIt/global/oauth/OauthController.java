@@ -15,6 +15,7 @@ public class OauthController {
     private final ApiResponseDto response;
     private final GoogleOauth googleOauth;
     private final NaverOauth naverOauth;
+    private final KakaoOauth kakaoOauth;
 
     @PostMapping("/auth/google")
     public ResponseEntity googleLogin(@RequestBody AccessTokenDto accessToken) throws IOException {
@@ -26,6 +27,13 @@ public class OauthController {
     @PostMapping("/auth/naver")
     public ResponseEntity naverLogin(@RequestBody AccessTokenDto accessToken) throws IOException {
         GetSocialOAuthRes getSocialOAuthRes = naverOauth.oAuthLogin(accessToken.getAccessToken());
+
+        return response.success(getSocialOAuthRes);
+    }
+
+    @PostMapping("/auth/kakao")
+    public ResponseEntity kakaoLogin(@RequestBody AccessTokenDto accessToken) throws IOException {
+        GetSocialOAuthRes getSocialOAuthRes = kakaoOauth.oAuthLogin(accessToken.getAccessToken());
 
         return response.success(getSocialOAuthRes);
     }

@@ -79,7 +79,6 @@ public class TeamService {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         team.setCreatedAt(LocalDateTime.now());
-        teamRepository.save(team);
     }
 
     public Team findTeam(long teamId) {
