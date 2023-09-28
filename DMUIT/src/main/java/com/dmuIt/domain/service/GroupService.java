@@ -121,6 +121,17 @@ public class GroupService {
     }
 
     @Transactional
+    public void turnDown(HttpServletRequest request, long groupId, long applicationId) {
+        Member member = memberService.verifiedCurrentMember(request);
+        Group group = verifiedGroup(groupId);
+        MemberGroup findmemberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
+        if (!findmemberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+        applicationRepository.delete(verifiedApplication(applicationId));
+    }
+
+    @Transactional
     public void quitGroup(HttpServletRequest request, long groupId) {
         Member member = memberService.verifiedCurrentMember(request);
         List<MemberGroup> members = findMembers(groupId);

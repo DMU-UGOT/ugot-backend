@@ -10,6 +10,7 @@ public class ApplicationDto {
     @Getter
     @Setter
     public static class Response {
+        private Long applicationId;
         private Long memberId;
         private String nickname;
         private String major;

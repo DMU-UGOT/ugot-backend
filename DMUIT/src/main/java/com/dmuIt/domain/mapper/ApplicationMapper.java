@@ -14,6 +14,7 @@ public interface ApplicationMapper {
             return null;
         } else {
             ApplicationDto.Response response = new ApplicationDto.Response();
+            response.setApplicationId(application.getApplicationId());
             response.setMemberId(application.getMember().getMemberId());
             response.setNickname(application.getMember().getNickname());
             response.setMajor(application.getMember().getMajor());

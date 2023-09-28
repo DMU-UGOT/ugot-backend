@@ -71,6 +71,11 @@ public class GroupController {
         groupService.accept(request, groupId, applicationId);
     }
 
+    @DeleteMapping("{group-id}/{application-id}/turnDown")
+    public void turnDown(HttpServletRequest request, @PathVariable("group-id") long groupId, @PathVariable("application-id") long applicationId) {
+        groupService.turnDown(request, groupId, applicationId);
+    }
+
     @DeleteMapping("/{group-id}/quit")
     public void quitGroup(HttpServletRequest request, @PathVariable("group-id") long groupId) {
         groupService.quitGroup(request, groupId);

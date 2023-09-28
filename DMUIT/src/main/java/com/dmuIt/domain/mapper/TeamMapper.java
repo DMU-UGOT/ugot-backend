@@ -34,6 +34,8 @@ public interface TeamMapper {
             response.setGitHubLink(team.getGitHubLink());
             response.setCreatedAt(team.getCreatedAt());
             response.setMemberId(team.getMember().getMemberId());
+            response.setGroupId(team.getGroup().getGroupId());
+            response.setGroupName(team.getGroup().getGroupName());
             return response;
         }
     }
