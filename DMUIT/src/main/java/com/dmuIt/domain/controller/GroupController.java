@@ -56,9 +56,9 @@ public class GroupController {
         return memberGroupMapper.membersToMemberResponse(groupService.findMembers(groupId));
     }
 
-    @PostMapping("/{group-id}/application")
-    public void applicationGroup(HttpServletRequest request, @PathVariable("group-id") long groupId) {
-        groupService.applicationGroup(request, groupId);
+    @PostMapping("/{group-id}/apply")
+    public void applyroup(HttpServletRequest request, @PathVariable("group-id") long groupId) {
+        groupService.applyGroup(request, groupId);
     }
 
     @GetMapping("/{group-id}/applications")

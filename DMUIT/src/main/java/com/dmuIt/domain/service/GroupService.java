@@ -72,7 +72,7 @@ public class GroupService {
     }
 
     @Transactional
-    public void applicationGroup(HttpServletRequest request, long groupId) {
+    public void applyGroup(HttpServletRequest request, long groupId) {
         Member member = memberService.verifiedCurrentMember(request);
         List<MemberGroup> members = findMembers(groupId);
         for (MemberGroup value : members) {
@@ -83,6 +83,9 @@ public class GroupService {
         Group group = verifiedGroup(groupId);
         if (group.getNowPersonnel() == group.getAllPersonnel()) {
             throw new BusinessLogicException(ExceptionCode.GROUP_IS_FULL);
+        }
+        if (applicationRepository.findApplicationByMemberAndGroup(member, group) != null) {
+            throw new BusinessLogicException(ExceptionCode.APPLICATION_EXISTS);
         }
         Application application = new Application();
         application.setMember(member);

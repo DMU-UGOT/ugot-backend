@@ -49,6 +49,8 @@ public interface StudyMapper {
             response.setViewCount( study.getViewCount() );
             response.setCreatedAt( study.getCreatedAt() );
             response.setMemberId(study.getMember().getMemberId());
+            response.setGroupId(study.getGroup().getGroupId());
+            response.setGroupName(study.getGroup().getGroupName());
             return response;
         }
     }

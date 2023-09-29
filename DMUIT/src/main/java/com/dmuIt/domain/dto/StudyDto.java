@@ -87,5 +87,7 @@ public class StudyDto {
         private Long viewCount;
         private LocalDateTime createdAt;
         private Long memberId;
+        private Long groupId;
+        private String groupName;
     }
 }
