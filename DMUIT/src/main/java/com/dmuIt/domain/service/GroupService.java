@@ -180,6 +180,7 @@ public class GroupService {
         if (findMemberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
+        group.setNowPersonnel(group.getNowPersonnel() - 1);
         memberGroupRepository.delete(findMemberGroup);
     }
 
