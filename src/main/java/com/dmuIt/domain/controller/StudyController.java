@@ -2,7 +2,6 @@ package com.dmuIt.domain.controller;
 
 import com.dmuIt.domain.dto.*;
 import com.dmuIt.domain.entity.Study;
-import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.mapper.MemberGroupMapper;
 import com.dmuIt.domain.mapper.StudyMapper;
 import com.dmuIt.domain.repository.StudyRepository;
