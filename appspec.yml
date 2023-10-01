@@ -2,14 +2,14 @@ version: 0.0
 os: linux
 files:
   - source: /
-  destination: /home/ec2-user/action
-  overwrite: yes
+    destination: /home/ec2-user/action
+    overwrite: yes
 
 permissions:
   - objects: /
-  pattern: "**"
-  owner: ubuntu
-  group: ubuntu
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
 
 hooks:
   ApplicationStart:
