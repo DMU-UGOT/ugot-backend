@@ -1,19 +1,14 @@
 package com.dmuIt.domain.controller;
 
 import com.dmuIt.domain.dto.ClassChangeDto;
-import com.dmuIt.domain.dto.CommunityResponseDto;
 import com.dmuIt.domain.dto.FindAllDto;
 import com.dmuIt.domain.dto.PageInfo;
 import com.dmuIt.domain.entity.ClassChange;
-import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.mapper.ClassChangeMapper;
 import com.dmuIt.domain.repository.ClassChangeRepository;
 import com.dmuIt.domain.service.ClassChangeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/classChanges")
 public class ClassChangeController {
-    private final ClassChangeRepository classChangeRepository;
     private final ClassChangeMapper classChangeMapper;
     private final ClassChangeService classChangeService;
 
