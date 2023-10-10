@@ -3,6 +3,7 @@ package com.dmuIt.domain.controller;
 import com.dmuIt.domain.dto.ApiResponseDto;
 import com.dmuIt.domain.dto.MessageDto;
 import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.repository.MemberRepository;
 import com.dmuIt.domain.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static io.lettuce.core.pubsub.PubSubOutput.Type.message;
 
 @RestController
 @RequestMapping("/messages")
@@ -25,7 +28,9 @@ public class MessageController {
             ,@PathVariable("community-id") Long comId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
         messageDto.setSenderName(currentMember.getNickname());
-        return apiResponseDto.success("쪽지를 보냈습니다.", messageService.write(messageDto, comId));
+
+        messageService.write(messageDto, comId);
+        return apiResponseDto.success("쪽지를 보냈습니다.");
     }
 
     @ResponseStatus(HttpStatus.CREATED)

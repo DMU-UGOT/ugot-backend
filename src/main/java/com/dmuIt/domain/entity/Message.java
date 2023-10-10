@@ -5,9 +5,9 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.yaml.snakeyaml.events.Event;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Getter
@@ -23,9 +23,9 @@ public class Message {
     private Long messageId;
 
 
-    @Column
-    private int room;
-
+    /*   @Column
+       private int room;
+   */
     @Column(nullable = false)
     private String senderName;
 
@@ -49,6 +49,11 @@ public class Message {
     @JoinColumn(name = "receiver_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member receiver;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Room room;
 
 
 }
