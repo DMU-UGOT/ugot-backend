@@ -25,7 +25,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
                     "         SELECT *,\n" +
                     "               ROW_NUMBER() OVER(PARTITION BY room ORDER BY created_at DESC) AS rn\n" +
                     "           FROM message\n" +
-                    "       ) tt WHERE rn = 1 AND (tt.receiver_name LIKE :name OR tt.sender_name LIKE :name)", nativeQuery = true
+                    "       ) tt ", nativeQuery = true
     )
     List<Message> findAllBySender(@Param("name") String name);
 

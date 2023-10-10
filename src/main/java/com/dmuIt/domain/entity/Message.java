@@ -35,6 +35,11 @@ public class Message {
     @Column(nullable = false)
     private String content;
 
+    @Column(name = "receiver_delete", nullable = false)
+    private Integer receiverDelete = 0;
+
+    @Column(name = "sender_delete", nullable = false)
+    private Integer senderDelete = 0;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -55,5 +60,21 @@ public class Message {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;
 
+
+/*    public void setReceiverDelete(Integer receiverDelete) {
+        this.receiverDelete = receiverDelete;
+    }
+
+    public void setSenderDelete(Integer senderDelete) {
+        this.senderDelete = senderDelete;
+    }*/
+
+    public boolean isMessagePresent(){
+        if(senderDelete == 1 && receiverDelete ==1){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }

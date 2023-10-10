@@ -63,7 +63,6 @@ public class MessageController {
     @DeleteMapping("/delete/{message-id}")
     public ResponseEntity<?> deleteReceivedMessage(HttpServletRequest request, @PathVariable("message-id") long messageId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
-
         return apiResponseDto.success( messageId + "번 쪽지를 삭제했습니다.", messageService.deleteMessage(messageId, currentMember));
     }
 

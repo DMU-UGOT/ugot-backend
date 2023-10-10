@@ -17,10 +17,6 @@ import java.util.List;
 
 public interface CommunityRepository extends JpaRepository<Community, Long> {
 
-    @Query(
-            value = "SELECT * FROM community p WHERE p.comId LIKE :comId", nativeQuery = true
-    )
-    Community findMemberById(Long comId);
 
     @Query(
             value = "SELECT p FROM Community p WHERE p.title LIKE %:keyword% OR p.content LIKE %:keyword%",
