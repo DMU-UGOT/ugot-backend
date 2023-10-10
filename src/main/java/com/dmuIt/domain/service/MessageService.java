@@ -104,7 +104,7 @@ public class MessageService {
     }
 
     //쪽지함
-    public MessageDto receivedMessage(Member member){
+    public Object receivedMessage(Member member){
         List<Message> messages = messageRepository.findAllBySender(member.getNickname());
         List<MessageDto> messageDtos = new ArrayList<>();
 
@@ -118,7 +118,13 @@ public class MessageService {
                 messageDtos.add(MessageDto.toDto(message));
             }
         }
-        return messageDtos.get(0);
+        if(messageDtos.size() == 0)
+        {
+            return "쪽지가 없습니다.";
+        }else{
+            return messageDtos.get(0);
+        }
+
     }
 
     //쪽지 상세보기
@@ -140,7 +146,7 @@ public class MessageService {
         return messageDtos;
     }
 
-    //편지 삭제 - 양쪽 다 삭제됨.
+    //편지 삭제
     @Transactional
     public Object deleteMessage(long id, Member member) {
         Message message = messageRepository.findById(id)
