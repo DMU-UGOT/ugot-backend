@@ -1,6 +1,7 @@
 package com.dmuIt.domain.dto;
 
 import com.dmuIt.domain.entity.Message;
+import com.dmuIt.domain.entity.Room;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class MessageDto {
     private long id;
-    private int room;
+    private Integer room;
     private String content;
     private String senderName;
     private String receiverName;
@@ -22,7 +23,7 @@ public class MessageDto {
     public static MessageDto toDto(Message message) {
         return new MessageDto(
                 message.getMessageId(),
-                message.getRoom(),
+                message.getRoom().getRoom(),
                 message.getContent(),
                 message.getSender().getNickname(),
                 message.getReceiver().getNickname(),
