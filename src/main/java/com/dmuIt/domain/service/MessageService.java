@@ -146,6 +146,23 @@ public class MessageService {
         return messageDtos;
     }
 
+    //방 삭제
+    @Transactional
+    public Object deleteRoom(Member member, Integer room){
+        List<Message> messages = messageRepository.findByRoom(room);
+
+        for (Message message : messages) {
+            if(member.getNickname().equals(message.getSenderName())) // 내가 보낸 메세지 삭제
+            {
+                message.setSenderDelete(1);
+            }else if(member.getNickname().equals(message.getReceiverName())) //내가 받은 메세지 삭제
+            {
+                message.setReceiverDelete(1);
+            }
+        }
+        return "방 나가기";
+    }
+
     //편지 삭제
     @Transactional
     public Object deleteMessage(long id, Member member) {

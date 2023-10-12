@@ -58,6 +58,12 @@ public class MessageController {
         return apiResponseDto.success("쪽지를 불러왔습니다.", messageService.allMessage(currentMember, room));
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/delete/room/{room}")
+    public ResponseEntity<?> deleteRoom(HttpServletRequest request, @PathVariable("room") Integer room) {
+        Member currentMember = messageService.verifiedCurrentMember(request);
+        return apiResponseDto.success(  "해당 채팅방을 삭제했습니다.", messageService.deleteRoom(currentMember, room));
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/delete/{message-id}")
