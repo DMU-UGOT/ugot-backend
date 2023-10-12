@@ -64,5 +64,4 @@ public class Message {
             return false;
         }
     }
-
 }

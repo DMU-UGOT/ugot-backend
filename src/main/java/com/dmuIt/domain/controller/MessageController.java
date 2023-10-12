@@ -18,6 +18,7 @@ public class MessageController {
     private final MessageService messageService;
     private final ApiResponseDto apiResponseDto;
 
+
     //게시글 보고 send
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/send/{community-id}")

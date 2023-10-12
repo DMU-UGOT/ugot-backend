@@ -14,9 +14,7 @@ import javax.persistence.*;
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Room extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer room;
-
 }
