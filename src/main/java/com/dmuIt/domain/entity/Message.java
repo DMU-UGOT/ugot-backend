@@ -5,9 +5,9 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.yaml.snakeyaml.events.Event;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Getter
@@ -23,9 +23,9 @@ public class Message {
     private Long messageId;
 
 
-    @Column
-    private int room;
-
+    /*   @Column
+       private int room;
+   */
     @Column(nullable = false)
     private String senderName;
 
@@ -35,6 +35,11 @@ public class Message {
     @Column(nullable = false)
     private String content;
 
+    @Column(name = "receiver_delete", nullable = false)
+    private Integer receiverDelete = 0;
+
+    @Column(name = "sender_delete", nullable = false)
+    private Integer senderDelete = 0;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -50,5 +55,26 @@ public class Message {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member receiver;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Room room;
+
+
+/*    public void setReceiverDelete(Integer receiverDelete) {
+        this.receiverDelete = receiverDelete;
+    }
+
+    public void setSenderDelete(Integer senderDelete) {
+        this.senderDelete = senderDelete;
+    }*/
+
+    public boolean isMessagePresent(){
+        if(senderDelete == 1 && receiverDelete ==1){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }

@@ -25,7 +25,9 @@ public class MessageController {
             ,@PathVariable("community-id") Long comId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
         messageDto.setSenderName(currentMember.getNickname());
-        return apiResponseDto.success("쪽지를 보냈습니다.", messageService.write(messageDto, comId));
+
+        messageService.write(messageDto, comId);
+        return apiResponseDto.success("쪽지를 보냈습니다.");
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -58,7 +60,6 @@ public class MessageController {
     @DeleteMapping("/delete/{message-id}")
     public ResponseEntity<?> deleteReceivedMessage(HttpServletRequest request, @PathVariable("message-id") long messageId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
-
         return apiResponseDto.success( messageId + "번 쪽지를 삭제했습니다.", messageService.deleteMessage(messageId, currentMember));
     }
 

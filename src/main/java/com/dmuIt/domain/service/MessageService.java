@@ -4,9 +4,11 @@ import com.dmuIt.domain.dto.MessageDto;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.entity.Member;
 import com.dmuIt.domain.entity.Message;
+import com.dmuIt.domain.entity.Room;
 import com.dmuIt.domain.repository.CommunityRepository;
 import com.dmuIt.domain.repository.MemberRepository;
 import com.dmuIt.domain.repository.MessageRepository;
+import com.dmuIt.domain.repository.RoomRepository;
 import com.dmuIt.global.auth.jwt.JwtTokenProvider;
 import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -24,37 +25,38 @@ import java.util.*;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final CommunityRepository communityRepository;
+    private final RoomRepository roomRepository;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
 
     //방 번호 구분
-    public void roomChecking(Message message, MessageDto messageDto, Member receiver){
+    public void roomChecking(Message message, MessageDto messageDto, Member receiver, Room room){
+
         if(messageRepository.findRoomNum(receiver.getNickname(), messageDto.getSenderName()) == null){
             //신규방 설정
-            //랜덤 방 숫자를 주되 중복되지 않게
-            Integer a;
-            do{
-                a = (int) (Math.random()*100+1);
-            }while(messageRepository.findRoomNum(receiver.getNickname(), messageDto.getSenderName()) == a);
-            message.setRoom(a);
+            roomRepository.save(room);
+            message.setRoom(room);
         }else{
-            //기존방!
-            message.setRoom(messageRepository.findRoomNum(receiver.getNickname(), messageDto.getSenderName()));
+            //기존방
+            room.setRoom(messageRepository.findRoomNum(receiver.getNickname(), messageDto.getSenderName()));
+            message.setRoom(room);
         }
     }
 
 
     @Transactional
     public MessageDto write(MessageDto messageDto, Long comId) {
+
         Optional<Member> optionalMember2 = memberRepository.findByNickname(messageDto.getSenderName());
         Member sender = optionalMember2
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        Community community = communityRepository.findMemberById(comId);
+        Community community = communityRepository.findById(comId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
         Member receiver = community.getMember();
         Message message = new Message();
-
-        roomChecking(message,messageDto,receiver);
+        Room room = new Room();
+        roomChecking(message,messageDto,receiver,room);
 
         message.setReceiver(receiver);
         message.setSender(sender);
@@ -73,17 +75,19 @@ public class MessageService {
         Member sender = optionalMember2
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         List<Message> m = messageRepository.findByRoom(roomId);
-        Member receiver = sender;
-        for (int i=0; i<=m.size(); i++) { //자신에게 보내지 않게끔 함...
-            if(m.get(i).getReceiver() != sender){
-                receiver = m.get(i).getReceiver();
-                break;
-            }
+        Member receiver;
+        if(m.get(m.size()-1).getSender() != sender) //연속으로 보내는 게 아니라면
+        {
+            receiver = m.get(m.size()-1).getSender(); //이전의 보낸이가 받는이
+        }else{
+            receiver = m.get(m.size()-1).getReceiver(); //받는이 유지
         }
 
         Message message = new Message();
 
-        roomChecking(message,messageDto,receiver);
+        Room room = new Room();
+        room.setRoom(roomId);
+        message.setRoom(room);
 
         message.setReceiver(receiver);
         message.setSender(sender);
