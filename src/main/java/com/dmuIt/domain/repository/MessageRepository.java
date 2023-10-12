@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
+
     @Query(
             value = "SELECT * FROM message p WHERE p.room LIKE :room OR p.room LIKE :k", nativeQuery = true
     )

@@ -182,7 +182,6 @@ public class MessageService {
         return "삭제 완료";
     }
 
-
     public Member verifiedCurrentMember(HttpServletRequest request) {
         String accessToken = request.getHeader("Authorization").substring(7);
         Claims claims = jwtTokenProvider.parseClaims(accessToken);
