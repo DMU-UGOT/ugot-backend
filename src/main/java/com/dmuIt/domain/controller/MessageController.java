@@ -3,7 +3,6 @@ package com.dmuIt.domain.controller;
 import com.dmuIt.domain.dto.ApiResponseDto;
 import com.dmuIt.domain.dto.MessageDto;
 import com.dmuIt.domain.entity.Member;
-import com.dmuIt.domain.repository.MemberRepository;
 import com.dmuIt.domain.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
-import static io.lettuce.core.pubsub.PubSubOutput.Type.message;
 
 @RestController
 @RequestMapping("/messages")
