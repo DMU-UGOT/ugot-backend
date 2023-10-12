@@ -25,6 +25,7 @@ public class GroupService {
     private final MemberGroupRepository memberGroupRepository;
     private final ConversationRepository conversationRepository;
     private final ApplicationRepository applicationRepository;
+    private final FavoriteRepository favoriteRepository;
     private final MemberService memberService;
     private final NoticeMapper noticeMapper;
 
@@ -154,6 +155,7 @@ public class GroupService {
         }
         group.setNowPersonnel(group.getNowPersonnel() - 1);
         memberGroupRepository.delete(memberGroupRepository.findMemberGroupByMemberAndGroup(member, group));
+        favoriteRepository.delete(favoriteRepository.findFavoriteByMemberAndGroup(member, group));
     }
 
     @Transactional

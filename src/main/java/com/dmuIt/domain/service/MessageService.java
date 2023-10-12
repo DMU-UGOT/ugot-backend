@@ -1,6 +1,5 @@
 package com.dmuIt.domain.service;
 
-import com.dmuIt.domain.dto.ApiResponseDto;
 import com.dmuIt.domain.dto.MessageDto;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.entity.Member;
@@ -52,10 +51,8 @@ public class MessageService {
         Optional<Member> optionalMember2 = memberRepository.findByNickname(messageDto.getSenderName());
         Member sender = optionalMember2
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-
         Community community = communityRepository.findById(comId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));;
-
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
         Member receiver = community.getMember();
         Message message = new Message();
         Room room = new Room();
@@ -104,27 +101,13 @@ public class MessageService {
     }
 
     //쪽지함
-    public Object receivedMessage(Member member){
+    public List<MessageDto> receivedMessage(Member member){
         List<Message> messages = messageRepository.findAllBySender(member.getNickname());
         List<MessageDto> messageDtos = new ArrayList<>();
-
         for (Message message : messages) {
-            if(message.getSenderName().equals(member.getNickname()) //내가 보낸 쪽지를
-                    && message.getSenderDelete() == 0) // 삭제하지 않았을 때
-            {
-                messageDtos.add(MessageDto.toDto(message));
-            }else if(message.getReceiverName().equals(member.getNickname()) //내가 받은 쪽지를
-                    && message.getReceiverDelete() == 0) { // 삭제하지 않았을 때
-                messageDtos.add(MessageDto.toDto(message));
-            }
+            messageDtos.add(MessageDto.toDto(message));
         }
-        if(messageDtos.size() == 0)
-        {
-            return "쪽지가 없습니다.";
-        }else{
-            return messageDtos.get(0);
-        }
-
+        return messageDtos;
     }
 
     //쪽지 상세보기
@@ -134,17 +117,11 @@ public class MessageService {
         List<MessageDto> messageDtos = new ArrayList<>();
 
         for (Message message : messages) {
-            if(message.getSenderName().equals(member.getNickname())
-                    && message.getSenderDelete() == 0) // 삭제하지 않았을 때
-            {
-                messageDtos.add(MessageDto.toDto(message));
-            }else if(message.getReceiverName().equals(member.getNickname()) //내가 받은 쪽지를
-                    && message.getReceiverDelete() == 0) { // 삭제하지 않았을 때
-                messageDtos.add(MessageDto.toDto(message));
-            }
+            messageDtos.add(MessageDto.toDto(message));
         }
         return messageDtos;
     }
+
 
     //방 삭제
     @Transactional
@@ -164,22 +141,15 @@ public class MessageService {
     }
 
     //편지 삭제
+
+    //편지 삭제 - 양쪽 다 삭제됨.
+
     @Transactional
     public Object deleteMessage(long id, Member member) {
         Message message = messageRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("메시지를 찾을 수 없습니다."));
-
-        if(member.getNickname().equals(message.getSenderName())) // 내가 보낸 메세지 삭제
-        {
-            message.setSenderDelete(1);
-        }else if(member.getNickname().equals(message.getReceiverName())) //내가 받은 메세지 삭제
-        {
-            message.setReceiverDelete(1);
-        }
-        if(message.isMessagePresent() == true){
-            messageRepository.delete(message);
-        }
-        return "삭제 완료";
+        messageRepository.delete(message);
+        return "양쪽 모두 삭제";
     }
 
     public Member verifiedCurrentMember(HttpServletRequest request) {
