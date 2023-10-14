@@ -32,7 +32,9 @@ public class CommentService {
     private final MemberService memberService;
 
     public List<CommentDto.Response> getComments(final Long id) {
+        System.out.println("1");
         Community community = communityRepository.findById(id).get();
+        System.out.println("1");
         return commentMapper.commentsToCommentResponseDtos(commentRepository.findCommentsByCommunity(community));
     }
 

@@ -40,7 +40,7 @@ public class MessageService {
             message.setRoom(room);
         }else{
             //기존방
-            room.setRoom(messageRepository.findRoomNum(receiver.getNickname(), messageDto.getSenderName()));
+            room.setRoom(messageRepository.findRoomNum(receiver.getNickname(), messageDto.getSenderName()).get(0));
             message.setRoom(room);
         }
     }
