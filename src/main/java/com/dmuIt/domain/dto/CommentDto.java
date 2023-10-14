@@ -9,9 +9,9 @@ public class CommentDto {
     @Getter
     @Setter
     public static class Response {
+        private Long commentId;
         private String nickname;
         private String content;
         private LocalDateTime createdAt;
     }
-  
 }

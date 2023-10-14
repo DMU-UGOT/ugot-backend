@@ -29,26 +29,6 @@ public class Comment extends Auditable {
     @JoinColumn(name = "community_id")
     private Community community;
 
-    /*
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private Team team;
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "study_id")
-    private Study study;
-
-    */
-
-
-    public Comment(Long id, String content, Member member, Community community) {
-        this.id = id;
-        this.content = content;
-        this.member = member;
-        this.community = community;
-    }
-
     public void setCommunity(Community community) {
         this.community = community;
     }

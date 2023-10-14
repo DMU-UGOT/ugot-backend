@@ -15,6 +15,7 @@ public enum ExceptionCode implements ErrorCode{
     CLASS_CHANGE_NOT_FOUND(HttpStatus.NOT_FOUND, "ClassChange not found"),
     GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "Group not found"),
     NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "Notice not found"),
+    MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "Message not found"),
     CONVERSATION_NOT_FOUND(HttpStatus.NOT_FOUND, "Conversation not found"),
     APPLICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "Application not found"),
     MEMBER_EXISTS(HttpStatus.CONFLICT, "Member exists"),

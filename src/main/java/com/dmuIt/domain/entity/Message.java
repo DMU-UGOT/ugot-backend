@@ -58,10 +58,6 @@ public class Message {
 
 
     public boolean isMessagePresent(){
-        if(senderDelete == 1 && receiverDelete ==1){
-            return true;
-        }else{
-            return false;
-        }
+        return senderDelete == 1 && receiverDelete == 1;
     }
 }
