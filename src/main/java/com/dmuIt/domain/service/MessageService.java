@@ -31,6 +31,8 @@ public class MessageService {
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
 
+
+
     //방 번호 구분
     public void roomChecking(Message message, MessageDto messageDto, Member receiver, Room room){
 
@@ -59,6 +61,7 @@ public class MessageService {
         Member receiver = community.getMember();
         Message message = new Message();
         Room room = new Room();
+
         roomChecking(message,messageDto,receiver,room);
 
         message.setReceiver(receiver);
@@ -159,7 +162,11 @@ public class MessageService {
             {
                 message.setReceiverDelete(1);
             }
+            roomRepository.delete(message.getRoom());
+            messageRepository.delete(message);
         }
+
+
         return "방 나가기";
     }
 
@@ -168,6 +175,7 @@ public class MessageService {
     public Object deleteMessage(long id, Member member) {
         Message message = messageRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("메시지를 찾을 수 없습니다."));
+        List<Message> messages = messageRepository.findByRoom(message.getRoom().getRoom());
 
         if(member.getNickname().equals(message.getSenderName())) // 내가 보낸 메세지 삭제
         {
@@ -176,8 +184,11 @@ public class MessageService {
         {
             message.setReceiverDelete(1);
         }
-        if(message.isMessagePresent() == true){
+        if(message.isMessagePresent() == false){
             messageRepository.delete(message);
+        }
+        if(message.isAllMessageDeleted(messages)){
+            roomRepository.delete(message.getRoom());
         }
         return "삭제 완료";
     }
