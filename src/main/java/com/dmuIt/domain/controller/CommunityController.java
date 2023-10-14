@@ -1,10 +1,12 @@
 package com.dmuIt.domain.controller;
 
 import com.dmuIt.domain.dto.*;
+import com.dmuIt.domain.entity.Comment;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.mapper.CommunityMapper;
 import com.dmuIt.domain.repository.CommunityRepository;
+import com.dmuIt.domain.service.CommentService;
 import com.dmuIt.domain.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ public class CommunityController
 {
     private final CommunityRepository communityRepository;
     private final CommunityService communityService;
+    private final CommentService commentService;
     private final CommunityMapper communityMapper;
 
     @PostMapping
@@ -98,5 +101,26 @@ public class CommunityController
         }
         return pagingList;
 
+    }
+
+    @GetMapping("/{community-id}/comment")
+    public List<CommentDto.Response> getPostComments(@PathVariable Long id){
+        return commentService.getComments(id);
+    }
+
+    @PostMapping("/{community-id}/comment")
+    public void createComment(HttpServletRequest request,  @PathVariable Long id, @RequestBody Comment comment){
+        commentService.create(request, id, comment);
+    }
+
+
+    @PatchMapping("/{community-id}/comment/{comment-id}")
+    public void update(HttpServletRequest request, @PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
+        commentService.update(request, id,commentID,comment);
+    }
+
+    @DeleteMapping("/{community-id}/comment/{comment-id}")
+    public void deleteComment(HttpServletRequest request, @PathVariable Long id, @PathVariable Long commentID){
+        commentService.delete(request, id, commentID);
     }
 }
