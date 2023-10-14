@@ -54,8 +54,8 @@ public class CommunityController
     }
 
     @GetMapping("/{community-id}")
-    public CommunityResponseDto findById(@PathVariable final Long id) {
-        return communityService.findById(id);
+    public CommunityResponseDto findById(@PathVariable("community-id") final Long communityId) {
+        return communityService.findById(communityId);
     }
 
     @PatchMapping("/{community-id}")
