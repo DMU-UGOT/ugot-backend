@@ -26,8 +26,8 @@ public class MessageController {
             ,@PathVariable("community-id") Long comId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
         messageDto.setSenderName(currentMember.getNickname());
-        messageService.write(messageDto, comId);
-        return apiResponseDto.success("쪽지를 보냈습니다.");
+
+        return apiResponseDto.success("쪽지보내기.", messageService.write(messageDto, comId));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
