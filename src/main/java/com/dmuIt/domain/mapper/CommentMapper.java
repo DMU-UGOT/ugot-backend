@@ -16,6 +16,7 @@ public interface CommentMapper {
 
         CommentDto.Response response = new CommentDto.Response();
 
+        response.setCommentId(comment.getId());
         response.setNickname(comment.getMember().getNickname());
         response.setContent(comment.getContent());
         response.setCreatedAt(comment.getCreatedAt());

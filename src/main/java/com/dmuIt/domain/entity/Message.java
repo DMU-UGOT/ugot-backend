@@ -22,10 +22,6 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
-
-    /*   @Column
-       private int room;
-   */
     @Column(nullable = false)
     private String senderName;
 
@@ -61,20 +57,7 @@ public class Message {
     private Room room;
 
 
-/*    public void setReceiverDelete(Integer receiverDelete) {
-        this.receiverDelete = receiverDelete;
-    }
-
-    public void setSenderDelete(Integer senderDelete) {
-        this.senderDelete = senderDelete;
-    }*/
-
     public boolean isMessagePresent(){
-        if(senderDelete == 1 && receiverDelete ==1){
-            return true;
-        }else{
-            return false;
-        }
+        return senderDelete == 1 && receiverDelete == 1;
     }
-
 }

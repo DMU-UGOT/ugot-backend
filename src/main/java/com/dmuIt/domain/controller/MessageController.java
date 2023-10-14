@@ -18,6 +18,7 @@ public class MessageController {
     private final MessageService messageService;
     private final ApiResponseDto apiResponseDto;
 
+
     //게시글 보고 send
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/send/{community-id}")
@@ -39,14 +40,12 @@ public class MessageController {
         return apiResponseDto.success("쪽지를 보냈습니다.", messageService.writeInRoom(messageDto, roomId));
     }
 
-
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
     public ResponseEntity<?> getReceivedMessage(HttpServletRequest request) {
         Member currentMember = messageService.verifiedCurrentMember(request);
         return apiResponseDto.success("쪽지함입니다.", messageService.receivedMessage(currentMember));
     }
-
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{room}")
@@ -55,6 +54,12 @@ public class MessageController {
         return apiResponseDto.success("쪽지를 불러왔습니다.", messageService.allMessage(currentMember, room));
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/delete/room/{room}")
+    public ResponseEntity<?> deleteRoom(HttpServletRequest request, @PathVariable("room") Integer room) {
+        Member currentMember = messageService.verifiedCurrentMember(request);
+        return apiResponseDto.success(  "해당 채팅방을 삭제했습니다.", messageService.deleteRoom(currentMember, room));
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/delete/{message-id}")
@@ -62,7 +67,5 @@ public class MessageController {
         Member currentMember = messageService.verifiedCurrentMember(request);
         return apiResponseDto.success( messageId + "번 쪽지를 삭제했습니다.", messageService.deleteMessage(messageId, currentMember));
     }
-
-
 
 }
