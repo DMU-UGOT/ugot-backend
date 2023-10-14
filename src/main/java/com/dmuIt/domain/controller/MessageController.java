@@ -21,7 +21,7 @@ public class MessageController {
 
     //게시글 보고 send
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/inCommunity{community-id}")
+    @PostMapping("/inCommunity/{community-id}")
     public ResponseEntity<?> sendMessageInCommunity(HttpServletRequest request, @RequestBody MessageDto messageDto
             ,@PathVariable("community-id") Long comId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
