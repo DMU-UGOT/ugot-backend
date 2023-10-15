@@ -1,8 +1,8 @@
 #!/bin/bash
-BUILD_JAR=$(ls /home/ec2-user/action/build/libs/DMUIT-0.0.1-SNAPSHOT.jar)
+BUILD_JAR=$(ls /home/ec2-user/server2/ugot-backend/build/libs/DMUIT-0.0.1-SNAPSHOT.jar)
 JAR_NAME=$(basename $BUILD_JAR)
 
-echo "> 현재 시간: $(date)" >> /home/ec2-user/action/deploy.log
+echo "> 현재 시간: $(date)" >> /home/ec2-user/deploy.log
 
 echo "> build 파일명: $JAR_NAME" >> /home/ec2-user/action/deploy.log
 

@@ -33,6 +33,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             value = "SELECT room FROM message p WHERE (p.receiver_name LIKE :recvName AND p.sender_name Like :sendName) OR " +
                     "(p.receiver_name LIKE :sendName AND p.sender_name Like :recvName)", nativeQuery = true
     )
-    Integer findRoomNum(@Param("recvName") String recvName, @Param("sendName") String sendName);
+    List<Integer> findRoomNum(@Param("recvName") String recvName, @Param("sendName") String sendName);
 
 }

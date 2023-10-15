@@ -21,8 +21,8 @@ public class MessageController {
 
     //게시글 보고 send
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/inCommunity{community-id}")
-    public ResponseEntity<?> sendMessageInCommunity(HttpServletRequest request, @RequestBody MessageDto messageDto
+    @PostMapping("/send/{community-id}")
+    public ResponseEntity<?> sendMessage1(HttpServletRequest request, @RequestBody MessageDto messageDto
             ,@PathVariable("community-id") Long comId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
         messageDto.setSenderName(currentMember.getNickname());
@@ -31,8 +31,8 @@ public class MessageController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/inRoom/{room-id}")
-    public ResponseEntity<?> sendMessageInRoom(HttpServletRequest request, @RequestBody MessageDto messageDto
+    @PostMapping("/send/room/{room-id}")
+    public ResponseEntity<?> sendMessage2(HttpServletRequest request, @RequestBody MessageDto messageDto
             ,@PathVariable("room-id") Integer roomId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
         messageDto.setSenderName(currentMember.getNickname());
@@ -47,21 +47,21 @@ public class MessageController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{room-id}")
+    @GetMapping("/{room}")
     public ResponseEntity<?> getAllReceivedMessage(HttpServletRequest request, @PathVariable("room") Integer room) {
         Member currentMember = messageService.verifiedCurrentMember(request);
         return apiResponseDto.success("쪽지를 불러왔습니다.", messageService.allMessage(currentMember, room));
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/room/{room-id}")
+    @DeleteMapping("/delete/room/{room}")
     public ResponseEntity<?> deleteRoom(HttpServletRequest request, @PathVariable("room") Integer room) {
         Member currentMember = messageService.verifiedCurrentMember(request);
         return apiResponseDto.success(  "해당 채팅방을 삭제했습니다.", messageService.deleteRoom(currentMember, room));
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/{message-id}")
+    @DeleteMapping("/delete/{message-id}")
     public ResponseEntity<?> deleteReceivedMessage(HttpServletRequest request, @PathVariable("message-id") long messageId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
         return apiResponseDto.success( messageId + "번 쪽지를 삭제했습니다.", messageService.deleteMessage(messageId, currentMember));

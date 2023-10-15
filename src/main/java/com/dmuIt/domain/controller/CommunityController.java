@@ -1,12 +1,10 @@
 package com.dmuIt.domain.controller;
 
 import com.dmuIt.domain.dto.*;
-import com.dmuIt.domain.entity.Comment;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.mapper.CommunityMapper;
 import com.dmuIt.domain.repository.CommunityRepository;
-import com.dmuIt.domain.service.CommentService;
 import com.dmuIt.domain.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,14 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 @RestController
-@RequestMapping("/communities")
+@RequestMapping("/com")
 @RequiredArgsConstructor
 
 public class CommunityController
 {
     private final CommunityRepository communityRepository;
     private final CommunityService communityService;
-    private final CommentService commentService;
     private final CommunityMapper communityMapper;
 
     @PostMapping
@@ -53,17 +50,17 @@ public class CommunityController
         return communityMapper.ComsToComResponseDtos(communityService.findMyCommunities(request));
     }
 
-    @GetMapping("/{community-id}")
+    @GetMapping("/{id}")
     public CommunityResponseDto findById(@PathVariable final Long id) {
         return communityService.findById(id);
     }
 
-    @PatchMapping("/{community-id}")
+    @PatchMapping("/{id}")
     public void update(HttpServletRequest request, @PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
         communityService.update(request, id, params);
     }
 
-    @DeleteMapping("/{community-id}")
+    @DeleteMapping("/{id}")
     public void delete(HttpServletRequest request, @PathVariable final Long id) {
         communityService.delete(request, id);
     }
@@ -101,26 +98,5 @@ public class CommunityController
         }
         return pagingList;
 
-    }
-
-    @GetMapping("/{community-id}/comment")
-    public List<CommentDto.Response> getPostComments(@PathVariable Long id){
-        return commentService.getComments(id);
-    }
-
-    @PostMapping("/{community-id}/comment")
-    public void createComment(HttpServletRequest request,  @PathVariable Long id, @RequestBody Comment comment){
-        commentService.create(request, id, comment);
-    }
-
-
-    @PatchMapping("/{community-id}/comment/{comment-id}")
-    public void update(HttpServletRequest request, @PathVariable Long id, @PathVariable Long commentID, @RequestBody Comment comment){
-        commentService.update(request, id,commentID,comment);
-    }
-
-    @DeleteMapping("/{community-id}/comment/{comment-id}")
-    public void deleteComment(HttpServletRequest request, @PathVariable Long id, @PathVariable Long commentID){
-        commentService.delete(request, id, commentID);
     }
 }
