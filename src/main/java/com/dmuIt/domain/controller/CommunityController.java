@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 @RestController
-@RequestMapping("/com")
+@RequestMapping("/communities")
 @RequiredArgsConstructor
 
 public class CommunityController
@@ -50,17 +50,17 @@ public class CommunityController
         return communityMapper.ComsToComResponseDtos(communityService.findMyCommunities(request));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{community-id}")
     public CommunityResponseDto findById(@PathVariable final Long id) {
         return communityService.findById(id);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{community-id}")
     public void update(HttpServletRequest request, @PathVariable final Long id, @RequestBody final CommunityRequestDto params) {
         communityService.update(request, id, params);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{community-id}")
     public void delete(HttpServletRequest request, @PathVariable final Long id) {
         communityService.delete(request, id);
     }

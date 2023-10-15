@@ -55,8 +55,7 @@ public class MessageService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         Community community = communityRepository.findById(comId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
-        ;
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
 
         Member receiver = community.getMember();
         Message message = new Message();
@@ -124,7 +123,9 @@ public class MessageService {
                 messageDtos.add(MessageDto.toDto(message));
             }
         }
+
         return messageDtos;
+
     }
 
 
@@ -172,8 +173,7 @@ public class MessageService {
     @Transactional
     public Object deleteMessage(long id, Member member) {
         Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("메시지를 찾을 수 없습니다."));
-        List<Message> messages = messageRepository.findByRoom(message.getRoom().getRoom());
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MESSAGE_NOT_FOUND));
 
         if(member.getNickname().equals(message.getSenderName())) // 내가 보낸 메세지 삭제
         {
@@ -182,7 +182,9 @@ public class MessageService {
         {
             message.setReceiverDelete(1);
         }
+
         if(message.isMessagePresent() == false){
+
             messageRepository.delete(message);
         }
         if(message.isAllMessageDeleted(messages)){
