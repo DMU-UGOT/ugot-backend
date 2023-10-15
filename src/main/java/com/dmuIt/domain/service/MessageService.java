@@ -159,8 +159,12 @@ public class MessageService {
             {
                 message.setReceiverDelete(1);
             }
-            roomRepository.delete(message.getRoom());
-            messageRepository.delete(message);
+            if(message.isAllMessageDeleted(messages)){
+                roomRepository.delete(message.getRoom());
+            }
+            if(message.isMessagePresent() == false){
+                messageRepository.delete(message);
+            }
         }
 
 
