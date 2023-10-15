@@ -31,14 +31,15 @@ public class MessageService {
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    //방 번호 구분
-    public void roomChecking(Message message, MessageDto messageDto, Member receiver, Room room){
 
-        if(messageRepository.findRoomNum(receiver.getNickname(), messageDto.getSenderName()) == null){
+    //방 번호 구분
+    public void roomChecking(Message message, MessageDto messageDto, Member receiver, Room room) {
+
+        if (messageRepository.findRoomNum(receiver.getNickname(), messageDto.getSenderName()) == null) {
             //신규방 설정
             roomRepository.save(room);
             message.setRoom(room);
-        }else{
+        } else {
             //기존방
             room.setRoom(messageRepository.findRoomNum(receiver.getNickname(), messageDto.getSenderName()));
             message.setRoom(room);
@@ -47,7 +48,7 @@ public class MessageService {
 
 
     @Transactional
-    public MessageDto write(MessageDto messageDto, Long comId) {
+    public Object write(MessageDto messageDto, Long comId) {
 
         Optional<Member> optionalMember2 = memberRepository.findByNickname(messageDto.getSenderName());
         Member sender = optionalMember2
@@ -59,17 +60,21 @@ public class MessageService {
         Member receiver = community.getMember();
         Message message = new Message();
         Room room = new Room();
-        roomChecking(message,messageDto,receiver,room);
+        if (sender.getNickname().equals(receiver.getNickname())) {
+            return "자신에게는 쪽지를 보낼 수 없습니다.";
+        } else {
+            roomChecking(message, messageDto, receiver, room);
 
-        message.setReceiver(receiver);
-        message.setSender(sender);
-        message.setSenderName(sender.getNickname());
-        message.setReceiverName(receiver.getNickname());
+            message.setReceiver(receiver);
+            message.setSender(sender);
+            message.setSenderName(sender.getNickname());
+            message.setReceiverName(receiver.getNickname());
 
-        message.setContent(messageDto.getContent());
-        messageRepository.save(message);
+            message.setContent(messageDto.getContent());
+            messageRepository.save(message);
 
-        return MessageDto.toDto(message);
+            return MessageDto.toDto(message);
+        }
     }
 
     @Transactional
@@ -79,11 +84,11 @@ public class MessageService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         List<Message> m = messageRepository.findByRoom(roomId);
         Member receiver;
-        if(m.get(m.size()-1).getSender() != sender) //연속으로 보내는 게 아니라면
+        if (m.get(m.size() - 1).getSender() != sender) //연속으로 보내는 게 아니라면
         {
-            receiver = m.get(m.size()-1).getSender(); //이전의 보낸이가 받는이
-        }else{
-            receiver = m.get(m.size()-1).getReceiver(); //받는이 유지
+            receiver = m.get(m.size() - 1).getSender(); //이전의 보낸이가 받는이
+        } else {
+            receiver = m.get(m.size() - 1).getReceiver(); //받는이 유지
         }
 
         Message message = new Message();
@@ -104,28 +109,25 @@ public class MessageService {
     }
 
     //쪽지함
-    public Object receivedMessage(Member member){
+    public List<MessageDto> receivedMessage(Member member) {
         List<Message> messages = messageRepository.findAllBySender(member.getNickname());
         List<MessageDto> messageDtos = new ArrayList<>();
 
         for (Message message : messages) {
-            if(message.getSenderName().equals(member.getNickname()) //내가 보낸 쪽지를
+            if (message.getSenderName().equals(member.getNickname()) //내가 보낸 쪽지를
                     && message.getSenderDelete() == 0) // 삭제하지 않았을 때
             {
                 messageDtos.add(MessageDto.toDto(message));
-            }else if(message.getReceiverName().equals(member.getNickname()) //내가 받은 쪽지를
+            } else if (message.getReceiverName().equals(member.getNickname()) //내가 받은 쪽지를
                     && message.getReceiverDelete() == 0) { // 삭제하지 않았을 때
                 messageDtos.add(MessageDto.toDto(message));
             }
         }
-        if(messageDtos.isEmpty())
-        {
-            return "쪽지가 없습니다.";
-        }else{
-            return messageDtos.get(0);
-        }
+
+        return messageDtos;
 
     }
+
 
     //쪽지 상세보기
     @Transactional(readOnly = true)
@@ -159,7 +161,11 @@ public class MessageService {
             {
                 message.setReceiverDelete(1);
             }
+            roomRepository.delete(message.getRoom());
+            messageRepository.delete(message);
         }
+
+
         return "방 나가기";
     }
 
@@ -176,8 +182,13 @@ public class MessageService {
         {
             message.setReceiverDelete(1);
         }
-        if(message.isMessagePresent()){
+
+        if(message.isMessagePresent() == false){
+
             messageRepository.delete(message);
+        }
+        if(message.isAllMessageDeleted(messages)){
+            roomRepository.delete(message.getRoom());
         }
         return "삭제 완료";
     }
