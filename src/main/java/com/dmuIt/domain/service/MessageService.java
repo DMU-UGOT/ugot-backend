@@ -56,7 +56,6 @@ public class MessageService {
 
         Community community = communityRepository.findById(comId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
-        ;
 
         Member receiver = community.getMember();
         Message message = new Message();
