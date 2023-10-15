@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -58,6 +59,23 @@ public class Message {
 
 
     public boolean isMessagePresent(){
-        return senderDelete == 1 && receiverDelete == 1;
+        if(senderDelete == 1 && receiverDelete == 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    public boolean isAllMessageDeleted(List<Message> m) {
+        int i = 0;
+        for (Message message : m) {
+            if (isMessagePresent() == true){
+                i++;
+            }
+        }
+        if(i>0){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
