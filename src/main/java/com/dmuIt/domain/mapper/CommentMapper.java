@@ -20,6 +20,7 @@ public interface CommentMapper {
         response.setNickname(comment.getMember().getNickname());
         response.setContent(comment.getContent());
         response.setCreatedAt(comment.getCreatedAt());
+        response.setMemberId(comment.getMember().getMemberId());
 
         return response;
     }
