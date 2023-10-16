@@ -123,9 +123,7 @@ public class MessageService {
                 messageDtos.add(MessageDto.toDto(message));
             }
         }
-
         return messageDtos;
-
     }
 
 
@@ -161,8 +159,12 @@ public class MessageService {
             {
                 message.setReceiverDelete(1);
             }
-            roomRepository.delete(message.getRoom());
-            messageRepository.delete(message);
+            if(message.isAllMessageDeleted(messages)){
+                roomRepository.delete(message.getRoom());
+            }
+            if(message.isMessagePresent() == false){
+                messageRepository.delete(message);
+            }
         }
 
 
@@ -174,6 +176,7 @@ public class MessageService {
     public Object deleteMessage(long id, Member member) {
         Message message = messageRepository.findById(id)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MESSAGE_NOT_FOUND));
+        List<Message> messages = messageRepository.findByRoom(message.getRoom().getRoom());
 
         if(member.getNickname().equals(message.getSenderName())) // 내가 보낸 메세지 삭제
         {
@@ -182,9 +185,7 @@ public class MessageService {
         {
             message.setReceiverDelete(1);
         }
-
         if(message.isMessagePresent() == false){
-
             messageRepository.delete(message);
         }
         if(message.isAllMessageDeleted(messages)){
