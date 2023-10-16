@@ -16,9 +16,9 @@ spring:
   #      path: /h2
   datasource:
     # jdbc:h2:mem:test
-    url: jdbc:mysql://database-1.c8mntq7qpcmx.ap-northeast-2.rds.amazonaws.com:3306/mydb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: ${{ secrets.MYSQL_URL }}
     username: root
-    password: dmuit2023!
+    password: ${{ secrets.MYSQL_PASSWORD }}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -33,7 +33,7 @@ spring:
 
 mail:
   address:
-    admin: admin@gmail.com
+    admin: ${{ secrets.ADMIN_EMAIL }}
 
 jwt:
-  key: dkjalkdlkj23134dklfkjal123ldkal2498084lkdnka28u31mndaiu53j1
+  key: ${{ secrets.JWT_KEY }}
