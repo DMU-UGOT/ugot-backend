@@ -66,7 +66,7 @@ public class Message {
         }
     }
     public boolean isAllMessageDeleted(List<Message> m) {
-        int i=0;
+        int i = 0;
         for (Message message : m) {
             if (message.isMessagePresent() == true){
                 i++;
