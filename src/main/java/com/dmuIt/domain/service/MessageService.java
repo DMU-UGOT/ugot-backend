@@ -187,7 +187,6 @@ public class MessageService {
         }
 
         if(!message.isMessagePresent()){
-
             messageRepository.delete(message);
         }
         if(message.isAllMessageDeleted(messages)){
