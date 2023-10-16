@@ -7,11 +7,11 @@ on:
 permissions:
   contents: read
 
-env:
-  S3_BUCKET_NAME: github-action-a
+#env:
+#  S3_BUCKET_NAME: github-action-a
 
 jobs:
-  build:
+  build-docker-image:
 
     runs-on: ubuntu-latest
 
@@ -22,34 +22,49 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-    - name : Add permission
-      run: chmod +x gradlew
+#    - name : Add permission
+#      run: chmod +x gradlew
     - name: Build with Gradle
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
       with:
-        arguments: build
+        arguments: clean bootJar
 
-    # build한 후 프로젝트를 압축합니다.
-    - name: Make zip file
-      run: zip -r ./ugot-backend.zip .
-      shell: bash
+      # Docker 이미지 빌드
+    - name: docker image build
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}
 
-    # Access Key와 Secret Access Key를 통해 권한을 확인합니다.
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      # DockerHub 로그인
+    - name: docker login
+      uses: docker/login-action@v2
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-northeast-2
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    # 압축한 프로젝트를 S3로 전송합니다.
-    - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./ugot-backend.zip s3://$S3_BUCKET_NAME/ugot-backend.zip
+      # Docker Hub 이미지 푸시
+    - name: docker Hub push
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}
 
-    # CodeDeploy에게 배포 명령을 내립니다.
-    - name: Code Deploy
-      run: >
-        aws deploy create-deployment --application-name github-action
-        --deployment-config-name CodeDeployDefault.AllAtOnce
-        --deployment-group-name github-action-group
-        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=ugot-backend.zip
+#    # build한 후 프로젝트를 압축합니다.
+#    - name: Make zip file
+#      run: zip -r ./ugot-backend.zip .
+#      shell: bash
+#
+#    # Access Key와 Secret Access Key를 통해 권한을 확인합니다.
+#    - name: Configure AWS credentials
+#      uses: aws-actions/configure-aws-credentials@v1
+#      with:
+#        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+#        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#        aws-region: ap-northeast-2
+#
+#    # 압축한 프로젝트를 S3로 전송합니다.
+#    - name: Upload to S3
+#      run: aws s3 cp --region ap-northeast-2 ./ugot-backend.zip s3://$S3_BUCKET_NAME/ugot-backend.zip
+#
+#    # CodeDeploy에게 배포 명령을 내립니다.
+#    - name: Code Deploy
+#      run: >
+#        aws deploy create-deployment --application-name github-action
+#        --deployment-config-name CodeDeployDefault.AllAtOnce
+#        --deployment-group-name github-action-group
+#        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=ugot-backend.zip
