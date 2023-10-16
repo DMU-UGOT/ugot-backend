@@ -44,6 +44,7 @@ jobs:
     - name: docker Hub push
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
 
+# AWS CODEDEPLOY 사용
 #    # build한 후 프로젝트를 압축합니다.
 #    - name: Make zip file
 #      run: zip -r ./ugot-backend.zip .
