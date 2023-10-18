@@ -31,7 +31,7 @@ public class CommunityController
     @PostMapping
     public String save(HttpServletRequest request, @RequestBody final CommunityRequestDto params) {
         communityService.save(request, params);
-        return "..";
+        return "..,";
     }
 
     @GetMapping
