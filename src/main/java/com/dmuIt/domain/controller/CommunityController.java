@@ -29,8 +29,9 @@ public class CommunityController
     private final CommunityMapper communityMapper;
 
     @PostMapping
-    public void save(HttpServletRequest request, @RequestBody final CommunityRequestDto params) {
+    public String save(HttpServletRequest request, @RequestBody final CommunityRequestDto params) {
         communityService.save(request, params);
+        return "..";
     }
 
     @GetMapping
