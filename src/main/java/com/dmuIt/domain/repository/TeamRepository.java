@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface TeamRepository extends JpaRepository<Team, Long> {
-//    Page<Team> findAllByOrderByIdDesc(Pageable pageable);
     Page<Team> findAllByOrderByCreatedAtDesc(Pageable pageable);
     Page<Team> findAll(Pageable pageable);
     @Query(

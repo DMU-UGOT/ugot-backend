@@ -2,7 +2,6 @@ package com.dmuIt.domain.service;
 
 import com.dmuIt.domain.entity.ClassChange;
 import com.dmuIt.domain.entity.Member;
-import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.repository.ClassChangeRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;

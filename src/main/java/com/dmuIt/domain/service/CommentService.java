@@ -12,12 +12,8 @@ import com.dmuIt.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

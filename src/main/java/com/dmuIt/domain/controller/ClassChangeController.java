@@ -5,7 +5,6 @@ import com.dmuIt.domain.dto.FindAllDto;
 import com.dmuIt.domain.dto.PageInfo;
 import com.dmuIt.domain.entity.ClassChange;
 import com.dmuIt.domain.mapper.ClassChangeMapper;
-import com.dmuIt.domain.repository.ClassChangeRepository;
 import com.dmuIt.domain.service.ClassChangeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

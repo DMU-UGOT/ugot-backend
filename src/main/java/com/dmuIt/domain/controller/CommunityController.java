@@ -1,8 +1,10 @@
 package com.dmuIt.domain.controller;
 
-import com.dmuIt.domain.dto.*;
+import com.dmuIt.domain.dto.CommunityRequestDto;
+import com.dmuIt.domain.dto.CommunityResponseDto;
+import com.dmuIt.domain.dto.FindAllDto;
+import com.dmuIt.domain.dto.PageInfo;
 import com.dmuIt.domain.entity.Community;
-import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.mapper.CommunityMapper;
 import com.dmuIt.domain.repository.CommunityRepository;
 import com.dmuIt.domain.service.CommunityService;
@@ -13,9 +15,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Positive;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 @RestController
 @RequestMapping("/com")

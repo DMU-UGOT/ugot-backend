@@ -1,13 +1,11 @@
 package com.dmuIt.domain.dto;
 
 import com.dmuIt.domain.entity.Message;
-import com.dmuIt.domain.entity.Room;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Data
 @NoArgsConstructor

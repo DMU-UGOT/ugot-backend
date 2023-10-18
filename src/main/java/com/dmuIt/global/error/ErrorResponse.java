@@ -1,6 +1,5 @@
 package com.dmuIt.global.error;
 
-import com.dmuIt.global.exception.ExceptionCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;

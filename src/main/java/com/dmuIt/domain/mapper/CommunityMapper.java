@@ -1,9 +1,7 @@
 package com.dmuIt.domain.mapper;
 
 import com.dmuIt.domain.dto.CommunityResponseDto;
-import com.dmuIt.domain.dto.TeamDto;
 import com.dmuIt.domain.entity.Community;
-import com.dmuIt.domain.entity.Team;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

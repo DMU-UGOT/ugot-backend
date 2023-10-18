@@ -2,19 +2,15 @@ package com.dmuIt.domain.service;
 
 import com.dmuIt.domain.dto.CommunityRequestDto;
 import com.dmuIt.domain.dto.CommunityResponseDto;
-import com.dmuIt.domain.entity.Comment;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.entity.Member;
-import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.mapper.CommunityMapper;
 import com.dmuIt.domain.repository.CommunityRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

@@ -1,6 +1,5 @@
 package com.dmuIt.domain.service;
 
-import com.dmuIt.domain.dto.ApiResponseDto;
 import com.dmuIt.domain.dto.MessageDto;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.entity.Member;
@@ -19,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service

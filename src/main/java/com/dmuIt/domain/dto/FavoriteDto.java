@@ -1,6 +1,7 @@
 package com.dmuIt.domain.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 public class FavoriteDto {
     @Getter

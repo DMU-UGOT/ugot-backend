@@ -1,6 +1,9 @@
 package com.dmuIt.domain.service;
 
-import com.dmuIt.domain.entity.*;
+import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.entity.MemberGroup;
+import com.dmuIt.domain.entity.Study;
+import com.dmuIt.domain.entity.StudyBookmark;
 import com.dmuIt.domain.repository.MemberGroupRepository;
 import com.dmuIt.domain.repository.StudyBookmarkRepository;
 import com.dmuIt.domain.repository.StudyRepository;
