@@ -47,7 +47,7 @@ jobs:
           sudo docker rm -f $(docker ps -qa)
           sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-          sudo docker-compose up -d
+          docker-compose up -d
 #          docker image prune -f
       # DockerHub 로그인
 #    - name: docker login
