@@ -9,6 +9,9 @@ services:
       - "6379:6379"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks:
+      - default
+      - new_net
   springboot:
     container_name: springboot
     image: slothst/github-actions-demo
@@ -21,3 +24,9 @@ services:
       - "8080:8080"
     depends_on:
       - redis
+    networks:
+      - default
+      - new_net
+networks:
+  new_net:
+    driver: bridge

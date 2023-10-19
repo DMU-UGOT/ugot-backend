@@ -24,6 +24,16 @@ jobs:
 #      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
 #      with:
 #        arguments: clean bootJar
+      # gradle 캐싱
+    - name: Gradle Caching
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
 
     - name: Build with Gradle
       run: ./gradlew bootJar
@@ -44,10 +54,11 @@ jobs:
 #        password: ${{ secrets.PASSWORD }}
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
-          sudo docker rm -f $(docker ps -qa)
-          sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+          sudo docker stop github-actions-demo
+          sudo docker rm github-actions-demo
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-          docker-compose up -d
+          sudo docker run -d --name github-actions-demo -p ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+          docker rmi -f $(docker images -f "dangling=true" -q)
 #          docker image prune -f
       # DockerHub 로그인
 #    - name: docker login
