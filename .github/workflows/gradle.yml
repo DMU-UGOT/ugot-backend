@@ -57,8 +57,9 @@ jobs:
           sudo docker stop github-actions-demo
           sudo docker rm github-actions-demo
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-          sudo docker run -d --name github-actions-demo -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+          docker-compose up --build -d
           docker rmi -f $(docker images -f "dangling=true" -q)
+#          sudo docker run -d --name github-actions-demo -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
 #          docker image prune -f
       # DockerHub 로그인
 #    - name: docker login
