@@ -12,7 +12,9 @@ services:
     image: slothst/github-actions-demo
     build:
       context: .
-      dockerfile: ./Dockerfile
+#      dockerfile: ./Dockerfile
+    expose:
+      - 8080
     ports:
       - "8080:8080"
     depends_on:
