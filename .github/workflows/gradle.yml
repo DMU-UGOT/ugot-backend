@@ -33,13 +33,13 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
 #      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
     - name: Deploy to prod
-      uses: appleboy/ssh-action@v1.0.0
+      uses: appleboy/ssh-action@master
       id: deploy-prod
       with:
         host: ${{ secrets.HOST_PROD }}
         username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-#        key: ${{ secrets.PRIVATE_KEY }}
+#        password: ${{ secrets.PASSWORD }}
+        key: ${{ secrets.PRIVATE_KEY }}
         script: |
           sudo docker rm -f $(docker ps -qa)
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
