@@ -37,9 +37,9 @@ jobs:
       id: deploy-prod
       with:
         host: ${{ secrets.HOST_PROD }}
-        username: ec2-user
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
 #        key: ${{ secrets.PRIVATE_KEY }}
-        envs: GITHUB_SHA
         script: |
           sudo docker rm -f $(docker ps -qa)
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
