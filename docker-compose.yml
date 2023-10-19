@@ -7,6 +7,8 @@ services:
     hostname: redis
     ports:
       - "6379:6379"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   springboot:
     container_name: springboot
     image: slothst/github-actions-demo
