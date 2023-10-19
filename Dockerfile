@@ -11,10 +11,3 @@ COPY ${JAR_FILE} DMUIT.jar
 
 # 실행 명령어
 ENTRYPOINT ["java", "-jar", "/DMUIT.jar"]
-
-FROM redis:3.0
-RUN mkdir /var/log/redis
-RUN mkdir /usr/local/etc/redis
-
-COPY conf/redis.conf /usr/local/etc/redis/redis.conf
-CMD [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
