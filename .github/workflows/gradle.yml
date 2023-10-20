@@ -57,7 +57,7 @@ jobs:
 #        password: ${{ secrets.PASSWORD }}
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
-          cd DMUIT
+          cd ugot-backend
           sudo docker rm -f $(docker ps -qa)
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
           docker-compose up -d
