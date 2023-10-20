@@ -3,30 +3,24 @@ version: "3.7"
 services:
   redis:
     image: redis
-    container_name: redis
+    container_name: my_redis
     hostname: redis
     ports:
       - "6379:6379"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     networks:
-      - default
       - new_net
+
   springboot:
+    image: slothst/github_actions_demo
     container_name: springboot
-    image: slothst/github-actions-demo
-    build:
-      context: .
-#      dockerfile: ./Dockerfile
-    expose:
-      - 8080
     ports:
       - "8080:8080"
     depends_on:
       - redis
     networks:
-      - default
       - new_net
+
 networks:
   new_net:
     driver: bridge
+    external: true
