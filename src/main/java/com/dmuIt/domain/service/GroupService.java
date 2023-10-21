@@ -138,24 +138,20 @@ public class GroupService {
     @Transactional
     public void quitGroup(HttpServletRequest request, long groupId) {
         Member member = memberService.verifiedCurrentMember(request);
-        List<MemberGroup> members = findMembers(groupId);
-        int cnt = 0;
-        for (MemberGroup value : members) {
-            if (value.getMember().equals(member)) {
-                cnt++;
-            }
-        }
-        if (cnt != 1) {
-            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
-        }
         Group group = verifiedGroup(groupId);
         MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberAndGroup(member, group);
+        if (memberGroup == null) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
         if (memberGroup.getRole().equals(MemberGroup.RoleInGroup.ADMIN)) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
         group.setNowPersonnel(group.getNowPersonnel() - 1);
         memberGroupRepository.delete(memberGroupRepository.findMemberGroupByMemberAndGroup(member, group));
-        favoriteRepository.delete(favoriteRepository.findFavoriteByMemberAndGroup(member, group));
+        Favorite favorite = favoriteRepository.findFavoriteByMemberAndGroup(member, group);
+        if (favorite != null) {
+            favoriteRepository.delete(favorite);
+        }
     }
 
     @Transactional
