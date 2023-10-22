@@ -21,13 +21,13 @@ public class MessageController {
 
     //게시글 보고 send
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/send/{community-id}")
+    @PostMapping("/send/{classChange-id}")
     public ResponseEntity<?> sendMessage1(HttpServletRequest request, @RequestBody MessageDto messageDto
-            ,@PathVariable("community-id") Long comId) {
+            ,@PathVariable("classChange-id") Long cId) {
         Member currentMember = messageService.verifiedCurrentMember(request);
         messageDto.setSenderName(currentMember.getNickname());
 
-        return apiResponseDto.success("쪽지보내기.", messageService.write(messageDto, comId));
+        return apiResponseDto.success("쪽지보내기.", messageService.write(messageDto, cId));
     }
 
     @ResponseStatus(HttpStatus.CREATED)

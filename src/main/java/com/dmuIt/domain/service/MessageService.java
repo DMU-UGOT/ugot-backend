@@ -1,14 +1,8 @@
 package com.dmuIt.domain.service;
 
 import com.dmuIt.domain.dto.MessageDto;
-import com.dmuIt.domain.entity.Community;
-import com.dmuIt.domain.entity.Member;
-import com.dmuIt.domain.entity.Message;
-import com.dmuIt.domain.entity.Room;
-import com.dmuIt.domain.repository.CommunityRepository;
-import com.dmuIt.domain.repository.MemberRepository;
-import com.dmuIt.domain.repository.MessageRepository;
-import com.dmuIt.domain.repository.RoomRepository;
+import com.dmuIt.domain.entity.*;
+import com.dmuIt.domain.repository.*;
 import com.dmuIt.global.auth.jwt.JwtTokenProvider;
 import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
@@ -26,7 +20,7 @@ import java.util.Optional;
 @Service
 public class MessageService {
     private final MessageRepository messageRepository;
-    private final CommunityRepository communityRepository;
+    private final ClassChangeRepository classChangeRepository;
     private final RoomRepository roomRepository;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
@@ -36,29 +30,29 @@ public class MessageService {
     //방 번호 구분
     public void roomChecking(Message message, MessageDto messageDto, Member receiver, Room room) {
 
-        if (messageRepository.findRoomNum(receiver.getNickname(), messageDto.getSenderName()) == null) {
+        if (messageRepository.findRoomNum(receiver.getName(), messageDto.getSenderName()) == null) {
             //신규방 설정
             roomRepository.save(room);
             message.setRoom(room);
         } else {
             //기존방
-            room.setRoom(messageRepository.findRoomNum(receiver.getNickname(), messageDto.getSenderName()).get(0));
+            room.setRoom(messageRepository.findRoomNum(receiver.getName(), messageDto.getSenderName()).get(0));
             message.setRoom(room);
         }
     }
 
 
     @Transactional
-    public Object write(MessageDto messageDto, Long comId) {
+    public Object write(MessageDto messageDto, Long cId) {
 
         Optional<Member> optionalMember2 = memberRepository.findByNickname(messageDto.getSenderName());
         Member sender = optionalMember2
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
-        Community community = communityRepository.findById(comId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
+        ClassChange classChange = classChangeRepository.findById(cId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CLASS_CHANGE_NOT_FOUND));
 
-        Member receiver = community.getMember();
+        Member receiver = classChange.getMember();
         Message message = new Message();
         Room room = new Room();
         if (sender.getNickname().equals(receiver.getNickname())) {
