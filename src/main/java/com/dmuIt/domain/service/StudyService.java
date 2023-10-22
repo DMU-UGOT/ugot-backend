@@ -85,9 +85,19 @@ public class StudyService {
         return studyRepository.save(study);
     }
 
-    public Page<Study> findStudies(int page, int size) {
+    public Page<Study> findStudiesOrderByCreatedAt(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return studyRepository.findAllByOrderByCreatedAtDesc(pageRequest);
+    }
+
+    public Page<Study> findStudiesOrderByViewCount(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return studyRepository.findAllByOrderByViewCountDesc(pageRequest);
+    }
+
+    public Page<Study> findStudiesOrderByAllPersonnel(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return studyRepository.findAllByOrderByGroupAllPersonnelDesc(pageRequest);
     }
 
     public List<Study> findMyStudies(HttpServletRequest request) {

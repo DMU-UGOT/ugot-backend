@@ -62,18 +62,50 @@ public class TeamController {
 
     }
 
-    @GetMapping
-    public FindAllDto getTeams(@Positive @RequestParam int page,
+    @GetMapping("/createdAt")
+    public FindAllDto<?> getTeamsOrderByCreatedAt(@Positive @RequestParam int page,
                                @Positive @RequestParam int size) {
         // page information
-        Page<Team> teamPage = teamService.findTeams(page - 1, size);
-        PageInfo pageInfo = new PageInfo(page, size, (int) teamPage.getTotalElements(), teamPage.getTotalPages());
+        Page<Team> teamPage = teamService.findTeamsOrderByCreatedAt(page - 1, size);
+        PageInfo pageInfo = getPageInfo(page, size, teamPage);
 
         // team 반환 + dto로 변환
         List<Team> teams = teamPage.getContent();
         List<TeamDto.Response> responses = teamMapper.teamsToTeamResponseDtos(teams);
 
-        return new FindAllDto(responses, pageInfo);
+        return new FindAllDto<>(responses, pageInfo);
+    }
+
+    @GetMapping("/viewCount")
+    public FindAllDto<?> getTeamsOrderByViewCount(@Positive @RequestParam int page,
+                               @Positive @RequestParam int size) {
+        // page information
+        Page<Team> teamPage = teamService.findTeamsOrderByViewCount(page - 1, size);
+        PageInfo pageInfo = getPageInfo(page, size, teamPage);
+
+        // team 반환 + dto로 변환
+        List<Team> teams = teamPage.getContent();
+        List<TeamDto.Response> responses = teamMapper.teamsToTeamResponseDtos(teams);
+
+        return new FindAllDto<>(responses, pageInfo);
+    }
+
+    @GetMapping("/allPersonnel")
+    public FindAllDto<?> getTeamsOrderByAllPersonnel(@Positive @RequestParam int page,
+                               @Positive @RequestParam int size) {
+        // page information
+        Page<Team> teamPage = teamService.findTeamsOrderByAllPersonnel(page - 1, size);
+        PageInfo pageInfo = getPageInfo(page, size, teamPage);
+
+        // team 반환 + dto로 변환
+        List<Team> teams = teamPage.getContent();
+        List<TeamDto.Response> responses = teamMapper.teamsToTeamResponseDtos(teams);
+
+        return new FindAllDto<>(responses, pageInfo);
+    }
+
+    private static PageInfo getPageInfo(int page, int size, Page<Team> teamPage) {
+        return new PageInfo(page, size, (int) teamPage.getTotalElements(), teamPage.getTotalPages());
     }
 
     @GetMapping("/{team-id}/findMembers")

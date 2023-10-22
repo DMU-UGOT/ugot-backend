@@ -60,17 +60,46 @@ public class StudyController {
         return studyMapper.studyToResponse(study);
     }
 
-    @GetMapping
-    public FindAllDto<?> getStudies(@Positive @RequestParam int page,
+    @GetMapping("/createdAt")
+    public FindAllDto<?> getStudiesOrderByCreatedAt(@Positive @RequestParam int page,
                                     @Positive @RequestParam int size) {
-        Page<Study> studyPage = studyService.findStudies(page - 1, size);
-        PageInfo pageInfo = new PageInfo(page, size, (int) studyPage.getTotalElements(), studyPage.getTotalPages());
+        Page<Study> studyPage = studyService.findStudiesOrderByCreatedAt(page - 1, size);
+        PageInfo pageInfo = getPageInfo(page, size, studyPage);
 
         List<Study> studies = studyPage.getContent();
         List<StudyDto.Response> responses = studyMapper.studiesToStudyResponseDtos(studies);
 
         return new FindAllDto<>(responses, pageInfo);
     }
+
+    @GetMapping("/viewCount")
+    public FindAllDto<?> getStudiesOrderByViewCount(@Positive @RequestParam int page,
+                                    @Positive @RequestParam int size) {
+        Page<Study> studyPage = studyService.findStudiesOrderByViewCount(page - 1, size);
+        PageInfo pageInfo = getPageInfo(page, size, studyPage);
+
+        List<Study> studies = studyPage.getContent();
+        List<StudyDto.Response> responses = studyMapper.studiesToStudyResponseDtos(studies);
+
+        return new FindAllDto<>(responses, pageInfo);
+    }
+
+    @GetMapping("/allPersonnel")
+    public FindAllDto<?> getStudiesOrderByAllPersonnel(@Positive @RequestParam int page,
+                                    @Positive @RequestParam int size) {
+        Page<Study> studyPage = studyService.findStudiesOrderByAllPersonnel(page - 1, size);
+        PageInfo pageInfo = getPageInfo(page, size, studyPage);
+
+        List<Study> studies = studyPage.getContent();
+        List<StudyDto.Response> responses = studyMapper.studiesToStudyResponseDtos(studies);
+
+        return new FindAllDto<>(responses, pageInfo);
+    }
+
+    private static PageInfo getPageInfo(int page, int size, Page<Study> studyPage) {
+        return new PageInfo(page, size, (int) studyPage.getTotalElements(), studyPage.getTotalPages());
+    }
+
 
     @GetMapping("/myStudies")
     public List<StudyDto.Response> findMyStudies(HttpServletRequest request) {

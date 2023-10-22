@@ -12,7 +12,8 @@ import java.util.List;
 
 public interface TeamRepository extends JpaRepository<Team, Long> {
     Page<Team> findAllByOrderByCreatedAtDesc(Pageable pageable);
-    Page<Team> findAll(Pageable pageable);
+    Page<Team> findAllByOrderByViewCountDesc(Pageable pageable);
+    Page<Team> findAllByOrderByGroupAllPersonnelDesc(Pageable pageable);
     @Query(
             value = "SELECT p FROM Team p WHERE p.title LIKE %:keyword% OR p.content LIKE %:keyword%",
             countQuery = "SELECT COUNT(p.id) FROM Team p WHERE p.title LIKE %:keyword% OR p.content LIKE %:keyword%"

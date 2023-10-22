@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface StudyRepository extends JpaRepository<Study, Long> {
     Page<Study> findAllByOrderByCreatedAtDesc(Pageable pageable);
+    Page<Study> findAllByOrderByViewCountDesc(Pageable pageable);
+    Page<Study> findAllByOrderByGroupAllPersonnelDesc(Pageable pageable);
     @Query(
             value = "SELECT p FROM Study p WHERE p.title LIKE %:keyword% OR p.content LIKE %:keyword%",
             countQuery = "SELECT COUNT(p.studyId) FROM Study p WHERE p.title LIKE %:keyword% OR p.content LIKE %:keyword%"

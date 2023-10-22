@@ -87,9 +87,19 @@ public class TeamService {
         return teamRepository.save(team);
     }
 
-    public Page<Team> findTeams(int page, int size) {
+    public Page<Team> findTeamsOrderByCreatedAt(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return teamRepository.findAllByOrderByCreatedAtDesc(pageRequest);
+    }
+
+    public Page<Team> findTeamsOrderByViewCount(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return teamRepository.findAllByOrderByViewCountDesc(pageRequest);
+    }
+
+    public Page<Team> findTeamsOrderByAllPersonnel(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return teamRepository.findAllByOrderByGroupAllPersonnelDesc(pageRequest);
     }
 
     public List<Team> findMyTeams(HttpServletRequest request) {
