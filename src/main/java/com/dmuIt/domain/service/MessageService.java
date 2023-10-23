@@ -122,7 +122,7 @@ public class MessageService {
     //쪽지 상세보기
     @Transactional(readOnly = true)
     public List<MessageDto> allMessage(Member member, Integer room) {
-        List<Message> messages = messageRepository.findAllByRoom(member, room);
+        List<Message> messages = messageRepository.findAllByRoom(room);
         List<MessageDto> messageDtos = new ArrayList<>();
 
         for (Message message : messages) {
