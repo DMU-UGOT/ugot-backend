@@ -30,44 +30,41 @@ public class MessageService {
     //방 번호 구분
     public void roomChecking(Message message, MessageDto messageDto, Member receiver, Room room) {
 
-        if (messageRepository.findRoomNum(receiver.getName(), messageDto.getSenderName()) == null) {
+        if (messageRepository.findRoomNum(receiver.getName(), message.getSenderName()).isEmpty()) {
             //신규방 설정
             roomRepository.save(room);
             message.setRoom(room);
         } else {
             //기존방
-            room.setRoom(messageRepository.findRoomNum(receiver.getName(), messageDto.getSenderName()).get(0));
+            room.setRoom(messageRepository.findRoomNum(receiver.getName(), message.getSenderName()).get(0));
             message.setRoom(room);
         }
     }
 
 
     @Transactional
-    public Object write(MessageDto messageDto, Long cId) {
-
-        Optional<Member> optionalMember2 = memberRepository.findByNickname(messageDto.getSenderName());
-        Member sender = optionalMember2
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-
+    public Object write(HttpServletRequest request, MessageDto messageDto, Long cId) {
         ClassChange classChange = classChangeRepository.findById(cId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CLASS_CHANGE_NOT_FOUND));
 
-        Member receiver = classChange.getMember();
+
         Message message = new Message();
         Room room = new Room();
+
+        Member receiver = classChange.getMember();
+        Member sender = verifiedCurrentMember(request);
+        message.setSender(sender);
+        message.setSenderName(sender.getNickname());
+
         if (sender.getNickname().equals(receiver.getNickname())) {
             return "자신에게는 쪽지를 보낼 수 없습니다.";
         } else {
             roomChecking(message, messageDto, receiver, room);
 
             message.setReceiver(receiver);
-            message.setSender(sender);
-            message.setSenderName(sender.getNickname());
             message.setReceiverName(receiver.getNickname());
-
             message.setContent(messageDto.getContent());
             messageRepository.save(message);
-
             return MessageDto.toDto(message);
         }
     }

@@ -24,10 +24,8 @@ public class MessageController {
     @PostMapping("/send/{classChange-id}")
     public ResponseEntity<?> sendMessage1(HttpServletRequest request, @RequestBody MessageDto messageDto
             ,@PathVariable("classChange-id") Long cId) {
-        Member currentMember = messageService.verifiedCurrentMember(request);
-        messageDto.setSenderName(currentMember.getNickname());
 
-        return apiResponseDto.success("쪽지보내기.", messageService.write(messageDto, cId));
+        return apiResponseDto.success("쪽지보내기.", messageService.write(request, messageDto, cId));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
