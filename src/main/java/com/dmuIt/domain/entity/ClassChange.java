@@ -30,7 +30,7 @@ public class ClassChange extends Auditable {
     @Column(nullable = false)
     private String status = "교환 가능";
 
-    @ManyToOne(fetch = FetchType.LAZY)// 다대일 관계
+    @ManyToOne(fetch = FetchType.EAGER)// 다대일 관계
     @JoinColumn(name = "member_id") // 포함 대상 정보는 member_id에 기록
     private Member member;
 }
