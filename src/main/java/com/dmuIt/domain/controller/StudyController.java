@@ -1,9 +1,6 @@
 package com.dmuIt.domain.controller;
 
-import com.dmuIt.domain.dto.FindAllDto;
-import com.dmuIt.domain.dto.MemberGroupDto;
-import com.dmuIt.domain.dto.PageInfo;
-import com.dmuIt.domain.dto.StudyDto;
+import com.dmuIt.domain.dto.*;
 import com.dmuIt.domain.entity.Study;
 import com.dmuIt.domain.mapper.MemberGroupMapper;
 import com.dmuIt.domain.mapper.StudyMapper;
@@ -129,20 +126,11 @@ public class StudyController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/search")
-    public Page<StudyDto> searchPaging(@Param("keyword") String keyword, @PageableDefault(size = 5) Pageable pageRequest) {
-
+    public Page<StudyDto> searchPaging(HttpServletRequest request, @Param("keyword") String keyword, @PageableDefault(size = 5) Pageable pageRequest) {
+        studyService.saveTeamSearchKeyword(request, keyword);
         Page<StudyDto> pagingList = null;
-        if(keyword == null) {
-            Page<Study> studyList = studyRepository.findAllSearch("", pageRequest);
-            pagingList = studyList.map(
-                    study -> new StudyDto(
-                            study.getStudyId(), study.getTitle(), study.getContent(),
-                            study.getIsContact(),
-                            study.getGroup().getAllPersonnel(), study.getGroup().getNowPersonnel(), study.getSubject(), study.getField(),
-                            study.getViewCount(), study.getBookmarked(),
-                            study.getKakaoOpenLink(), study.getGitHubLink(), study.getCreatedAt(), study.getMember().getMemberId()
-
-                    ));
+        if(keyword.length() < 2) {
+            throw new IllegalArgumentException("검색어는 두 글자 이상이어야 합니다.");
         }else{
             Page<Study> studyList = studyRepository.findAllSearch(keyword, pageRequest);
             pagingList = studyList.map(
@@ -157,6 +145,20 @@ public class StudyController {
                     ));
         }
         return pagingList;
+    }
 
+    @GetMapping("/searchHistory")
+    public List<SearchHistoryDto> getSearchHistory(HttpServletRequest request) {
+        return studyService.getSearchHistory(request);
+    }
+
+    @DeleteMapping("/searchHistory/{keyword}")
+    public void removeSearchHistory(HttpServletRequest request, @PathVariable("keyword") String keyword) {
+        studyService.removeSearchHistory(request, keyword);
+    }
+
+    @DeleteMapping("/searchHistory")
+    public void removeAllSearchHistory(HttpServletRequest request) {
+        studyService.removeAllSearchHistory(request);
     }
 }

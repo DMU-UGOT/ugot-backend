@@ -1,12 +1,11 @@
 package com.dmuIt.domain.service;
 
-import com.dmuIt.domain.entity.Member;
-import com.dmuIt.domain.entity.MemberGroup;
-import com.dmuIt.domain.entity.Team;
-import com.dmuIt.domain.entity.TeamBookmark;
+import com.dmuIt.domain.dto.SearchHistoryDto;
+import com.dmuIt.domain.entity.*;
 import com.dmuIt.domain.repository.MemberGroupRepository;
 import com.dmuIt.domain.repository.TeamBookmarkRepository;
 import com.dmuIt.domain.repository.TeamRepository;
+import com.dmuIt.domain.repository.SearchHistoryRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +25,12 @@ import java.util.Optional;
 public class TeamService {
     private final TeamRepository teamRepository;
     private final TeamBookmarkRepository bookmarkRepository;
+    private final SearchHistoryRepository searchHistoryRepository;
     private final MemberService memberService;
     private final MemberGroupRepository memberGroupRepository;
     private final GroupService groupService;
+
+    private final static String TEAM = "team";
 
     public void createTeam(HttpServletRequest request, Team team) {
         team.setMember(memberService.verifiedCurrentMember(request));
@@ -100,6 +102,50 @@ public class TeamService {
     public Page<Team> findTeamsOrderByAllPersonnel(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return teamRepository.findAllByOrderByGroupAllPersonnelDesc(pageRequest);
+    }
+
+    @Transactional
+    public void saveTeamSearchKeyword(HttpServletRequest request, String keyword) {
+        Member member = memberService.verifiedCurrentMember(request);
+        List<SearchHistory> histories = searchHistoryRepository.findAllByMemberAndTypeOrderByCreatedAtDesc(member, TEAM);
+        for (SearchHistory history : histories) {
+            if (history.getKeyword().equals(keyword)) {
+                history.setCreatedAt(LocalDateTime.now());
+                return;
+            }
+        }
+        SearchHistory searchHistory = SearchHistory.of(keyword, TEAM, member);
+        searchHistoryRepository.save(searchHistory);
+    }
+
+    public List<SearchHistoryDto> getSearchHistory(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        List<SearchHistory> histories = searchHistoryRepository.findAllByMemberAndTypeOrderByCreatedAtDesc(member, TEAM);
+        List<SearchHistoryDto> historyDtos = new ArrayList<>();
+        for (SearchHistory history : histories) {
+            historyDtos.add(SearchHistoryDto.builder()
+                    .keyword(history.getKeyword())
+                    .build());
+        }
+        return historyDtos;
+    }
+
+    @Transactional
+    public void removeSearchHistory(HttpServletRequest request, String keyword) {
+        Member member = memberService.verifiedCurrentMember(request);
+        List<SearchHistory> histories = searchHistoryRepository.findAllByMemberAndTypeOrderByCreatedAtDesc(member, TEAM);
+        for (SearchHistory history : histories) {
+            if (history.getKeyword().equals(keyword)) {
+                searchHistoryRepository.delete(history);
+                break;
+            }
+        }
+    }
+
+    @Transactional
+    public void removeAllSearchHistory(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        searchHistoryRepository.deleteAllByMemberAndType(member, TEAM);
     }
 
     public List<Team> findMyTeams(HttpServletRequest request) {
