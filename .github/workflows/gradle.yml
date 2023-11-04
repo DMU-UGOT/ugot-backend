@@ -1,67 +1,71 @@
-name: Java CI with Gradle
-
-on:
-  push:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
-
-jobs:
-  # Spring Boot 애플리케이션을 빌드하여 도커허브에 푸시하는 과정
-  build-docker-image:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-#    - name: Build with Gradle
-#      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+#name: Java CI with Gradle
+#
+#on:
+#  push:
+#    branches: [ "main" ]
+#
+#permissions:
+#  contents: read
+#
+#jobs:
+#  # Spring Boot 애플리케이션을 빌드하여 도커허브에 푸시하는 과정
+#  build-docker-image:
+#
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#    - uses: actions/checkout@v3
+#    - name: Set up JDK 11
+#      uses: actions/setup-java@v3
 #      with:
-#        arguments: clean bootJar
-      # gradle 캐싱
-    - name: Gradle Caching
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+#        java-version: '11'
+#        distribution: 'temurin'
+##    - name: Build with Gradle
+##      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+##      with:
+##        arguments: clean bootJar
+#      # gradle 캐싱
+#    - name: Gradle Caching
+#      uses: actions/cache@v3
+#      with:
+#        path: |
+#          ~/.gradle/caches
+#          ~/.gradle/wrapper
+#        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+#        restore-keys: |
+#          ${{ runner.os }}-gradle-
+#
+#    # gradlew에 권한 부여
+#    - name: Grant execute permission for gradles
+#      run: chmod +x gradlew
+#
+#    - name: Build with Gradle
+#      run: ./gradlew bootJar
+#
+#      # Docker 이미지 빌드
+#    - name: docker image build & push
+#      run: |
+#        docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+#        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
+#        docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+##      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
+#    - name: docker deploy
+#      uses: appleboy/ssh-action@master
+#      with:
+#        host: ${{ secrets.HOST_PROD }}
+#        username: ${{ secrets.USERNAME }}
+##        password: ${{ secrets.PASSWORD }}
+#        key: ${{ secrets.PRIVATE_KEY }}
+#        script: |
+#          cd ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+#          sudo docker rm -f $(docker ps -qa)
+#          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+#          docker-compose up -d
+#          docker image prune -f
 
-    # gradlew에 권한 부여
-    - name: Grant execute permission for gradles
-      run: chmod +x gradlew
 
-    - name: Build with Gradle
-      run: ./gradlew bootJar
 
-      # Docker 이미지 빌드
-    - name: docker image build & push
-      run: | 
-        docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-#      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
-    - name: docker deploy
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST_PROD }}
-        username: ${{ secrets.USERNAME }}
-#        password: ${{ secrets.PASSWORD }}
-        key: ${{ secrets.PRIVATE_KEY }}
-        script: |
-          cd ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-          sudo docker rm -f $(docker ps -qa)
-          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-          docker-compose up -d
-          docker image prune -f
+
 #          sudo docker run -d --name github-actions-demo -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
       # DockerHub 로그인
 #    - name: docker login
