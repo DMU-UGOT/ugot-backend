@@ -18,6 +18,7 @@ public enum ExceptionCode implements ErrorCode{
     MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "Message not found"),
     CONVERSATION_NOT_FOUND(HttpStatus.NOT_FOUND, "Conversation not found"),
     APPLICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "Application not found"),
+    SEARCH_HISTORY_NOT_FOUND(HttpStatus.NOT_FOUND, "History not found"),
     MEMBER_EXISTS(HttpStatus.CONFLICT, "Member exists"),
     NICKNAME_EXISTS(HttpStatus.CONFLICT, "Nickname exists"),
     APPLICATION_EXISTS(HttpStatus.CONFLICT, "You've already applied for this group"),

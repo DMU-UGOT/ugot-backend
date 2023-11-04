@@ -1,10 +1,9 @@
 package com.dmuIt.domain.service;
 
-import com.dmuIt.domain.entity.Member;
-import com.dmuIt.domain.entity.MemberGroup;
-import com.dmuIt.domain.entity.Study;
-import com.dmuIt.domain.entity.StudyBookmark;
+import com.dmuIt.domain.dto.SearchHistoryDto;
+import com.dmuIt.domain.entity.*;
 import com.dmuIt.domain.repository.MemberGroupRepository;
+import com.dmuIt.domain.repository.SearchHistoryRepository;
 import com.dmuIt.domain.repository.StudyBookmarkRepository;
 import com.dmuIt.domain.repository.StudyRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
@@ -29,6 +28,10 @@ public class StudyService {
     private final MemberService memberService;
     private final MemberGroupRepository memberGroupRepository;
     private final GroupService groupService;
+    private final SearchHistoryRepository searchHistoryRepository;
+
+    private final static String STUDY = "study";
+
 
     public void createStudy(HttpServletRequest request, Study study) {
         study.setMember(memberService.verifiedCurrentMember(request));
@@ -98,6 +101,50 @@ public class StudyService {
     public Page<Study> findStudiesOrderByAllPersonnel(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return studyRepository.findAllByOrderByGroupAllPersonnelDesc(pageRequest);
+    }
+
+    @Transactional
+    public void saveTeamSearchKeyword(HttpServletRequest request, String keyword) {
+        Member member = memberService.verifiedCurrentMember(request);
+        List<SearchHistory> histories = searchHistoryRepository.findAllByMemberAndTypeOrderByCreatedAtDesc(member, STUDY);
+        for (SearchHistory history : histories) {
+            if (history.getKeyword().equals(keyword)) {
+                history.setCreatedAt(LocalDateTime.now());
+                return;
+            }
+        }
+        SearchHistory searchHistory = SearchHistory.of(keyword, STUDY, member);
+        searchHistoryRepository.save(searchHistory);
+    }
+
+    public List<SearchHistoryDto> getSearchHistory(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        List<SearchHistory> histories = searchHistoryRepository.findAllByMemberAndTypeOrderByCreatedAtDesc(member, STUDY);
+        List<SearchHistoryDto> historyDtos = new ArrayList<>();
+        for (SearchHistory history : histories) {
+            historyDtos.add(SearchHistoryDto.builder()
+                    .keyword(history.getKeyword())
+                    .build());
+        }
+        return historyDtos;
+    }
+
+    @Transactional
+    public void removeSearchHistory(HttpServletRequest request, String keyword) {
+        Member member = memberService.verifiedCurrentMember(request);
+        List<SearchHistory> histories = searchHistoryRepository.findAllByMemberAndTypeOrderByCreatedAtDesc(member, STUDY);
+        for (SearchHistory history : histories) {
+            if (history.getKeyword().equals(keyword)) {
+                searchHistoryRepository.delete(history);
+                break;
+            }
+        }
+    }
+
+    @Transactional
+    public void removeAllSearchHistory(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        searchHistoryRepository.deleteAllByMemberAndType(member, STUDY);
     }
 
     public List<Study> findMyStudies(HttpServletRequest request) {

@@ -1,9 +1,6 @@
 package com.dmuIt.domain.controller;
 
-import com.dmuIt.domain.dto.CommunityRequestDto;
-import com.dmuIt.domain.dto.CommunityResponseDto;
-import com.dmuIt.domain.dto.FindAllDto;
-import com.dmuIt.domain.dto.PageInfo;
+import com.dmuIt.domain.dto.*;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.mapper.CommunityMapper;
 import com.dmuIt.domain.repository.CommunityRepository;
@@ -29,9 +26,8 @@ public class CommunityController
     private final CommunityMapper communityMapper;
 
     @PostMapping
-    public String save(HttpServletRequest request, @RequestBody final CommunityRequestDto params) {
+    public void save(HttpServletRequest request, @RequestBody final CommunityRequestDto params) {
         communityService.save(request, params);
-        return "..,";
     }
 
     @GetMapping
@@ -75,18 +71,11 @@ public class CommunityController
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/search")
-    public Page<CommunityResponseDto> searchPaging(@Param("keyword") String keyword, @PageableDefault(size = 5) Pageable pageRequest) {
-
+    public Page<CommunityResponseDto> searchPaging(HttpServletRequest request, @Param("keyword") String keyword, @PageableDefault(size = 5) Pageable pageRequest) {
+        communityService.saveTeamSearchKeyword(request, keyword);
         Page<CommunityResponseDto> pagingList = null;
-        if(keyword == null) {
-            Page<Community> communities = communityRepository.findAllSearch("", pageRequest);
-            pagingList = communities.map(
-                    community -> new CommunityResponseDto(
-                            community.getId(), community.getTitle(), community.getContent(),
-                            community.getViewCount(), (long) community.getComments().size(),
-                            community.getCreatedAt(), community.getMember().getNickname(),community.getMember().getMemberId()
-
-                    ));
+        if(keyword.length() < 2) {
+            throw new IllegalArgumentException("검색어는 두 글자 이상이어야 합니다.");
         }else{
             Page<Community> communities = communityRepository.findAllSearch(keyword, pageRequest);
             pagingList = communities.map(
@@ -99,6 +88,19 @@ public class CommunityController
                     ));
         }
         return pagingList;
+    }
+    @GetMapping("/searchHistory")
+    public List<SearchHistoryDto> getSearchHistory(HttpServletRequest request) {
+        return communityService.getSearchHistory(request);
+    }
 
+    @DeleteMapping("/searchHistory/{keyword}")
+    public void removeSearchHistory(HttpServletRequest request, @PathVariable("keyword") String keyword) {
+        communityService.removeSearchHistory(request, keyword);
+    }
+
+    @DeleteMapping("/searchHistory")
+    public void removeAllSearchHistory(HttpServletRequest request) {
+        communityService.removeAllSearchHistory(request);
     }
 }

@@ -57,6 +57,10 @@ public class Member extends Auditable {
     @ElementCollection
     private List<String> skill = new ArrayList<>();
 
+
+    @ElementCollection
+    private List<String> studySearchHistory = new ArrayList<>();
+
     @JsonIgnore
     @OneToMany(mappedBy = "member") // 일대다관계
     private List<ClassChange> classChanges;

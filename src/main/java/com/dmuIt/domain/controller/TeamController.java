@@ -1,9 +1,6 @@
 package com.dmuIt.domain.controller;
 
-import com.dmuIt.domain.dto.FindAllDto;
-import com.dmuIt.domain.dto.MemberGroupDto;
-import com.dmuIt.domain.dto.PageInfo;
-import com.dmuIt.domain.dto.TeamDto;
+import com.dmuIt.domain.dto.*;
 import com.dmuIt.domain.entity.Team;
 import com.dmuIt.domain.mapper.MemberGroupMapper;
 import com.dmuIt.domain.mapper.TeamMapper;
@@ -135,20 +132,11 @@ public class TeamController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/post/search")
-    public Page<TeamDto> searchPaging(@Param("keyword") String keyword, @PageableDefault(size = 5) Pageable pageRequest) {
-
+    public Page<TeamDto> searchPaging(HttpServletRequest request, @Param("keyword") String keyword, @PageableDefault(size = 5) Pageable pageRequest) {
+        teamService.saveTeamSearchKeyword(request, keyword);
         Page<TeamDto> pagingList = null;
-        if(keyword == null) {
-            Page<Team> teamList = teamRepository.findAllSearch("", pageRequest);
-            pagingList = teamList.map(
-                    team -> new TeamDto(
-                            team.getId(), team.getTitle(), team.getContent(),
-                            team.getField(), team.get_class(),
-                            team.getGroup().getAllPersonnel(), team.getGroup().getNowPersonnel(), team.getGoal(), team. getLanguage(),
-                            team.getViewCount(), team.getBookmarked(),
-                            team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreatedAt(), team.getMember().getMemberId()
-
-                    ));
+        if(keyword.length() < 2) {
+            throw new IllegalArgumentException("검색어는 두 글자 이상이어야 합니다.");
         }else{
             Page<Team> teamList = teamRepository.findAllSearch(keyword, pageRequest);
             pagingList = teamList.map(
@@ -158,11 +146,24 @@ public class TeamController {
                             team.getGroup().getAllPersonnel(), team.getGroup().getNowPersonnel(), team.getGoal(), team. getLanguage(),
                             team.getViewCount(), team.getBookmarked(),
                             team.getKakaoOpenLink(), team.getGitHubLink(), team.getCreatedAt(), team.getMember().getMemberId()
-
-
                     ));
         }
         return pagingList;
 
+    }
+
+    @GetMapping("/searchHistory")
+    public List<SearchHistoryDto> getSearchHistory(HttpServletRequest request) {
+        return teamService.getSearchHistory(request);
+    }
+
+    @DeleteMapping("/searchHistory/{keyword}")
+    public void removeSearchHistory(HttpServletRequest request, @PathVariable("keyword") String keyword) {
+        teamService.removeSearchHistory(request, keyword);
+    }
+
+    @DeleteMapping("/searchHistory")
+    public void removeAllSearchHistory(HttpServletRequest request) {
+        teamService.removeAllSearchHistory(request);
     }
 }

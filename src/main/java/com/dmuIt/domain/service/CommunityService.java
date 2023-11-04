@@ -2,10 +2,13 @@ package com.dmuIt.domain.service;
 
 import com.dmuIt.domain.dto.CommunityRequestDto;
 import com.dmuIt.domain.dto.CommunityResponseDto;
+import com.dmuIt.domain.dto.SearchHistoryDto;
 import com.dmuIt.domain.entity.Community;
 import com.dmuIt.domain.entity.Member;
+import com.dmuIt.domain.entity.SearchHistory;
 import com.dmuIt.domain.mapper.CommunityMapper;
 import com.dmuIt.domain.repository.CommunityRepository;
+import com.dmuIt.domain.repository.SearchHistoryRepository;
 import com.dmuIt.global.exception.BusinessLogicException;
 import com.dmuIt.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +27,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommunityService {
     private final CommunityRepository communityRepository;
+    private final SearchHistoryRepository searchHistoryRepository;
     private final CommunityMapper communityMapper;
     private final MemberService memberService;
+
+    private final static String COMMUNITY = "community";
 
     @Transactional
     public void save(HttpServletRequest request, final CommunityRequestDto params) {
@@ -68,7 +75,6 @@ public class CommunityService {
         if (entity.getMember().getMemberId() != member.getMemberId()) {
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
         }
-        //Community entity = communityRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
         entity.update(params.toEntity().getTitle(), params.toEntity().getContent());
         entity.setModifiedAt(LocalDateTime.now());
     }
@@ -101,6 +107,50 @@ public class CommunityService {
     public Community findVerifiedCommunity(Long communityId) {
         Optional<Community> optionalCommunity = communityRepository.findById(communityId);
         return optionalCommunity.orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
+    }
+
+    @Transactional
+    public void saveTeamSearchKeyword(HttpServletRequest request, String keyword) {
+        Member member = memberService.verifiedCurrentMember(request);
+        List<SearchHistory> histories = searchHistoryRepository.findAllByMemberAndTypeOrderByCreatedAtDesc(member, COMMUNITY);
+        for (SearchHistory history : histories) {
+            if (history.getKeyword().equals(keyword)) {
+                history.setCreatedAt(LocalDateTime.now());
+                return;
+            }
+        }
+        SearchHistory searchHistory = SearchHistory.of(keyword, COMMUNITY, member);
+        searchHistoryRepository.save(searchHistory);
+    }
+
+    public List<SearchHistoryDto> getSearchHistory(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        List<SearchHistory> histories = searchHistoryRepository.findAllByMemberAndTypeOrderByCreatedAtDesc(member, COMMUNITY);
+        List<SearchHistoryDto> historyDtos = new ArrayList<>();
+        for (SearchHistory history : histories) {
+            historyDtos.add(SearchHistoryDto.builder()
+                    .keyword(history.getKeyword())
+                    .build());
+        }
+        return historyDtos;
+    }
+
+    @Transactional
+    public void removeSearchHistory(HttpServletRequest request, String keyword) {
+        Member member = memberService.verifiedCurrentMember(request);
+        List<SearchHistory> histories = searchHistoryRepository.findAllByMemberAndTypeOrderByCreatedAtDesc(member, COMMUNITY);
+        for (SearchHistory history : histories) {
+            if (history.getKeyword().equals(keyword)) {
+                searchHistoryRepository.delete(history);
+                break;
+            }
+        }
+    }
+
+    @Transactional
+    public void removeAllSearchHistory(HttpServletRequest request) {
+        Member member = memberService.verifiedCurrentMember(request);
+        searchHistoryRepository.deleteAllByMemberAndType(member, COMMUNITY);
     }
 }
 
