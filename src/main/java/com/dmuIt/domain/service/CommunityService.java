@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.dmuIt.domain.service.TeamService.LAST_HISTORY_INDEX;
+import static com.dmuIt.domain.service.TeamService.MAXIMUM_HISTORY_LENGTH;
+
 @Service
 @RequiredArgsConstructor
 public class CommunityService {
@@ -118,6 +121,9 @@ public class CommunityService {
                 history.setCreatedAt(LocalDateTime.now());
                 return;
             }
+        }
+        if (histories.size() == MAXIMUM_HISTORY_LENGTH) {
+            searchHistoryRepository.delete(histories.get(LAST_HISTORY_INDEX));
         }
         SearchHistory searchHistory = SearchHistory.of(keyword, COMMUNITY, member);
         searchHistoryRepository.save(searchHistory);

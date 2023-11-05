@@ -31,6 +31,8 @@ public class TeamService {
     private final GroupService groupService;
 
     private final static String TEAM = "team";
+    public final static int MAXIMUM_HISTORY_LENGTH = 6;
+    public final static int LAST_HISTORY_INDEX = 5;
 
     public void createTeam(HttpServletRequest request, Team team) {
         team.setMember(memberService.verifiedCurrentMember(request));
@@ -113,6 +115,9 @@ public class TeamService {
                 history.setCreatedAt(LocalDateTime.now());
                 return;
             }
+        }
+        if (histories.size() == MAXIMUM_HISTORY_LENGTH) {
+            searchHistoryRepository.delete(histories.get(LAST_HISTORY_INDEX));
         }
         SearchHistory searchHistory = SearchHistory.of(keyword, TEAM, member);
         searchHistoryRepository.save(searchHistory);
