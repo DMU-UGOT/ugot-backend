@@ -104,6 +104,11 @@ public class TeamService {
         return teamRepository.findAllByOrderByGroupAllPersonnelDesc(pageRequest);
     }
 
+    public Page<Team> findTeamsOrderByAllSkill(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return teamRepository.findAllByOrderByGroupAllPersonnelDesc(pageRequest);
+    }
+
     @Transactional
     public void saveTeamSearchKeyword(HttpServletRequest request, String keyword) {
         Member member = memberService.verifiedCurrentMember(request);
